@@ -13,27 +13,27 @@ const EducationItem = ({ institution, period, detail, degree, side, isVisible, i
     }`}
   >
     {/* Timeline dot */}
-    <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full border-4 border-slate-50 bg-blue-500 z-10 shadow-sm" />
+    <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full border-4 border-zinc-950 bg-orange-500 z-10 shadow-sm" />
 
     {/* Content Card */}
     <div
-      className={`w-[calc(100%-40px)] md:w-[45%] ml-auto md:ml-0 p-8 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all duration-500 hover:border-slate-300 ${
+      className={`w-[calc(100%-40px)] md:w-[45%] ml-auto md:ml-0 p-8 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-xl hover:shadow-2xl transition-all duration-500 hover:border-zinc-700 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-           <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">{period}</span>
-           <span className="text-xs font-semibold text-slate-500 bg-slate-50 border border-slate-100 px-3 py-1 rounded-full">Completed</span>
+           <span className="text-[10px] font-bold text-orange-500 uppercase tracking-[0.2em]">{period}</span>
+           <span className="text-[10px] font-bold text-zinc-500 bg-zinc-800 border border-zinc-700 px-3 py-1 rounded-lg uppercase tracking-widest">Completed</span>
         </div>
         
         <div>
-           <h3 className="text-xl font-bold text-slate-900 mb-2">{institution}</h3>
-           <p className="text-sm font-semibold text-slate-700">{degree}</p>
+           <h3 className="text-xl font-bold text-white mb-2">{institution}</h3>
+           <p className="text-sm font-bold text-zinc-400">{degree}</p>
         </div>
 
-        <p className="text-sm leading-relaxed text-slate-600">
+        <p className="text-sm leading-relaxed text-zinc-400">
           {detail}
         </p>
       </div>
@@ -80,18 +80,18 @@ const Education = () => {
   }, []);
 
   if (isLoading) return (
-    <section className="w-full py-20 bg-slate-50">
+    <section className="w-full py-20 bg-zinc-950">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 space-y-12 animate-pulse">
         <div className="flex justify-between items-end gap-6">
           <div className="space-y-4">
-             <div className="w-40 h-8 bg-slate-200 rounded-lg"></div>
-             <div className="w-64 h-16 bg-slate-200 rounded-xl"></div>
+             <div className="w-40 h-8 bg-zinc-900 rounded-lg"></div>
+             <div className="w-64 h-16 bg-zinc-900 rounded-xl"></div>
           </div>
-          <div className="w-32 h-20 bg-slate-200 rounded-xl"></div>
+          <div className="w-32 h-20 bg-zinc-900 rounded-xl"></div>
         </div>
         <div className="space-y-8">
           {[1,2].map(i => (
-            <div key={i} className="h-40 w-full md:w-[45%] bg-slate-200 rounded-xl"></div>
+            <div key={i} className="h-40 w-full md:w-[45%] bg-zinc-900 rounded-xl"></div>
           ))}
         </div>
       </div>
@@ -101,7 +101,7 @@ const Education = () => {
   return (
     <section
       ref={containerRef}
-      className="w-full relative py-20 bg-slate-50 overflow-hidden border-b border-slate-100"
+      className="w-full relative py-20 bg-zinc-950 overflow-hidden border-b border-zinc-900"
       id="education"
     >
       <EditSectionButton href="/admin/education" label="Edit Education" />
@@ -110,25 +110,25 @@ const Education = () => {
         {/* Engineering Header */}
         <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white">
-                 <GraduationCap size={16} className="text-blue-600" />
-                 <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Academic Verification</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
+                 <GraduationCap size={16} className="text-orange-500" />
+                 <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Academic Verification</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.1]">
                 Educational <br />
-                <span className="text-blue-600">
+                <span className="text-orange-500">
                   Ledger.
                 </span>
               </h2>
            </div>
-           <p className="max-w-xs text-slate-600 text-sm md:text-base leading-relaxed text-left md:text-right">
+           <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
               Formal academic training and educational background.
            </p>
         </div>
 
         <div className="relative">
           {/* Vertical Timeline Line */}
-          <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-slate-200" />
+          <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-zinc-900" />
 
           {/* Timeline Items */}
           <div className="space-y-4">

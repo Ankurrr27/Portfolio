@@ -126,13 +126,13 @@ export default function SkillSphere({ skills }) {
 
         <Sphere args={[4.2, 64, 64]}>
           <MeshDistortMaterial
-            color="#818cf8"
+            color="#f97316"
             roughness={0.1}
             metalness={0.8}
             distort={0.3}
             speed={1.5}
             transparent
-            opacity={0.1}
+            opacity={0.05}
           />
         </Sphere>
 

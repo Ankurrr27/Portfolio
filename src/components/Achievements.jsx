@@ -12,21 +12,17 @@ const icons = {
   gfg: <SiGeeksforgeeks />,
 };
 
-// Brand colors per platform
+// Brand colors per platform (Zinc Themed)
 const platformColors = {
-  github:   { bg: "bg-slate-900",  text: "text-white",        icon: "text-white" },
-  leetcode: { bg: "bg-orange-500", text: "text-white",        icon: "text-white" },
-  gfg:      { bg: "bg-green-600",  text: "text-white",        icon: "text-white" },
+  github:   { bg: "bg-zinc-900",  text: "text-white",        icon: "text-zinc-100", border: "border-zinc-800" },
+  leetcode: { bg: "bg-orange-600", text: "text-white",        icon: "text-white",    border: "border-orange-500" },
+  gfg:      { bg: "bg-emerald-700",  text: "text-white",        icon: "text-white",    border: "border-emerald-600" },
 };
 
-// Category color palette (cycles)
+// Zinc-aligned palette
 const categoryColors = [
-  { border: "border-violet-200", bg: "bg-violet-50",   icon: "bg-violet-600",   tag: "text-violet-600 bg-violet-50" },
-  { border: "border-amber-200",  bg: "bg-amber-50",    icon: "bg-amber-500",    tag: "text-amber-600 bg-amber-50"  },
-  { border: "border-emerald-200",bg: "bg-emerald-50",  icon: "bg-emerald-600",  tag: "text-emerald-700 bg-emerald-50" },
-  { border: "border-rose-200",   bg: "bg-rose-50",     icon: "bg-rose-600",     tag: "text-rose-600 bg-rose-50"   },
-  { border: "border-sky-200",    bg: "bg-sky-50",      icon: "bg-sky-600",      tag: "text-sky-600 bg-sky-50"     },
-  { border: "border-indigo-200", bg: "bg-indigo-50",   icon: "bg-indigo-600",   tag: "text-indigo-600 bg-indigo-50" },
+  { border: "border-zinc-800", bg: "bg-zinc-900", icon: "bg-zinc-800", text: "text-zinc-100", desc: "text-zinc-400", tag: "text-zinc-400 bg-zinc-800/50" },
+  { border: "border-zinc-800", bg: "bg-zinc-900", icon: "bg-zinc-800", text: "text-zinc-100", desc: "text-zinc-400", tag: "text-zinc-400 bg-zinc-800/50" },
 ];
 
 
@@ -58,7 +54,7 @@ const Achievements = () => {
   return (
     <section
       ref={sectionRef}
-      className="w-full relative py-20 bg-white overflow-hidden border-b border-slate-100"
+      className="w-full relative py-20 bg-zinc-950 overflow-hidden border-b border-zinc-900"
       id="achievements"
     >
       <EditSectionButton href="/admin/achievements" label="Edit Achievements" />
@@ -67,18 +63,18 @@ const Achievements = () => {
         {/* Engineering Header */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50">
-                 <Trophy size={16} className="text-blue-600" />
-                 <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Verification System</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
+                 <Trophy size={16} className="text-orange-500" />
+                 <span className="text-xs font-semibold text-zinc-300 uppercase tracking-wide">Verification System</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.1]">
                 Major <br />
-                <span className="text-blue-600">
+                <span className="text-orange-500">
                   Milestones.
                 </span>
               </h2>
            </div>
-           <p className="max-w-xs text-slate-600 text-sm md:text-base leading-relaxed text-left md:text-right">
+           <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
               Validated technical recognition records and competitive programming milestones.
            </p>
         </div>
@@ -86,9 +82,9 @@ const Achievements = () => {
         {codingStats.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             {codingStats.map((stat, i) => {
-              const pc = platformColors[stat.icon] || { bg: "bg-blue-600", text: "text-white", icon: "text-white" };
+              const pc = platformColors[stat.icon] || { bg: "bg-zinc-800", text: "text-white", icon: "text-white", border: "border-zinc-700" };
               return (
-                <div key={i} className={`p-8 rounded-xl border border-transparent ${pc.bg} flex items-center justify-between group shadow-sm hover:shadow-lg transition-all duration-300`}>
+                <div key={i} className={`p-8 rounded-xl border ${pc.border} ${pc.bg} flex items-center justify-between group shadow-sm hover:shadow-xl transition-all duration-300`}>
                    <div className="space-y-1">
                       <p className={`text-xs font-semibold uppercase tracking-wider ${pc.text} opacity-70`}>{stat.label}</p>
                       <h4 className={`text-4xl font-bold tracking-tight ${pc.text}`}>{stat.count}</h4>
@@ -105,29 +101,29 @@ const Achievements = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {achievements.map((a, i) => {
-            const palette = categoryColors[i % categoryColors.length];
+            const palette = categoryColors[i % categoryColors.length] || categoryColors[0];
             return (
-              <div key={a.id || i} className={`group p-8 rounded-xl bg-white border ${palette.border} hover:shadow-lg transition-all duration-300 flex flex-col h-full`}>
+              <div key={a.id || i} className={`group p-8 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 transition-all duration-300 flex flex-col h-full shadow-lg`}>
                  <div className="flex justify-between items-start mb-6">
-                    <div className={`p-3 rounded-xl ${palette.icon} text-white group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`p-3 rounded-xl bg-zinc-800 text-orange-500 group-hover:scale-110 transition-transform duration-300 border border-zinc-700`}>
                        <Trophy size={20} />
                     </div>
-                    <span className="text-xs text-slate-500 font-medium bg-slate-50 border border-slate-100 px-3 py-1 rounded-full">
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest bg-zinc-800 border border-zinc-700 px-3 py-1 rounded-lg">
                        {a.dateLabel || "Archive"}
                     </span>
                  </div>
                  
-                 <p className={`text-xs font-bold uppercase tracking-wider mb-2 ${palette.tag}`}>{a.category || "Merit"}</p>
-                 <h4 className="text-xl font-bold text-slate-900 mb-3 leading-tight">
+                 <p className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-2 text-zinc-500`}>{a.category || "Merit"}</p>
+                 <h4 className="text-xl font-bold text-white mb-3 leading-tight">
                     {a.title}
                  </h4>
                  
-                 <p className="text-slate-600 text-sm leading-relaxed flex-1 mb-8">
+                 <p className="text-zinc-400 text-sm leading-relaxed flex-1 mb-8">
                     {a.description}
                  </p>
                  
                  {a.achievementUrl && (
-                   <a href={a.achievementUrl} target="_blank" rel="noopener" className="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-slate-900 group/link transition-colors">
+                   <a href={a.achievementUrl} target="_blank" rel="noopener" className="flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-orange-500 group/link transition-colors mt-auto">
                       View Verification <ArrowUpRight size={16} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                    </a>
                  )}

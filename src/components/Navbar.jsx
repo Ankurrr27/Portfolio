@@ -1,8 +1,9 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Education"];
+const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Education", "Gallery"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,61 +29,59 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 px-6 md:px-8 flex items-center justify-between rounded-xl border bg-white/70 backdrop-blur-md shadow-sm ${
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 px-6 md:px-8 flex items-center justify-between rounded-2xl border bg-zinc-900/70 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)] ${
         isScrolled
-          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-slate-200/50"
-          : "w-[calc(100%-3rem)] max-w-7xl h-16 border-slate-200/50"
+          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-zinc-800"
+          : "w-[calc(100%-3rem)] max-w-7xl h-16 border-zinc-800"
       }`}
     >
       {/* Logo */}
       <a href="#home" className="flex items-center gap-1.5 group">
-        <span className="text-xl font-bold text-slate-900 transition-colors duration-300">
+        <span className="text-xl font-bold text-white transition-colors duration-300">
           Ankur.
         </span>
+        <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
       </a>
 
       {/* Desktop nav */}
-      <div className="flex items-center gap-6">
-        <ul className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <li key={link}>
-              <a
-                href={`#${link.toLowerCase()}`}
-                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  active === link
-                    ? "text-blue-600 bg-blue-50"
-                    : "text-slate-600 hover:text-blue-600 hover:bg-slate-50"
-                }`}
-              >
-                {link}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div className="hidden md:flex items-center gap-1.5 p-1 rounded-xl bg-black/20 border border-white/5">
+        {navLinks.map((link) => (
+          <a
+            key={link}
+            href={`#${link.toLowerCase()}`}
+            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-all rounded-lg ${
+              active === link 
+                ? "bg-zinc-800 text-white shadow-sm" 
+                : "text-zinc-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            {link}
+          </a>
+        ))}
       </div>
 
       {/* Mobile controls */}
       <div className="flex items-center gap-3 md:hidden">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="cursor-pointer text-slate-700 p-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all active:scale-95"
+          className="cursor-pointer text-white p-2 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition-all active:scale-95"
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </button>
       </div>
 
-      {/* Mobile menu - Redesigned for Glassmorphism */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="fixed md:hidden left-0 top-20 w-[90%] left-1/2 -translate-x-1/2 max-h-[80vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-xl z-[900] p-6"
+            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[90%] max-h-[80vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl z-[900] p-6 backdrop-blur-xl"
           >
             <ul className="flex flex-col gap-2">
-              {navLinks.map((link, i) => (
+              {navLinks.map((link) => (
                 <li
                   key={link}
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -90,10 +89,10 @@ const Navbar = () => {
                 >
                   <a
                     href={`#${link.toLowerCase()}`}
-                    className={`flex items-center px-4 py-3 rounded-lg text-lg font-medium transition-colors ${
+                    className={`flex items-center px-4 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${
                       active === link 
-                        ? "bg-blue-50 text-blue-700" 
-                        : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+                        ? "bg-white/10 text-orange-500" 
+                        : "text-zinc-400 hover:bg-white/5 hover:text-white"
                     }`}
                   >
                     {link}

@@ -4,7 +4,10 @@ import { prisma } from "../../../lib/prisma";
 export async function GET() {
   try {
     const education = await prisma.education.findMany({
-      orderBy: { displayOrder: "asc" }
+      orderBy: [
+        { displayOrder: "asc" },
+        { createdAt: "desc" }
+      ]
     });
     return NextResponse.json({ education });
   } catch (error) {
