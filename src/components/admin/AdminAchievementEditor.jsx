@@ -48,6 +48,20 @@ export default function AdminAchievementEditor({
                 achievements.filter((_, itemIndex) => itemIndex !== index)
               )
             }
+            onMoveUp={() => {
+              if (index === 0) return;
+              const next = [...achievements];
+              [next[index - 1], next[index]] = [next[index], next[index - 1]];
+              setAchievements(next);
+            }}
+            onMoveDown={() => {
+              if (index === achievements.length - 1) return;
+              const next = [...achievements];
+              [next[index + 1], next[index]] = [next[index], next[index + 1]];
+              setAchievements(next);
+            }}
+            isFirst={index === 0}
+            isLast={index === achievements.length - 1}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <AdminField

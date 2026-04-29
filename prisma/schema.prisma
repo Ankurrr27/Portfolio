@@ -69,6 +69,7 @@ model Education {
   side         String?
   skills       String?
   description  String?
+  imageUrl     String?
   displayOrder Int      @default(0)
   featured     Boolean  @default(true)
   createdAt    DateTime @default(now())

@@ -1,105 +1,10 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
 import { Upload, X, Image as ImageIcon, Check, Loader2, Plus, Trash2 } from "lucide-react";
 import { useAdmin } from "../../context/AdminContext";
+import ManualCropModal from "./ManualCropModal";
 
-// ─── Helpers ───────────────────────────────────────────────────────────────
-
-function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
-  return centerCrop(
-    makeAspectCrop({ unit: "%", width: 90 }, aspect, mediaWidth, mediaHeight),
-    mediaWidth,
-    mediaHeight
-  );
-}
-
-async function getCroppedBlob(imageEl, crop, fileName) {
-  const canvas = document.createElement("canvas");
-  const scaleX = imageEl.naturalWidth / imageEl.width;
-  const scaleY = imageEl.naturalHeight / imageEl.height;
-  canvas.width = Math.floor(crop.width * scaleX);
-  canvas.height = Math.floor(crop.height * scaleY);
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(
-    imageEl,
-    crop.x * scaleX, crop.y * scaleY,
-    crop.width * scaleX, crop.height * scaleY,
-    0, 0, canvas.width, canvas.height
-  );
-  return new Promise((resolve) =>
-    canvas.toBlob((blob) => resolve(new File([blob], fileName, { type: "image/jpeg" })), "image/jpeg", 0.92)
-  );
-}
-
-// ─── CropModal ─────────────────────────────────────────────────────────────
-
-function CropModal({ src, fileName, aspect, onDone, onCancel }) {
-  const [crop, setCrop] = useState();
-  const [completedCrop, setCompletedCrop] = useState(null);
-  const imgRef = useRef(null);
-
-  const onImageLoad = useCallback((e) => {
-    const { width, height } = e.currentTarget;
-    setCrop(centerAspectCrop(width, height, aspect));
-  }, [aspect]);
-
-  const handleConfirm = async () => {
-    if (!completedCrop || !imgRef.current) return;
-    const file = await getCroppedBlob(imgRef.current, completedCrop, fileName);
-    onDone(file);
-  };
-
-  return (
-    <div className="fixed inset-0 z-[9000] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden">
-        <div className="flex items-center justify-between p-5 border-b border-slate-100">
-          <div>
-            <h3 className="font-bold text-slate-900">Crop Image</h3>
-            <p className="text-xs text-slate-500 mt-0.5">{aspect === 16 / 9 ? "Cover — 16:9" : "Square — 1:1"} ratio</p>
-          </div>
-          <button onClick={onCancel} className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors">
-            <X size={18} />
-          </button>
-        </div>
-
-        <div className="p-5 bg-slate-50 flex items-center justify-center min-h-[300px]">
-          <ReactCrop
-            crop={crop}
-            onChange={(_, pct) => setCrop(pct)}
-            onComplete={(c) => setCompletedCrop(c)}
-            aspect={aspect}
-            minWidth={50}
-            className="max-h-[60vh]"
-          >
-            <img
-              ref={imgRef}
-              src={src}
-              onLoad={onImageLoad}
-              alt="Crop preview"
-              className="max-h-[60vh] object-contain"
-            />
-          </ReactCrop>
-        </div>
-
-        <div className="flex justify-end gap-3 p-5 border-t border-slate-100">
-          <button onClick={onCancel} className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors">
-            Cancel
-          </button>
-          <button
-            onClick={handleConfirm}
-            disabled={!completedCrop}
-            className="px-5 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
-          >
-            <Check size={16} /> Apply Crop
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
@@ -115,17 +20,18 @@ export default function ProjectImageEditor({ project, onSaved }) {
   const galleryInputRef = useRef(null);
 
   // ── Upload a File to Cloudinary via our API ──
-  const uploadFile = async (file, aspect) => {
+  const uploadFile = async (blob, aspect, fileName) => {
     setUploading(true);
     setStatus("");
     try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("aspectRatio", aspect === 16 / 9 ? "16:9" : "1:1");
+      if (!blob) return;
+      const formData = new FormData();
+      formData.append("file", blob, fileName || "image.jpg");
+      formData.append("aspectRatio", aspect === 16 / 9 ? "16:9" : "1:1");
       const res = await fetch("/api/admin/upload", {
         method: "POST",
         headers: { "x-admin-key": adminKey },
-        body: form,
+        body: formData,
       });
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
@@ -154,16 +60,18 @@ export default function ProjectImageEditor({ project, onSaved }) {
 
   // ── After crop is confirmed ──
   const handleCropDone = async (croppedFile) => {
-    const { target, aspect } = cropModal;
+    if (!cropModal) return;
+    const { target, aspect, fileName } = cropModal;
     setCropModal(null);
     try {
-      const url = await uploadFile(croppedFile, aspect);
+      const url = await uploadFile(croppedFile, aspect, fileName);
       if (target === "cover") {
         setImageUrl(url);
       } else {
         setGalleryUrls((prev) => [...prev, url]);
       }
-    } catch {
+    } catch (err) {
+      console.error("Project upload failed:", err);
       setStatus("Upload failed. Check Cloudinary credentials.");
     }
   };
@@ -278,12 +186,11 @@ export default function ProjectImageEditor({ project, onSaved }) {
 
       {/* Crop Modal */}
       {cropModal && (
-        <CropModal
-          src={cropModal.src}
-          fileName={cropModal.fileName}
+        <ManualCropModal
+          image={cropModal.src}
           aspect={cropModal.aspect}
-          onDone={handleCropDone}
-          onCancel={() => setCropModal(null)}
+          onCropComplete={handleCropDone}
+          onClose={() => setCropModal(null)}
         />
       )}
     </div>

@@ -33,10 +33,15 @@ export default function AdminSkillsPage() {
     setIsLoading(true);
     setStatus("");
     try {
+      const orderedDomains = domains.map((d, index) => ({
+        ...d,
+        displayOrder: index,
+      }));
+
       const res = await fetch("/api/admin/skills", {
         method: "PUT",
         headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
-        body: JSON.stringify({ domains }),
+        body: JSON.stringify({ domains: orderedDomains }),
       });
       if (res.ok) setStatus("Skills updated successfully.");
       else throw new Error("Failed to save");
@@ -57,6 +62,20 @@ export default function AdminSkillsPage() {
 
   const updateDomain = (index, field, value) => {
     setDomains(domains.map((d, i) => i === index ? { ...d, [field]: value } : d));
+  };
+
+  const moveUp = (index) => {
+    if (index === 0) return;
+    const next = [...domains];
+    [next[index - 1], next[index]] = [next[index], next[index - 1]];
+    setDomains(next);
+  };
+
+  const moveDown = (index) => {
+    if (index === domains.length - 1) return;
+    const next = [...domains];
+    [next[index + 1], next[index]] = [next[index], next[index + 1]];
+    setDomains(next);
   };
 
   const addSkill = (domainIndex) => {
@@ -114,17 +133,16 @@ export default function AdminSkillsPage() {
 
       <div className="space-y-8">
         {domains.map((domain, dIndex) => (
-          <div key={dIndex} className="p-8 rounded-xl border border-slate-200 bg-white shadow-sm space-y-8 relative group">
-            <div className="flex justify-between items-center mb-2">
-               <h3 className="text-base font-semibold text-slate-900">Domain Group</h3>
-               <button 
-                onClick={() => removeDomain(dIndex)}
-                className="p-2 rounded-lg bg-red-50 text-red-600 transition-colors hover:bg-red-100"
-               >
-                 <Trash2 size={16} />
-               </button>
-            </div>
-
+          <AdminEntryShell
+            key={dIndex}
+            title={domain.title || "New Domain"}
+            subtitle={domain.key || "domain-id"}
+            onRemove={() => removeDomain(dIndex)}
+            onMoveUp={() => moveUp(dIndex)}
+            onMoveDown={() => moveDown(dIndex)}
+            isFirst={dIndex === 0}
+            isLast={dIndex === domains.length - 1}
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
                 <AdminField 
@@ -184,7 +202,7 @@ export default function AdminSkillsPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </AdminEntryShell>
         ))}
       </div>
     </div>

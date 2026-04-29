@@ -6,7 +6,7 @@ import EditSectionButton from "./admin/EditSectionButton";
 
 
 
-const EducationItem = ({ institution, period, detail, degree, side, isVisible, index }) => (
+const EducationItem = ({ institution, period, detail, degree, side, isVisible, index, imageUrl }) => (
   <div
     className={`relative flex items-center justify-between w-full mb-12 md:mb-16 ${
       side === "left" ? "md:flex-row-reverse" : "md:flex-row"
@@ -17,25 +17,53 @@ const EducationItem = ({ institution, period, detail, degree, side, isVisible, i
 
     {/* Content Card */}
     <div
-      className={`w-[calc(100%-40px)] md:w-[45%] ml-auto md:ml-0 p-8 rounded-2xl bg-zinc-900 border border-zinc-800 shadow-xl hover:shadow-2xl transition-all duration-500 hover:border-zinc-700 ${
+      className={`group w-[calc(100%-40px)] md:w-[45%] ml-auto md:ml-0 rounded-[2rem] bg-zinc-900/40 backdrop-blur-md border border-zinc-800/50 hover:border-orange-500/30 transition-all duration-500 overflow-hidden flex flex-col sm:flex-row ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
-      <div className="flex flex-col gap-4">
+      {/* Marginal Expanding Image Section */}
+      {imageUrl && (
+        <div className="relative overflow-hidden flex-shrink-0 bg-zinc-950 transition-all duration-700 ease-in-out w-16 sm:w-24 md:w-32 group-hover:w-full sm:group-hover:w-56 md:group-hover:w-64 aspect-video sm:aspect-auto border-r border-zinc-800/50">
+          <img 
+            src={imageUrl} 
+            alt={institution} 
+            className="w-full h-full object-cover opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/20 to-zinc-900/60 group-hover:from-transparent transition-all duration-700" />
+          
+          {/* Subtle accent line */}
+          <div className="absolute inset-y-0 right-0 w-[1px] bg-zinc-800 group-hover:bg-orange-500/30 transition-colors" />
+        </div>
+      )}
+
+      {/* Content Section */}
+      <div className="flex-1 p-6 md:p-8 flex flex-col gap-6">
         <div className="flex items-center justify-between">
-           <span className="text-[10px] font-bold text-orange-500 uppercase tracking-[0.2em]">{period}</span>
-           <span className="text-[10px] font-bold text-zinc-500 bg-zinc-800 border border-zinc-700 px-3 py-1 rounded-lg uppercase tracking-widest">Completed</span>
+           <div className="px-3 py-1 rounded-full bg-zinc-950 border border-zinc-800 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{period}</span>
+           </div>
+           <span className="text-[9px] font-bold text-zinc-500 border border-zinc-800 px-3 py-1 rounded-full uppercase tracking-[0.2em] group-hover:text-orange-500 group-hover:border-orange-500/30 transition-all">Verified</span>
         </div>
         
-        <div>
-           <h3 className="text-xl font-bold text-white mb-2">{institution}</h3>
-           <p className="text-sm font-bold text-zinc-400">{degree}</p>
+        <div className="space-y-3">
+           <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-tight group-hover:text-orange-500 transition-colors">
+             {institution}
+           </h3>
+           <div className="flex items-center gap-2">
+             <div className="w-4 h-[1px] bg-zinc-700" />
+             <p className="text-sm font-bold text-zinc-400 uppercase tracking-widest leading-none">
+               {degree}
+             </p>
+           </div>
         </div>
 
-        <p className="text-sm leading-relaxed text-zinc-400">
-          {detail}
-        </p>
+        {detail && (
+          <p className="text-sm leading-relaxed text-zinc-500 group-hover:text-zinc-400 transition-colors">
+            {detail}
+          </p>
+        )}
       </div>
     </div>
 
@@ -141,6 +169,7 @@ const Education = () => {
                 period={item.period}
                 detail={item.detail}
                 degree={item.degree}
+                imageUrl={item.imageUrl}
                 isVisible={isVisible}
               />
             ))}

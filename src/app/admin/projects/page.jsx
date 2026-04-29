@@ -85,6 +85,24 @@ export default function AdminProjectsPage() {
     }));
   };
 
+  const moveUp = (index) => {
+    if (index === 0) return;
+    setSelectedSlugs((prev) => {
+      const next = [...prev];
+      [next[index - 1], next[index]] = [next[index], next[index - 1]];
+      return next;
+    });
+  };
+
+  const moveDown = (index) => {
+    setSelectedSlugs((prev) => {
+      if (index === prev.length - 1) return prev;
+      const next = [...prev];
+      [next[index + 1], next[index]] = [next[index], next[index + 1]];
+      return next;
+    });
+  };
+
   return (
     <div className="space-y-8 pb-20">
       <header className="flex items-center justify-between gap-6 border-b border-slate-200 pb-6">
@@ -120,6 +138,8 @@ export default function AdminProjectsPage() {
         projectImages={projectImages}
         onToggleProject={toggleProjectSelection}
         onUpdateProjectImage={updateProjectImage}
+        onMoveUp={moveUp}
+        onMoveDown={moveDown}
         onImportSelected={handleSave}
         isLoading={isLoading}
       />

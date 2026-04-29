@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useAdmin } from "../../../context/AdminContext";
-import { Save, AlertCircle, Plus, GraduationCap } from "lucide-react";
+import { Save, AlertCircle, Plus, GraduationCap, Image as ImageIcon } from "lucide-react";
+import AdminEntryShell from "../../../components/admin/AdminEntryShell";
+import AdminField from "../../../components/admin/AdminField";
+import AdminImageUpload from "../../../components/admin/AdminImageUpload";
 
 export default function AdminEducationPage() {
   const { adminKey } = useAdmin();
@@ -73,6 +76,7 @@ export default function AdminEducationPage() {
         detail: "",
         skills: "",
         description: "",
+        imageUrl: "",
         displayOrder: 0
       },
       ...education
@@ -122,70 +126,68 @@ export default function AdminEducationPage() {
 
       <div className="space-y-6">
         {education.map((item, index) => (
-          <div key={index} className="p-6 rounded-xl border border-slate-200 bg-white shadow-sm relative group">
-            <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                  <GraduationCap size={20} />
-                </div>
-                <h3 className="text-base font-semibold text-slate-900">Entry #{index + 1}</h3>
-              </div>
-              <button
-                onClick={() => setEducation(education.filter((_, i) => i !== index))}
-                className="rounded-lg border border-red-200 px-4 py-2 text-red-600 font-medium text-xs hover:bg-red-50 transition-colors"
-              >
-                Remove
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700">Institution</label>
-                <input
-                  type="text"
-                  value={item.institution}
-                  onChange={(e) => updateField(index, "institution", e.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+          <AdminEntryShell
+            key={index}
+            title={item.institution || "New Education"}
+            subtitle={item.degree || "Degree Detail"}
+            onRemove={() => setEducation(education.filter((_, i) => i !== index))}
+            onMoveUp={() => {
+              if (index === 0) return;
+              const next = [...education];
+              [next[index - 1], next[index]] = [next[index], next[index - 1]];
+              setEducation(next);
+            }}
+            onMoveDown={() => {
+              if (index === education.length - 1) return;
+              const next = [...education];
+              [next[index + 1], next[index]] = [next[index], next[index + 1]];
+              setEducation(next);
+            }}
+            isFirst={index === 0}
+            isLast={index === education.length - 1}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+              <div className="md:col-span-4 lg:col-span-3">
+                <AdminImageUpload 
+                  label="Institution Logo"
+                  currentImage={item.imageUrl}
+                  onUploadSuccess={(url) => updateField(index, "imageUrl", url)}
                 />
               </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700">Degree</label>
-                <input
-                  type="text"
+
+              <div className="md:col-span-8 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <AdminField
+                  label="Institution"
+                  value={item.institution || ""}
+                  onChange={(e) => updateField(index, "institution", e.target.value)}
+                />
+                <AdminField
+                  label="Degree"
                   value={item.degree || ""}
                   onChange={(e) => updateField(index, "degree", e.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                 />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700">Period</label>
-                <input
-                  type="text"
+                <AdminField
+                  label="Period"
                   value={item.period || ""}
                   onChange={(e) => updateField(index, "period", e.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                 />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-700">Skills</label>
-                <input
-                  type="text"
+                <AdminField
+                  label="Skills"
                   value={item.skills || ""}
                   onChange={(e) => updateField(index, "skills", e.target.value)}
                   placeholder="e.g. React, Node.js, Python"
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
                 />
-              </div>
-              <div className="space-y-1.5 md:col-span-2">
-                <label className="text-sm font-semibold text-slate-700">Description</label>
-                <textarea
-                  value={item.description || ""}
-                  onChange={(e) => updateField(index, "description", e.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors min-h-[100px] resize-y"
-                />
+                <div className="md:col-span-2">
+                  <AdminField
+                    label="Description"
+                    value={item.description || ""}
+                    onChange={(e) => updateField(index, "description", e.target.value)}
+                    textarea
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </AdminEntryShell>
         ))}
       </div>
     </div>

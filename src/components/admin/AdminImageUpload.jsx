@@ -40,6 +40,10 @@ export default function AdminImageUpload({ onUploadSuccess, currentImage, label 
     setShowCropper(false);
     setIsUploading(true);
 
+    if (!croppedBlob) {
+      setIsUploading(false);
+      return;
+    }
     const formData = new FormData();
     formData.append("file", croppedBlob, "cropped-image.jpg");
     formData.append("aspectRatio", aspectRatio);

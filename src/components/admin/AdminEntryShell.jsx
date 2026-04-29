@@ -1,7 +1,13 @@
+import { ArrowUp, ArrowDown } from "lucide-react";
+
 export default function AdminEntryShell({
   title,
   subtitle,
   onRemove,
+  onMoveUp,
+  onMoveDown,
+  isFirst,
+  isLast,
   children,
 }) {
   return (
@@ -13,12 +19,34 @@ export default function AdminEntryShell({
             {subtitle}
           </p>
         </div>
-        <button
-          onClick={onRemove}
-          className="rounded-lg border border-red-200 px-4 py-2 text-red-600 font-medium text-xs hover:bg-red-50 transition-all active:scale-95"
-        >
-          Remove
-        </button>
+        <div className="flex items-center gap-3">
+          {(onMoveUp || onMoveDown) && (
+            <div className="flex items-center gap-1 border-r border-slate-200 pr-3 mr-1">
+              <button
+                onClick={onMoveUp}
+                disabled={isFirst}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-600 disabled:opacity-20 transition-all active:scale-95"
+                title="Move Up"
+              >
+                <ArrowUp size={14} />
+              </button>
+              <button
+                onClick={onMoveDown}
+                disabled={isLast}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-600 disabled:opacity-20 transition-all active:scale-95"
+                title="Move Down"
+              >
+                <ArrowDown size={14} />
+              </button>
+            </div>
+          )}
+          <button
+            onClick={onRemove}
+            className="rounded-lg border border-red-100 px-4 py-2 text-red-500 font-bold text-[10px] uppercase tracking-wider hover:bg-red-50 transition-all active:scale-95"
+          >
+            Remove
+          </button>
+        </div>
       </div>
       {children}
     </div>
