@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Globe, Database, Layers, CheckCircle2 } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
@@ -67,7 +67,7 @@ const Skills = () => {
     // Fallback visibility
     const timer = setTimeout(() => {
       if (isLoading) setIsLoading(false);
-    }, 2000);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -91,9 +91,8 @@ const Skills = () => {
       </div>
     </section>
   );
-  if (domains.length === 0) return null;
-
-  const currentDomain = domains.find((d) => d.key === activeDomain) || domains[0];
+  // Removed early return to ensure section is visible even if empty
+  const currentDomain = domains.find((d) => d.key === activeDomain) || domains[0] || { title: "No Domain", items: [] };
 
   return (
     <section id="skills" className="w-full pt-32 pb-24 px-6 md:px-12 lg:px-24 bg-zinc-950 relative overflow-hidden border-b border-zinc-900">
@@ -116,7 +115,9 @@ const Skills = () => {
             </h2>
           </div>
           <div className="hidden lg:block h-[300px] w-full">
-             <SkillSphere skills={domains.flatMap(d => d.items || [])} />
+             <Suspense fallback={<div className="w-full h-full bg-zinc-900 rounded-2xl animate-pulse" />}>
+                <SkillSphere skills={domains.flatMap(d => d.items || [])} />
+             </Suspense>
           </div>
         </div>
         
@@ -144,7 +145,9 @@ const Skills = () => {
             </div>
 
             <div className="lg:hidden w-full aspect-square -my-10">
-               <SkillSphere skills={domains.flatMap(d => d.items || [])} />
+               <Suspense fallback={<div className="w-full h-full bg-zinc-900 rounded-2xl animate-pulse" />}>
+                  <SkillSphere skills={domains.flatMap(d => d.items || [])} />
+               </Suspense>
             </div>
           </div>
 

@@ -29,10 +29,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 px-6 md:px-8 flex items-center justify-between rounded-2xl border bg-zinc-900/70 backdrop-blur-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)] ${
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 px-6 md:px-8 flex items-center justify-between rounded-2xl border bg-zinc-950/40 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_32px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${
         isScrolled
-          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-zinc-800"
-          : "w-[calc(100%-3rem)] max-w-7xl h-16 border-zinc-800"
+          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-white/10 shadow-[inset_0_0_12px_rgba(255,255,255,0.05)]"
+          : "w-[calc(100%-3rem)] max-w-7xl h-16 border-white/10"
       }`}
     >
       {/* Logo */}

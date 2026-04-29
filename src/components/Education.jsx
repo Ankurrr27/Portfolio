@@ -63,7 +63,7 @@ const Education = () => {
       } finally {
         setIsLoading(false);
         // Fallback visibility if observer fails
-        setTimeout(() => setIsVisible(true), 1000);
+        setTimeout(() => setIsVisible(true), 300);
       }
     };
     fetchEducation();

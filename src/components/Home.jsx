@@ -27,11 +27,11 @@ const Home = ({ totalViews = 0 }) => {
         if (data.profile) setProfile(data.profile);
       } catch (err) {
         console.error("Home: Error fetching profile", err);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchProfile();
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
   }, []);
 
   const { headline, linkedinUrl } = profile || {};
