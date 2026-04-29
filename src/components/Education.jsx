@@ -1,0 +1,144 @@
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { GraduationCap } from "lucide-react";
+import EditSectionButton from "./admin/EditSectionButton";
+
+
+import { educationEntries } from "../data/education";
+
+const EducationItem = ({ institution, period, detail, degree, side, isVisible, index }) => (
+  <div
+    className={`relative flex items-center justify-between w-full mb-12 md:mb-16 ${
+      side === "left" ? "md:flex-row-reverse" : "md:flex-row"
+    }`}
+  >
+    {/* Timeline dot */}
+    <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full border-4 border-slate-50 bg-blue-500 z-10 shadow-sm" />
+
+    {/* Content Card */}
+    <div
+      className={`w-[calc(100%-40px)] md:w-[45%] ml-auto md:ml-0 p-8 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all duration-500 hover:border-slate-300 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+           <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">{period}</span>
+           <span className="text-xs font-semibold text-slate-500 bg-slate-50 border border-slate-100 px-3 py-1 rounded-full">Completed</span>
+        </div>
+        
+        <div>
+           <h3 className="text-xl font-bold text-slate-900 mb-2">{institution}</h3>
+           <p className="text-sm font-semibold text-slate-700">{degree}</p>
+        </div>
+
+        <p className="text-sm leading-relaxed text-slate-600">
+          {detail}
+        </p>
+      </div>
+    </div>
+
+    {/* Spacer for the other side on desktop */}
+    <div className="hidden md:block md:w-[45%]" />
+  </div>
+);
+
+const Education = () => {
+  const [education, setEducation] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchEducation = async () => {
+      try {
+        const res = await fetch("/api/education");
+        const data = await res.json();
+        if (data.education && data.education.length > 0) {
+          setEducation(data.education);
+        } else {
+          setEducation(educationEntries);
+        }
+      } catch (err) {
+        console.error("Education: Error fetching", err);
+        setEducation(educationEntries);
+      } finally {
+        setIsLoading(false);
+        // Fallback visibility if observer fails
+        setTimeout(() => setIsVisible(true), 1000);
+      }
+    };
+    fetchEducation();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.05, rootMargin: "50px" }
+    );
+
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  if (isLoading) return (
+    <div className="w-full h-[400px] flex items-center justify-center bg-slate-50">
+      <div className="w-[80%] h-full rounded-2xl bg-slate-200 animate-pulse" />
+    </div>
+  );
+
+  return (
+    <section
+      ref={containerRef}
+      className="w-full relative py-20 bg-slate-50 overflow-hidden border-b border-slate-100"
+      id="education"
+    >
+      <EditSectionButton href="/admin/education" label="Edit Education" />
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+        
+        {/* Engineering Header */}
+        <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+           <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white">
+                 <GraduationCap size={16} className="text-blue-600" />
+                 <span className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Academic Verification</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
+                Educational <br />
+                <span className="text-blue-600">
+                  Ledger.
+                </span>
+              </h2>
+           </div>
+           <p className="max-w-xs text-slate-600 text-sm md:text-base leading-relaxed text-left md:text-right">
+              Formal academic training and educational background.
+           </p>
+        </div>
+
+        <div className="relative">
+          {/* Vertical Timeline Line */}
+          <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-slate-200" />
+
+          {/* Timeline Items */}
+          <div className="space-y-4">
+            {education.map((item, index) => (
+              <EducationItem
+                key={item.id}
+                index={index}
+                side={index % 2 === 0 ? "left" : "right"}
+                institution={item.institution}
+                period={item.period}
+                detail={item.detail}
+                degree={item.degree}
+                isVisible={isVisible}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Education;

@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  githubId    Int?     @unique
+  name        String
+  slug        String   @unique
+  htmlUrl     String
+  homepage    String?
+  description String?
+  topics      String[]
+  language    String?
+  stars       Int      @default(0)
+  forks       Int      @default(0)
+  fork        Boolean  @default(false)
+  featured    Boolean  @default(true)
+  displayOrder Int?
+  imageUrl    String?
+  galleryUrls String[]
+  updatedAt   DateTime
+  createdAt   DateTime @default(now())
+  lastSyncedAt DateTime @updatedAt
+
+  @@index([featured, updatedAt(sort: Desc)])
+  @@index([displayOrder(sort: Asc)])
+}
+
+model Profile {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  fullName         String
+  headline         String?
+  bio              String?
+  longBio          String?
+  email            String?  @unique
+  resumeUrl        String?
+  profileImageUrl  String?
+  aboutImageUrl    String?
+  location         String?
+  githubUrl        String?
+  linkedinUrl      String?
+  leetcodeUrl      String?
+  geeksforgeeksUrl String?
+  codechefUrl      String?
+  maxProjects      Int      @default(6)
+  maxAchievements  Int      @default(6)
+  maxGalleryPhotos Int      @default(12)
+  cgpa             String?
+  leetcodeSolved   String?
+  gfgSolved        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Education {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  institution  String
+  degree       String?
+  period       String
+  detail       String?
+  grade        String?
+  location     String?
+  side         String?
+  skills       String?
+  description  String?
+  displayOrder Int      @default(0)
+  featured     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([displayOrder(sort: Asc)])
+  @@index([featured])
+}
+
+model Achievement {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  issuer       String?
+  description  String?
+  achievementUrl String?
+  badgeImageUrl String?
+  category     String?
+  dateLabel    String?
+  featured     Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([displayOrder(sort: Asc)])
+  @@index([featured])
+}
+
+model SiteView {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  path        String
+  sessionId   String?
+  userAgent   String?
+  referrer    String?
+  ipHash      String?
+  viewedAt    DateTime @default(now())
+
+  @@index([path, viewedAt(sort: Desc)])
+}
+
+model SkillDomain {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  key          String      @unique
+  title        String
+  summary      String?
+  displayOrder Int         @default(0)
+  items        SkillItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model SkillItem {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  level     String?
+  domainId  String      @db.ObjectId
+  domain    SkillDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model GalleryItem {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  url          String
+  title        String?
+  category     String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([displayOrder(sort: Asc)])
+}
