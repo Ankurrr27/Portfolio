@@ -72,7 +72,7 @@ const App = () => {
       <Achievements />
       <Gallery />
       <Education />
-      <Footer />
+      <Footer totalViews={totalViews} />
       <Cursor />
     </div>
   );

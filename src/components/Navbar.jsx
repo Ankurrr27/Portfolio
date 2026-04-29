@@ -28,10 +28,10 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 px-6 md:px-8 flex items-center justify-between rounded-xl border bg-white shadow-sm ${
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 px-6 md:px-8 flex items-center justify-between rounded-xl border bg-white/70 backdrop-blur-md shadow-sm ${
         isScrolled
-          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-slate-200"
-          : "w-[95%] md:w-[85%] lg:w-[75%] h-16 border-transparent"
+          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-slate-200/50"
+          : "w-[calc(100%-3rem)] max-w-7xl h-16 border-slate-200/50"
       }`}
     >
       {/* Logo */}

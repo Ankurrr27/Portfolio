@@ -101,6 +101,7 @@ export default function AdminProfilePage() {
                 { label: "Full Name", key: "fullName", icon: User },
                 { label: "Email", key: "email", icon: Mail },
                 { label: "Location", key: "location", icon: MapPin },
+                { label: "CGPA (Optional)", key: "cgpa", icon: User },
               ].map(field => (
                 <div key={field.key} className="space-y-2">
                   <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2 px-1">
@@ -151,6 +152,60 @@ export default function AdminProfilePage() {
                 { label: "GitHub URL", key: "githubUrl" },
                 { label: "LeetCode URL", key: "leetcodeUrl" },
                 { label: "GFG URL", key: "geeksforgeeksUrl" },
+              ].map(field => (
+                <div key={field.key} className="space-y-2">
+                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                    {field.label}
+                  </label>
+                  <input
+                    type="text"
+                    value={profile[field.key] || ""}
+                    onChange={(e) => updateField(field.key, e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* New Section for Preferences & Custom Stats */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8">
+        <div className="space-y-6">
+          <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
+            <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Display Limits</h3>
+            <p className="text-xs text-slate-500 mb-4">Set the maximum number of items to display on the public frontend.</p>
+            <div className="space-y-4">
+              {[
+                { label: "Max Projects to Show", key: "maxProjects", type: "number" },
+                { label: "Max Achievements to Show", key: "maxAchievements", type: "number" },
+                { label: "Max Gallery Photos", key: "maxGalleryPhotos", type: "number" },
+              ].map(field => (
+                <div key={field.key} className="space-y-2">
+                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                    {field.label}
+                  </label>
+                  <input
+                    type={field.type}
+                    value={profile[field.key] || ""}
+                    onChange={(e) => updateField(field.key, e.target.type === "number" ? parseInt(e.target.value) || 0 : e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
+            <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Cached Coding Stats</h3>
+            <p className="text-xs text-slate-500 mb-4">Fallback values used if the LeetCode or GFG APIs fail to respond.</p>
+            <div className="space-y-4">
+              {[
+                { label: "LeetCode Solved (Fallback)", key: "leetcodeSolved" },
+                { label: "GFG Solved (Fallback)", key: "gfgSolved" },
               ].map(field => (
                 <div key={field.key} className="space-y-2">
                   <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">

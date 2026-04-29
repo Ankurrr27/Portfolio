@@ -16,9 +16,15 @@ export default function AdminProjectPicker({
 }) {
   const [expandedSlug, setExpandedSlug] = useState(null);
   const [localImages, setLocalImages] = useState({}); // track updated images locally
+  const [searchQuery, setSearchQuery] = useState("");
 
   const featuredProjects = githubProjects.filter((p) => selectedSlugs.includes(p.slug));
-  const availableProjects = githubProjects.filter((p) => !selectedSlugs.includes(p.slug));
+  const availableProjects = githubProjects.filter((p) => {
+    if (selectedSlugs.includes(p.slug)) return false;
+    if (searchQuery.trim() === "") return true;
+    return p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+           (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
+  });
 
   const handleImagesSaved = (updatedProject) => {
     setLocalImages((prev) => ({
@@ -149,9 +155,20 @@ export default function AdminProjectPicker({
         )}
 
         <div>
-          <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4 border-t border-slate-100 pt-6">
-            Available Repositories
-          </h3>
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4 border-t border-slate-100 pt-6">
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
+              Available Repositories
+            </h3>
+            <div className="relative w-full md:w-64">
+              <input 
+                type="text" 
+                placeholder="Search repositories..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:bg-white focus:border-blue-500 outline-none transition-colors"
+              />
+            </div>
+          </div>
           {availableProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {availableProjects.map(p => renderProjectCard(p, false))}

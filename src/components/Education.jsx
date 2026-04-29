@@ -4,7 +4,7 @@ import { GraduationCap } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
 
 
-import { educationEntries } from "../data/education";
+
 
 const EducationItem = ({ institution, period, detail, degree, side, isVisible, index }) => (
   <div
@@ -57,12 +57,9 @@ const Education = () => {
         const data = await res.json();
         if (data.education && data.education.length > 0) {
           setEducation(data.education);
-        } else {
-          setEducation(educationEntries);
         }
       } catch (err) {
         console.error("Education: Error fetching", err);
-        setEducation(educationEntries);
       } finally {
         setIsLoading(false);
         // Fallback visibility if observer fails
@@ -83,9 +80,22 @@ const Education = () => {
   }, []);
 
   if (isLoading) return (
-    <div className="w-full h-[400px] flex items-center justify-center bg-slate-50">
-      <div className="w-[80%] h-full rounded-2xl bg-slate-200 animate-pulse" />
-    </div>
+    <section className="w-full py-20 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 space-y-12 animate-pulse">
+        <div className="flex justify-between items-end gap-6">
+          <div className="space-y-4">
+             <div className="w-40 h-8 bg-slate-200 rounded-lg"></div>
+             <div className="w-64 h-16 bg-slate-200 rounded-xl"></div>
+          </div>
+          <div className="w-32 h-20 bg-slate-200 rounded-xl"></div>
+        </div>
+        <div className="space-y-8">
+          {[1,2].map(i => (
+            <div key={i} className="h-40 w-full md:w-[45%] bg-slate-200 rounded-xl"></div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 
   return (

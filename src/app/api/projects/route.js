@@ -98,32 +98,16 @@ async function saveSelectedProjects(selectedRepos) {
 export async function GET() {
   try {
     const databaseProjects = await readDatabaseProjects();
-
-    if (databaseProjects.length > 0) {
-      return NextResponse.json({
-        projects: databaseProjects,
-        source: "database",
-      });
-    }
-  } catch (error) {
-    console.error("Database fetch failed:", error);
-  }
-
-  try {
-    const githubProjects = pickProjects(await fetchGitHubProjects());
     return NextResponse.json({
-      projects: githubProjects,
-      source: "github",
+      projects: databaseProjects,
+      source: "database",
     });
   } catch (error) {
-    console.error("GitHub fetch failed:", error);
-    return NextResponse.json(
-      {
-        projects: fallbackProjects,
-        source: "fallback",
-      },
-      { status: 200 }
-    );
+    console.error("Database fetch failed:", error);
+    return NextResponse.json({
+      projects: [],
+      source: "database",
+    });
   }
 }
 

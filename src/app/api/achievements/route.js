@@ -25,17 +25,17 @@ export async function GET() {
     ]);
 
     return NextResponse.json({
-      achievements: achievements.length > 0 ? achievements : fallbackAchievements,
+      achievements: achievements,
       codingStats: liveStats,
-      source: achievements.length > 0 ? "database" : "fallback",
+      source: "database",
     });
   } catch (error) {
     console.error("Unable to load achievements:", error);
     const liveStats = await fetchCodingStats().catch(() => []);
     return NextResponse.json({
-      achievements: fallbackAchievements,
+      achievements: [],
       codingStats: liveStats,
-      source: "fallback",
+      source: "database",
     });
   }
 }

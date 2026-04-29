@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Globe, Database, Layers, CheckCircle2 } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
 
-import { skillGroups } from "../data/skills";
+
 
 const domainIcons = {
   frontend: <Globe size={20} strokeWidth={2} />,
@@ -55,16 +55,9 @@ const Skills = () => {
           setDomains(data.domains);
           setActiveDomain(data.domains[0].key);
           setAllSkills(data.domains.flatMap(d => d.items || []));
-        } else {
-          setDomains(skillGroups.domains);
-          setActiveDomain(skillGroups.domains[0].key);
-          setAllSkills(skillGroups.domains.flatMap(d => d.items || []));
         }
       } catch (err) {
         console.error("Skills: Error", err);
-        setDomains(skillGroups.domains);
-        setActiveDomain(skillGroups.domains[0].key);
-        setAllSkills(skillGroups.domains.flatMap(d => d.items || []));
       } finally {
         setIsLoading(false);
       }
@@ -78,9 +71,24 @@ const Skills = () => {
   }, []);
 
   if (isLoading) return (
-    <div className="w-full h-[400px] flex items-center justify-center bg-slate-50">
-      <div className="w-[80%] h-full rounded-2xl bg-slate-200 animate-pulse" />
-    </div>
+    <section className="w-full py-20 px-6 md:px-12 lg:px-24 bg-slate-50">
+      <div className="max-w-7xl mx-auto space-y-12 animate-pulse">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <div className="w-40 h-8 bg-slate-200 rounded-lg"></div>
+            <div className="w-64 h-16 bg-slate-200 rounded-xl"></div>
+          </div>
+          <div className="w-full h-24 bg-slate-200 rounded-xl"></div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-3 space-y-4">
+            {[1,2,3].map(i => <div key={i} className="h-20 bg-slate-200 rounded-xl"></div>)}
+          </div>
+          <div className="lg:col-span-6 h-64 bg-slate-200 rounded-xl"></div>
+          <div className="lg:col-span-3 h-64 bg-slate-200 rounded-xl"></div>
+        </div>
+      </div>
+    </section>
   );
   if (domains.length === 0) return null;
 

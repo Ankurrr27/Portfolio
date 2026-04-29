@@ -1,4 +1,4 @@
-import { profileContent } from "../data/profile";
+
 
 const GITHUB_USERNAME = "Ankurrr27";
 

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronRight, Sparkles, Eye } from "lucide-react";
-import { profileContent } from "../data/profile";
+
 import MagneticButton from "./MagneticButton";
 
 const highlights = [
@@ -15,8 +15,26 @@ const highlights = [
 const statLabel = (views) => `${views.toLocaleString()} portfolio visits`;
 
 const Home = ({ totalViews = 0 }) => {
-  const { headline, linkedinUrl } = profileContent;
+  const [profile, setProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("/api/profile");
+        const data = await res.json();
+        if (data.profile) setProfile(data.profile);
+      } catch (err) {
+        console.error("Home: Error fetching profile", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  const { headline, linkedinUrl } = profile || {};
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -42,11 +60,25 @@ const Home = ({ totalViews = 0 }) => {
         <div className="absolute bottom-[15%] right-[10%] w-64 h-64 rounded-full bg-indigo-100/50 blur-2xl" />
         <div className="absolute top-[40%] right-[30%] w-32 h-32 rounded-full bg-slate-200/40 blur-xl" />
       </div>
-<motion.div
+      <motion.div
         style={{ y: y1, opacity }}
         className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8"
       >
-        <div className="w-full md:w-[65%] flex flex-col items-start text-left space-y-8 pt-20 md:pt-16 lg:pt-0">
+        {isLoading ? (
+          <div className="w-full md:w-[65%] flex flex-col items-start text-left space-y-8 pt-20 md:pt-16 lg:pt-0 animate-pulse">
+            <div className="flex gap-3">
+              <div className="w-40 h-8 rounded-lg bg-slate-200"></div>
+              <div className="w-32 h-8 rounded-lg bg-slate-200"></div>
+            </div>
+            <div className="w-full max-w-xl h-24 rounded-2xl bg-slate-200"></div>
+            <div className="w-full max-w-lg h-16 rounded-xl bg-slate-200"></div>
+            <div className="flex gap-3 pt-4">
+              <div className="w-40 h-12 rounded-lg bg-slate-200"></div>
+              <div className="w-32 h-12 rounded-lg bg-slate-200"></div>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full md:w-[65%] flex flex-col items-start text-left space-y-8 pt-20 md:pt-16 lg:pt-0">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,7 +163,8 @@ const Home = ({ totalViews = 0 }) => {
               </a>
             </MagneticButton>
           </motion.div>
-        </div>
+          </div>
+        )}
       </motion.div>
 
       {/* Scroll Indicator */}
