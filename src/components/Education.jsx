@@ -101,11 +101,11 @@ const Education = () => {
   return (
     <section
       ref={containerRef}
-      className="w-full relative py-20 bg-zinc-950 overflow-hidden border-b border-zinc-900"
+      className="w-full relative pt-32 pb-24 bg-zinc-950 overflow-hidden border-b border-zinc-900 px-6 md:px-12 lg:px-24"
       id="education"
     >
       <EditSectionButton href="/admin/education" label="Edit Education" />
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Engineering Header */}
         <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>

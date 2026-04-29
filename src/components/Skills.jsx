@@ -20,8 +20,8 @@ const CapabilityCard = ({ domain, isActive, onClick }) => (
     onClick={onClick}
     className={`relative w-full p-5 text-left rounded-xl border transition-all duration-300 ${
       isActive 
-        ? "bg-blue-50 border-blue-200 shadow-sm" 
-        : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+        ? "bg-zinc-900 border-orange-500 shadow-2xl" 
+        : "bg-zinc-950 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900"
     }`}
   >
     <div className="flex items-center gap-4">
@@ -72,21 +72,21 @@ const Skills = () => {
   }, []);
 
   if (isLoading) return (
-    <section className="w-full py-20 px-6 md:px-12 lg:px-24 bg-slate-50">
+    <section className="w-full py-20 px-6 md:px-12 lg:px-24 bg-zinc-950">
       <div className="max-w-7xl mx-auto space-y-12 animate-pulse">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="w-40 h-8 bg-slate-200 rounded-lg"></div>
-            <div className="w-64 h-16 bg-slate-200 rounded-xl"></div>
+            <div className="w-40 h-8 bg-zinc-900 rounded-lg"></div>
+            <div className="w-64 h-16 bg-zinc-900 rounded-xl"></div>
           </div>
-          <div className="w-full h-24 bg-slate-200 rounded-xl"></div>
+          <div className="w-full h-24 bg-zinc-900 rounded-xl"></div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-3 space-y-4">
-            {[1,2,3].map(i => <div key={i} className="h-20 bg-slate-200 rounded-xl"></div>)}
+            {[1,2,3].map(i => <div key={i} className="h-20 bg-zinc-900 rounded-xl"></div>)}
           </div>
-          <div className="lg:col-span-6 h-64 bg-slate-200 rounded-xl"></div>
-          <div className="lg:col-span-3 h-64 bg-slate-200 rounded-xl"></div>
+          <div className="lg:col-span-6 h-64 bg-zinc-900 rounded-xl"></div>
+          <div className="lg:col-span-3 h-64 bg-zinc-900 rounded-xl"></div>
         </div>
       </div>
     </section>
@@ -96,7 +96,7 @@ const Skills = () => {
   const currentDomain = domains.find((d) => d.key === activeDomain) || domains[0];
 
   return (
-    <section id="skills" className="w-full py-24 px-6 md:px-12 lg:px-24 bg-zinc-950 relative overflow-hidden border-b border-zinc-900">
+    <section id="skills" className="w-full pt-32 pb-24 px-6 md:px-12 lg:px-24 bg-zinc-950 relative overflow-hidden border-b border-zinc-900">
       <EditSectionButton href="/admin/skills" label="Edit Skills" />
       
       <div className="max-w-7xl mx-auto flex flex-col gap-12 relative z-10">

@@ -100,24 +100,24 @@ const Projects = () => {
   if (isLoading) return null;
 
   return (
-    <div id="projects" className="w-full bg-zinc-950 relative scroll-mt-20 border-b border-zinc-900">
+    <div id="projects" className="w-full bg-zinc-950 relative scroll-mt-20 border-b border-zinc-900 pt-32 pb-24 px-6 md:px-12 lg:px-24">
       <EditSectionButton href="/admin/projects" label="Edit Projects" />
       
       {/* Engineering Header */}
-      <div className="w-full py-20 px-6 md:px-12 flex flex-col items-center">
+      <div className="max-w-7xl mx-auto flex flex-col items-start text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 mb-6">
            <Terminal size={16} className="text-orange-500" />
            <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Portfolio Projects</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white text-center mb-6 leading-[1.1]">
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
           Technical <br /> <span className="text-orange-500">Architecture.</span>
         </h2>
-        <p className="text-zinc-400 text-base max-w-2xl text-center leading-relaxed">
+        <p className="text-zinc-400 text-base max-w-2xl leading-relaxed">
            Deep dives into scalable systems, performance-driven implementations, and complex algorithmic structures.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <div className="max-w-7xl mx-auto py-16 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <ProjectCard 

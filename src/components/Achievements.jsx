@@ -54,11 +54,11 @@ const Achievements = () => {
   return (
     <section
       ref={sectionRef}
-      className="w-full relative py-20 bg-zinc-950 overflow-hidden border-b border-zinc-900"
+      className="w-full relative pt-32 pb-24 bg-zinc-950 overflow-hidden border-b border-zinc-900 px-6 md:px-12 lg:px-24"
       id="achievements"
     >
       <EditSectionButton href="/admin/achievements" label="Edit Achievements" />
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10">
 
         {/* Engineering Header */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
