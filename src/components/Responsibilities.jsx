@@ -1,19 +1,41 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Briefcase, Users, Award, ShieldCheck, ExternalLink } from "lucide-react";
+import { Briefcase, Users, Award, ShieldCheck, ExternalLink, Globe } from "lucide-react";
+import { FaInstagram, FaLinkedin } from "react-icons/fa6";
 import EditSectionButton from "./admin/EditSectionButton";
+import RippleGrid from "./ui/RippleGrid";
 
-const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl }) => {
+const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl, socialLinks }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const displayRoles = isExpanded ? roles : [roles[0]];
   const hasMore = roles.length > 1;
 
-  // Specific styling for IIITians Network
+  // Per-org branding config
   const isIIITians = organization === "IIITians Network";
-  
-  const containerStyles = isIIITians 
-    ? "bg-gradient-to-br from-[#1b2b1a] via-[#2a3f29] to-[#1b2b1a] border-[#3a5238]/50 shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+  const isTechKnow = organization === "TechKnow | Technical Council, IIIT Kota";
+  const isNeon     = organization === "Neon Cinematics";
+  const isUDBHAV   = organization === "UDBHAV - Inter IIIT Hackathon";
+
+  const containerStyles = isIIITians
+    ? "bg-gradient-to-br from-[#111f10] via-[#1e2e1c] to-[#111f10] border-[#3a5238]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+    : isTechKnow
+    ? "bg-gradient-to-br from-[#181400] via-[#221c00] to-[#181400] border-[#5a4a00]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+    : isNeon
+    ? "bg-gradient-to-br from-[#130d1f] via-[#1c1230] to-[#130d1f] border-[#4a2a7a]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+    : isUDBHAV
+    ? "bg-gradient-to-br from-[#1f0e00] via-[#2e1600] to-[#1f0e00] border-[#7a3a00]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
     : "bg-zinc-900/60 border-zinc-800/60 shadow-2xl";
+
+  // Full-card ripple — high fadeDistance & low vignette to fill edges
+  const rippleConfig = isIIITians
+    ? { gridColor: "#4ade80", opacity: 0.20, rippleIntensity: 0.06, gridSize: 8,  gridThickness: 20, glowIntensity: 0.15 }
+    : isTechKnow
+    ? { gridColor: "#d4a017", opacity: 0.22, rippleIntensity: 0.05, gridSize: 9,  gridThickness: 18, glowIntensity: 0.18 }
+    : isNeon
+    ? { gridColor: "#a855f7", opacity: 0.20, rippleIntensity: 0.05, gridSize: 9,  gridThickness: 18, glowIntensity: 0.14 }
+    : isUDBHAV
+    ? { gridColor: "#f97316", opacity: 0.20, rippleIntensity: 0.06, gridSize: 8,  gridThickness: 18, glowIntensity: 0.14 }
+    : null;
 
   return (
     <div
@@ -22,6 +44,25 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
       } ${containerStyles}`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
+      {/* RippleGrid animated background — full card coverage */}
+      {rippleConfig && (
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-2xl">
+          <RippleGrid
+            enableRainbow={false}
+            gridColor={rippleConfig.gridColor}
+            opacity={rippleConfig.opacity}
+            rippleIntensity={rippleConfig.rippleIntensity}
+            gridSize={rippleConfig.gridSize}
+            gridThickness={rippleConfig.gridThickness}
+            glowIntensity={rippleConfig.glowIntensity}
+            fadeDistance={4.0}
+            vignetteStrength={0.6}
+            mouseInteraction={true}
+            mouseInteractionRadius={1.2}
+          />
+        </div>
+      )}
+
       {/* Texture Overlay for IIITians */}
       {isIIITians && (
         <>
@@ -40,19 +81,21 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
       )}
 
       <div className="flex flex-col md:flex-row relative z-10">
-        {/* Left Side: Logo/Icon Space (Compact for IIITians) */}
+        {/* Left Side: Logo/Icon Space */}
         <div className={`w-full md:w-24 lg:w-32 shrink-0 relative border-b md:border-b-0 md:border-r flex items-start justify-center p-6 md:pt-8 h-auto ${
-          isIIITians ? "bg-transparent border-transparent" : "bg-zinc-950 border-zinc-800/60"
+          isIIITians ? "bg-transparent border-transparent"
+          : isTechKnow ? "bg-transparent border-transparent"
+          : "bg-zinc-950 border-zinc-800/60"
         }`}>
-          {!isIIITians && (
+          {(!isIIITians && !isTechKnow) && (
             logoUrl ? (
-              <img 
-                src={logoUrl} 
-                alt={organization} 
+              <img
+                src={logoUrl}
+                alt={organization}
                 className="w-16 h-16 md:w-12 md:h-12 lg:w-16 lg:h-16 object-contain opacity-80 group-hover:opacity-100 transition-all duration-500"
               />
             ) : (
-              <div className={`w-16 h-16 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-xl border flex items-center justify-center transition-colors bg-zinc-900 border-zinc-800 text-blue-500 group-hover:text-blue-400`}>
+              <div className="w-16 h-16 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-xl border flex items-center justify-center transition-colors bg-zinc-900 border-zinc-800 text-blue-500 group-hover:text-blue-400">
                 <Users size={32} />
               </div>
             )
@@ -63,30 +106,69 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
         <div className="flex-1 p-6 md:p-8 flex flex-col relative z-20">
           {/* Organization Header */}
           <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 flex-wrap">
                 <h3 className={`text-xl md:text-2xl font-bold tracking-tight leading-tight transition-colors duration-300 ${
-                  isIIITians ? "text-[#d4f484] group-hover:text-white" : "text-white group-hover:text-blue-500"
+                  isIIITians ? "text-[#d4f484] group-hover:text-white"
+                  : isTechKnow ? "text-[#f0c040] group-hover:text-white"
+                  : isNeon     ? "text-[#d8b4fe] group-hover:text-white"
+                  : isUDBHAV   ? "text-[#fb923c] group-hover:text-white"
+                  : "text-white group-hover:text-blue-500"
                 }`}>
                   {organization}
                 </h3>
                 {organizationUrl && (
-                  <a 
-                    href={organizationUrl} 
-                    target="_blank" 
+                  <a
+                    href={organizationUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
-                    className={`transition-colors ${isIIITians ? "text-[#d4f484]/50 hover:text-white" : "text-zinc-500 hover:text-blue-500"}`}
+                    className={`transition-colors ${
+                      isIIITians ? "text-[#d4f484]/50 hover:text-white"
+                      : isTechKnow ? "text-[#f0c040]/50 hover:text-white"
+                      : isNeon     ? "text-[#d8b4fe]/50 hover:text-white"
+                      : isUDBHAV   ? "text-[#fb923c]/50 hover:text-white"
+                      : "text-zinc-500 hover:text-blue-500"
+                    }`}
                   >
                     <ExternalLink size={18} />
                   </a>
                 )}
               </div>
               <p className={`font-bold text-[10px] uppercase tracking-widest mt-1 ${
-                isIIITians ? "text-[#d4f484]/60" : "text-zinc-500"
+                isIIITians ? "text-[#d4f484]/60"
+                : isTechKnow ? "text-[#f0c040]/60"
+                : isNeon     ? "text-[#d8b4fe]/60"
+                : isUDBHAV   ? "text-[#fb923c]/60"
+                : "text-zinc-500"
               }`}>
                 {period}
               </p>
             </div>
+
+            {/* IIITians Social Quick-Links */}
+            {isIIITians && socialLinks && (
+              <div className="flex items-center gap-2 shrink-0">
+                {socialLinks.map((link, i) => {
+                  const iconMap = {
+                    instagram: { Icon: FaInstagram, color: "hover:text-pink-400", bg: "hover:bg-pink-500/10" },
+                    linkedin:  { Icon: FaLinkedin,  color: "hover:text-blue-400", bg: "hover:bg-blue-500/10" },
+                    website:   { Icon: Globe,       color: "hover:text-[#d4f484]", bg: "hover:bg-[#d4f484]/10" },
+                  };
+                  const { Icon, color, bg } = iconMap[link.type] || { Icon: ExternalLink, color: "hover:text-white", bg: "hover:bg-white/10" };
+                  return (
+                    <a
+                      key={i}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`p-2 rounded-xl border border-[#d4f484]/10 bg-black/20 text-[#d4f484]/40 ${color} ${bg} transition-all duration-300 hover:scale-110 hover:border-[#d4f484]/20`}
+                    >
+                      <Icon size={16} />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Roles Journey */}
@@ -207,7 +289,12 @@ const Responsibilities = () => {
           ]
         }
       ],
-      logoUrl: "/images/iiitians.jpg"
+      logoUrl: "/images/iiitians.jpg",
+      socialLinks: [
+        { type: "instagram", url: "https://www.instagram.com/iiitians_network/" },
+        { type: "linkedin", url: "https://www.linkedin.com/company/iiitians-network/" },
+        { type: "website", url: "https://iiitians.in" },
+      ]
     },
     {
       id: "techknow",
@@ -321,6 +408,7 @@ const Responsibilities = () => {
               roles={item.roles}
               logoUrl={item.logoUrl}
               organizationUrl={item.organizationUrl}
+              socialLinks={item.socialLinks}
               isVisible={isVisible}
             />
           ))}
