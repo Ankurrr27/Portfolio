@@ -24,31 +24,42 @@ export async function fetchCodingStats(profile = null) {
 
   try {
     // 1. Fetch GitHub Stats
-    const githubRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`, {
-      headers: { Accept: "application/vnd.github+json" },
-      next: { revalidate: 3600 }
-    });
-    if (githubRes.ok) {
-      const data = await githubRes.json();
-      stats.github.count = data.public_repos || "10+";
-      stats.github.detail = "Public Repos";
+    try {
+      const githubRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`, {
+        headers: { Accept: "application/vnd.github+json" },
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(5000)
+      });
+      if (githubRes.ok) {
+        const data = await githubRes.json();
+        stats.github.count = data.public_repos || "10+";
+        stats.github.detail = "Public Repos";
+      }
+    } catch (e) {
+      console.warn("GitHub fetch failed, using fallback");
     }
 
     // 2. Fetch LeetCode Stats
-    const leetcodeRes = await fetch(`https://leetcode-stats-api.herokuapp.com/${leetcodeUser}`, {
-      next: { revalidate: 3600 }
-    });
-    if (leetcodeRes.ok) {
-      const data = await leetcodeRes.json();
-      if (data.status === "success" && data.totalSolved) {
-        stats.leetcode.count = data.totalSolved.toString();
+    try {
+      const leetcodeRes = await fetch(`https://leetcode-stats-api.herokuapp.com/${leetcodeUser}`, {
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(8000)
+      });
+      if (leetcodeRes.ok) {
+        const data = await leetcodeRes.json();
+        if (data.status === "success" && data.totalSolved) {
+          stats.leetcode.count = data.totalSolved.toString();
+        }
       }
+    } catch (e) {
+      console.warn("LeetCode fetch failed, using fallback");
     }
 
     // 3. Fetch GFG Stats
     try {
       const gfgRes = await fetch(`https://geeks-for-geeks-api.vercel.app/${gfgUser}`, {
-        next: { revalidate: 3600 }
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(5000)
       });
       if (gfgRes.ok) {
         const data = await gfgRes.json();
@@ -57,7 +68,7 @@ export async function fetchCodingStats(profile = null) {
         }
       }
     } catch (e) {
-      // Keep DB fallback if failed
+      console.warn("GFG fetch failed, using fallback");
     }
 
   } catch (error) {

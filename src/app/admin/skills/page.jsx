@@ -6,6 +6,7 @@ import { Save, AlertCircle, Plus, Trash2, Layers } from "lucide-react";
 import AdminSectionCard from "../../../components/admin/AdminSectionCard";
 import AdminField from "../../../components/admin/AdminField";
 import AdminEntryShell from "../../../components/admin/AdminEntryShell";
+import { SKILLS_DB } from "../../../lib/skills-db";
 
 export default function AdminSkillsPage() {
   const { adminKey } = useAdmin();
@@ -56,6 +57,15 @@ export default function AdminSkillsPage() {
     setDomains([...domains, { key: "new-domain", title: "New Domain", summary: "", displayOrder: domains.length, items: [] }]);
   };
 
+  const setupDefaults = () => {
+    setDomains([
+      { key: "front", title: "Frontend Development", summary: "Building high-performance user interfaces.", displayOrder: 0, items: [] },
+      { key: "back", title: "Backend & Infrastructure", summary: "Scalable server-side architectures.", displayOrder: 1, items: [] },
+      { key: "lang", title: "Programming Languages", summary: "Core algorithmic foundations.", displayOrder: 2, items: [] },
+      { key: "tools", title: "DevOps & Tooling", summary: "Engineering workflow optimization.", displayOrder: 3, items: [] }
+    ]);
+  };
+
   const removeDomain = (index) => {
     setDomains(domains.filter((_, i) => i !== index));
   };
@@ -80,7 +90,7 @@ export default function AdminSkillsPage() {
 
   const addSkill = (domainIndex) => {
     const newDomains = [...domains];
-    newDomains[domainIndex].items.push({ name: "", level: "Proficient" });
+    newDomains[domainIndex].items.push({ name: "", level: "Proficient", description: "", iconName: "", x: null, y: null });
     setDomains(newDomains);
   };
 
@@ -96,6 +106,21 @@ export default function AdminSkillsPage() {
     setDomains(newDomains);
   };
 
+  const SKILL_LIBRARY = Object.keys(SKILLS_DB).sort();
+
+  const addFromLibrary = (domainIndex, skillName) => {
+    const newDomains = [...domains];
+    newDomains[domainIndex].items.push({ 
+      name: skillName, 
+      level: "Proficient",
+      description: "",
+      iconName: "",
+      x: null,
+      y: null
+    });
+    setDomains(newDomains);
+  };
+
   return (
     <div className="space-y-8 pb-20">
       <header className="flex items-center justify-between gap-6 border-b border-slate-200 pb-6">
@@ -107,6 +132,12 @@ export default function AdminSkillsPage() {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={setupDefaults}
+            className="px-4 py-2.5 rounded-lg bg-orange-50 border border-orange-200 text-orange-700 font-medium text-sm flex items-center gap-2 hover:bg-orange-100 transition-colors"
+          >
+            <Layers size={16} /> Reset Defaults
+          </button>
           <button
             onClick={addDomain}
             className="px-4 py-2.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium text-sm flex items-center gap-2 hover:bg-slate-200 transition-colors"
@@ -142,6 +173,12 @@ export default function AdminSkillsPage() {
             onMoveDown={() => moveDown(dIndex)}
             isFirst={dIndex === 0}
             isLast={dIndex === domains.length - 1}
+            className={
+              domain.key === 'front' ? 'border-l-4 border-l-blue-500' :
+              domain.key === 'back' ? 'border-l-4 border-l-emerald-500' :
+              domain.key === 'lang' ? 'border-l-4 border-l-amber-500' :
+              domain.key === 'tools' ? 'border-l-4 border-l-purple-500' : ''
+            }
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
@@ -169,34 +206,58 @@ export default function AdminSkillsPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <label className="text-sm font-semibold text-slate-700">Skills List</label>
-                  <button 
-                    onClick={() => addSkill(dIndex)}
-                    className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                  >
-                    <Plus size={16} /> Add Skill
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <select 
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          addFromLibrary(dIndex, e.target.value);
+                          e.target.value = "";
+                        }
+                      }}
+                      className="text-xs border border-slate-200 rounded px-2 py-1 bg-white outline-none focus:border-blue-500"
+                    >
+                      <option value="">+ From Library</option>
+                      {SKILL_LIBRARY.map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                    <button 
+                      onClick={() => addSkill(dIndex)}
+                      className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                    >
+                      <Plus size={16} /> Add Skill
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                   {domain.items.map((skill, sIndex) => (
-                    <div key={sIndex} className="flex items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                      <input 
-                        type="text" 
-                        value={skill.name}
-                        onChange={(e) => updateSkill(dIndex, sIndex, "name", e.target.value)}
-                        placeholder="Skill name"
-                        className="flex-1 bg-transparent border-none outline-none text-sm text-slate-900 placeholder:text-slate-400"
+                    <div key={sIndex} className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <input 
+                          type="text" 
+                          value={skill.name}
+                          onChange={(e) => updateSkill(dIndex, sIndex, "name", e.target.value)}
+                          placeholder="Skill name"
+                          className="flex-1 bg-white px-3 py-1.5 rounded border border-slate-200 text-sm text-slate-900 focus:border-blue-500 outline-none"
+                        />
+                        <input 
+                          type="text" 
+                          value={skill.level || ""}
+                          onChange={(e) => updateSkill(dIndex, sIndex, "level", e.target.value)}
+                          placeholder="Level"
+                          className="w-24 bg-white px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-500 font-medium text-right focus:border-blue-500 outline-none"
+                        />
+                        <button onClick={() => removeSkill(dIndex, sIndex)} className="text-red-500 hover:text-red-600 p-1">
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                      <textarea
+                        value={skill.description || ""}
+                        onChange={(e) => updateSkill(dIndex, sIndex, "description", e.target.value)}
+                        placeholder="Brief description or key tools..."
+                        className="w-full bg-white px-3 py-2 rounded border border-slate-200 text-xs text-slate-600 focus:border-blue-500 outline-none resize-none h-16"
                       />
-                      <input 
-                        type="text" 
-                        value={skill.level || ""}
-                        onChange={(e) => updateSkill(dIndex, sIndex, "level", e.target.value)}
-                        placeholder="Level"
-                        className="w-24 bg-transparent border-none outline-none text-xs text-slate-500 font-medium text-right"
-                      />
-                      <button onClick={() => removeSkill(dIndex, sIndex)} className="text-red-500 hover:text-red-600 p-1">
-                        <Trash2 size={16} />
-                      </button>
                     </div>
                   ))}
                 </div>

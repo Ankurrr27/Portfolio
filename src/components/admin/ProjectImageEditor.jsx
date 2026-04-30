@@ -112,8 +112,21 @@ export default function ProjectImageEditor({ project, onSaved }) {
           {imageUrl ? (
             <>
               <img src={imageUrl} alt="Cover" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white font-semibold text-sm flex items-center gap-2"><Upload size={16} /> Replace</span>
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-6">
+                <div 
+                  className="text-white font-semibold text-sm flex flex-col items-center gap-1.5 hover:text-blue-300 transition-colors"
+                  onClick={(e) => { e.stopPropagation(); coverInputRef.current?.click(); }}
+                >
+                  <Upload size={20} />
+                  <span>Replace</span>
+                </div>
+                <div 
+                  className="text-white font-semibold text-sm flex flex-col items-center gap-1.5 hover:text-red-400 transition-colors"
+                  onClick={(e) => { e.stopPropagation(); setImageUrl(""); }}
+                >
+                  <Trash2 size={20} />
+                  <span>Remove</span>
+                </div>
               </div>
             </>
           ) : (

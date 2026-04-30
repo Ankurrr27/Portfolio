@@ -37,7 +37,8 @@ const About = () => {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
+    layoutEffect: false
   });
 
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.95, 1]);

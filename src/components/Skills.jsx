@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, Globe, Database, Layers, CheckCircle2 } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
@@ -7,55 +7,293 @@ import SkillSphere from "./SkillSphere";
 
 
 
-const domainIcons = {
-  frontend: <Globe size={20} strokeWidth={2} />,
-  backend: <Database size={20} strokeWidth={2} />,
-  "problem-solving": <Cpu size={20} strokeWidth={2} />,
-};
+import { SKILLS_DB } from "../lib/skills-db";
 
-const CapabilityCard = ({ domain, isActive, onClick }) => (
-  <motion.button
-    whileHover={{ x: 4 }}
-    whileTap={{ scale: 0.98 }}
-    onClick={onClick}
-    className={`relative w-full p-5 text-left rounded-xl border transition-all duration-300 ${
-      isActive 
-        ? "bg-zinc-900 border-orange-500 shadow-2xl" 
-        : "bg-zinc-950 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900"
-    }`}
-  >
-    <div className="flex items-center gap-4">
-      <div className={`w-10 h-10 flex-shrink-0 rounded-lg flex items-center justify-center transition-colors ${isActive ? "bg-orange-500 text-white" : "bg-zinc-800 text-zinc-500"}`}>
-        {domainIcons[domain.key] || <Layers size={20} />}
-      </div>
-      <div className="flex-1">
-        <div className="flex items-center justify-between">
-           <span className={`text-[10px] font-bold uppercase tracking-widest ${isActive ? "text-orange-500" : "text-zinc-500"}`}>
-              {domain.key}
-           </span>
-           {isActive && <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />}
-        </div>
-        <h4 className="text-base font-bold text-white mt-1">{domain.title}</h4>
+const SkillNetwork = ({ domains }) => {
+  const [nodes, setNodes] = useState([]);
+  const [hoveredNode, setHoveredNode] = useState(null);
+  const [activeFilter, setActiveFilter] = useState(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    // Flatten items and merge with config for icons
+    const allItems = domains.flatMap(d => d.items || []);
+    
+    const generatedNodes = allItems.map((item, i) => {
+      // Find matching config from our central Skills DB
+      const config = SKILLS_DB[item.name] || {
+        name: item.name,
+        icon: <Cpu size={14} />,
+        color: "#94a3b8",
+        category: "lang",
+        about: item.description || "Technical expertise and implementation."
+      };
+
+      return {
+        ...config,
+        id: item.id,
+        about: item.description || config.about, // Prefer DB description if set
+        x: item.x ?? (5 + (Math.random() * 90)),
+        y: item.y ?? (5 + (Math.random() * 90)),
+        vx: (Math.random() - 0.5) * 0.03,
+        vy: (Math.random() - 0.5) * 0.03,
+        delay: Math.random() * 2,
+      };
+    });
+    setNodes(generatedNodes);
+  }, [domains]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNodes(prev => prev.map(node => {
+        let newX = node.x + node.vx;
+        let newY = node.y + node.vy;
+        let newVx = node.vx;
+        let newVy = node.vy;
+
+        // Bounce off walls
+        if (newX < 2 || newX > 98) newVx *= -1;
+        if (newY < 2 || newY > 98) newVy *= -1;
+
+        return { ...node, x: newX, y: newY, vx: newVx, vy: newVy };
+      }));
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  };
+
+  const handleDrag = (id, info) => {
+    setNodes(prev => prev.map(node => {
+      if (node.id === id) {
+        const container = containerRef.current;
+        if (!container) return node;
+        const rect = container.getBoundingClientRect();
+        let newX = ((info.point.x - rect.left) / rect.width) * 100;
+        let newY = ((info.point.y - rect.top) / rect.height) * 100;
+        
+        // Clamp drag position
+        return {
+          ...node,
+          x: Math.max(5, Math.min(95, newX)),
+          y: Math.max(5, Math.min(95, newY))
+        };
+      }
+      return node;
+    }));
+  };
+
+  return (
+    <div 
+      ref={containerRef} 
+      className="relative w-full h-[600px] md:h-[800px] overflow-hidden rounded-[3rem] bg-[#050508] border border-zinc-900 shadow-2xl group/network select-none"
+    >
+      {/* Blueprint Grid */}
+      <div className="absolute inset-0 opacity-[0.1]" 
+           style={{ backgroundImage: 'radial-gradient(#1e293b 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      
+      {/* SVG Spider Web Connections */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+        {nodes.map((node, i) => nodes.slice(i + 1).map((target) => {
+            const dNodes = Math.sqrt(Math.pow(node.x - target.x, 2) + Math.pow(node.y - target.y, 2));
+            if (dNodes > 25) return null;
+            
+            const isHighlighted = hoveredNode?.id === node.id || hoveredNode?.id === target.id;
+            const isSameCategory = node.category === target.category;
+            
+            let connectionColor = "#1e293b";
+            if (isHighlighted) connectionColor = "#fb923c";
+            else if (isSameCategory) connectionColor = node.category === 'front' ? '#3b82f633' : node.category === 'back' ? '#10b98133' : '#f59e0b33';
+
+            return (
+              <motion.line
+                key={`${node.id}-${target.id}`}
+                stroke={connectionColor}
+                strokeWidth={isHighlighted ? 2 : 0.6}
+                initial={{ opacity: 0.1 }}
+                animate={{ 
+                  x1: `${node.x}%`,
+                  y1: `${node.y}%`,
+                  x2: `${target.x}%`,
+                  y2: `${target.y}%`,
+                  opacity: isHighlighted ? 0.8 : 0.2,
+                }}
+                transition={{ type: "tween", duration: 0.05 }}
+              />
+            );
+          }))}
+      </svg>
+
+
+      {/* High-Fidelity Skill Badges (DRAGGABLE) */}
+      {nodes.map((node) => {
+        const finalX = Math.max(5, Math.min(95, node.x));
+        const finalY = Math.max(5, Math.min(95, node.y));
+
+        const isDimmed = activeFilter && node.category !== activeFilter;
+
+        return (
+          <motion.div
+            key={node.id}
+            drag
+            dragMomentum={false}
+            dragConstraints={containerRef}
+            onDrag={(e, info) => handleDrag(node.id, info)}
+            className="absolute z-20"
+            style={{ 
+              left: `${finalX}%`, 
+              top: `${finalY}%`, 
+              transform: 'translate(-50%, -50%)',
+              pointerEvents: isDimmed ? 'none' : 'auto'
+            }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ 
+              scale: isDimmed ? 0.4 : 1, 
+              opacity: isDimmed ? 0.2 : 1,
+            }}
+            transition={{
+              scale: { duration: 0.3 },
+              opacity: { duration: 0.3 }
+            }}
+            onMouseEnter={() => setHoveredNode(node)}
+            onMouseLeave={() => setHoveredNode(null)}
+          >
+            <div 
+              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg border transition-all duration-500 shadow-xl cursor-grab active:cursor-grabbing whitespace-nowrap bg-zinc-900/60 backdrop-blur-md border-zinc-800 group-hover:border-zinc-700 ${
+                hoveredNode?.id === node.id 
+                  ? "scale-110 z-50 shadow-[0_0_30px_rgba(251,146,60,0.3)] border-orange-400" 
+                  : "z-10"
+              }`}
+              style={{ 
+                borderColor: hoveredNode?.id === node.id ? "#fb923c" : 'rgba(39, 39, 42, 0.5)',
+                boxShadow: hoveredNode?.id === node.id ? `0 0 30px #fb923c44` : 'none'
+              }}
+            >
+               <div className="text-lg transition-colors duration-300" style={{ color: node.color }}>
+                  {node.icon}
+               </div>
+               <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${
+                 hoveredNode?.id === node.id ? "text-orange-400" : "text-zinc-400"
+               }`}>
+                 {node.name}
+               </span>
+            </div>
+          </motion.div>
+        );
+      })}
+
+      {/* Neural Intelligence Detail Panel */}
+      <AnimatePresence>
+        {hoveredNode && (
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="absolute bottom-10 right-10 z-50 w-64 p-5 rounded-2xl bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 shadow-[0_0_40px_rgba(0,0,0,0.5)]"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-2 rounded-lg bg-zinc-800/50 text-xl" style={{ color: hoveredNode.color }}>
+                {hoveredNode.icon}
+              </div>
+              <div>
+                <h4 className="text-xs font-black text-white uppercase tracking-widest">{hoveredNode.name}</h4>
+                <div className="h-1 w-12 rounded-full mt-1" style={{ backgroundColor: hoveredNode.color }} />
+              </div>
+            </div>
+            <p className="text-[10px] leading-relaxed text-zinc-400 font-medium italic">
+              "{hoveredNode.about}"
+            </p>
+            <div className="mt-4 pt-3 border-t border-zinc-800 flex justify-between items-center">
+              <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-tighter">Stack Intelligence v2.0</span>
+              <div className="flex gap-1">
+                 {[1,2,3].map(i => <div key={i} className="w-1 h-1 rounded-full bg-orange-500/30" />)}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* LeetCode Style Dashboard Labels */}
+      <div className="absolute top-10 left-10 hidden lg:flex flex-col gap-2 pointer-events-auto">
+         <span className="text-[10px] font-black text-orange-400 uppercase tracking-[0.4em] mb-2 drop-shadow-[0_0_10px_rgba(251,146,60,0.3)]">Neural Network Mapping</span>
+         <div className="flex gap-4">
+            <button 
+              onClick={() => setActiveFilter(activeFilter === 'front' ? null : 'front')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                activeFilter === 'front' ? "bg-blue-500/20 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]" : "bg-zinc-900/80 border-zinc-800 hover:border-zinc-700"
+              }`}
+            >
+               <div className={`w-2 h-2 rounded-full ${activeFilter === 'front' ? "bg-blue-400 animate-pulse" : "bg-blue-500"}`} />
+               <span className={`text-[9px] font-bold uppercase tracking-widest ${activeFilter === 'front' ? "text-blue-100" : "text-zinc-500"}`}>Frontend</span>
+            </button>
+            <button 
+              onClick={() => setActiveFilter(activeFilter === 'back' ? null : 'back')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                activeFilter === 'back' ? "bg-emerald-500/20 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]" : "bg-zinc-900/80 border-zinc-800 hover:border-zinc-700"
+              }`}
+            >
+               <div className={`w-2 h-2 rounded-full ${activeFilter === 'back' ? "bg-emerald-400 animate-pulse" : "bg-emerald-500"}`} />
+               <span className={`text-[9px] font-bold uppercase tracking-widest ${activeFilter === 'back' ? "text-emerald-100" : "text-zinc-500"}`}>Backend</span>
+            </button>
+            <button 
+              onClick={() => setActiveFilter(activeFilter === 'lang' ? null : 'lang')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                activeFilter === 'lang' ? "bg-amber-500/20 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.3)]" : "bg-zinc-900/80 border-zinc-800 hover:border-zinc-700"
+              }`}
+            >
+               <div className={`w-2 h-2 rounded-full ${activeFilter === 'lang' ? "bg-amber-400 animate-pulse" : "bg-amber-500"}`} />
+               <span className={`text-[9px] font-bold uppercase tracking-widest ${activeFilter === 'lang' ? "text-amber-100" : "text-zinc-500"}`}>Languages</span>
+            </button>
+            <button 
+              onClick={() => setActiveFilter(activeFilter === 'tools' ? null : 'tools')}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                activeFilter === 'tools' ? "bg-purple-500/20 border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.3)]" : "bg-zinc-900/80 border-zinc-800 hover:border-zinc-700"
+              }`}
+            >
+               <div className={`w-2 h-2 rounded-full ${activeFilter === 'tools' ? "bg-purple-400 animate-pulse" : "bg-purple-500"}`} />
+               <span className={`text-[9px] font-bold uppercase tracking-widest ${activeFilter === 'tools' ? "text-purple-100" : "text-zinc-500"}`}>Tools</span>
+            </button>
+         </div>
       </div>
     </div>
-  </motion.button>
-);
+  );
+};
 
 const Skills = () => {
   const [domains, setDomains] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeDomain, setActiveDomain] = useState(null);
-  const [allSkills, setAllSkills] = useState([]);
 
   useEffect(() => {
+    // 1. Try to load from cache immediately
+    const cachedData = localStorage.getItem("portfolio_skills_cache");
+    if (cachedData) {
+      try {
+        const parsed = JSON.parse(cachedData);
+        if (parsed.domains) {
+          setDomains(parsed.domains);
+          setIsLoading(false);
+        }
+      } catch (e) {
+        console.error("Cache parse failed", e);
+      }
+    }
+
     const fetchSkills = async () => {
       try {
         const res = await fetch("/api/skills");
         const data = await res.json();
         if (data.domains && data.domains.length > 0) {
           setDomains(data.domains);
-          setActiveDomain(data.domains[0].key);
-          setAllSkills(data.domains.flatMap(d => d.items || []));
+          localStorage.setItem("portfolio_skills_cache", JSON.stringify(data));
         }
       } catch (err) {
         console.error("Skills: Error", err);
@@ -64,164 +302,32 @@ const Skills = () => {
       }
     };
     fetchSkills();
-    // Fallback visibility
-    const timer = setTimeout(() => {
-      if (isLoading) setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) return (
-    <section className="w-full py-20 px-6 md:px-12 lg:px-24 bg-zinc-950">
-      <div className="max-w-7xl mx-auto space-y-12 animate-pulse">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            <div className="w-40 h-8 bg-zinc-900 rounded-lg"></div>
-            <div className="w-64 h-16 bg-zinc-900 rounded-xl"></div>
-          </div>
-          <div className="w-full h-24 bg-zinc-900 rounded-xl"></div>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-3 space-y-4">
-            {[1,2,3].map(i => <div key={i} className="h-20 bg-zinc-900 rounded-xl"></div>)}
-          </div>
-          <div className="lg:col-span-6 h-64 bg-zinc-900 rounded-xl"></div>
-          <div className="lg:col-span-3 h-64 bg-zinc-900 rounded-xl"></div>
-        </div>
-      </div>
-    </section>
-  );
-  // Removed early return to ensure section is visible even if empty
-  const currentDomain = domains.find((d) => d.key === activeDomain) || domains[0] || { title: "No Domain", items: [] };
+  if (isLoading) return null;
 
   return (
     <section id="skills" className="w-full pt-32 pb-24 px-6 md:px-12 lg:px-24 bg-zinc-950 relative overflow-hidden border-b border-zinc-900">
       <EditSectionButton href="/admin/skills" label="Edit Skills" />
       
-      <div className="max-w-7xl mx-auto flex flex-col gap-12 relative z-10">
-        
-        {/* Header Block */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
-               <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-               <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Technical Inventory</span>
+               <Cpu size={16} className="text-orange-500" />
+               <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Architectural Graph</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.1]">
-              Digital <br />
-              <span className="text-orange-500">
-                Foundations.
-              </span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+              Technical <br />
+              <span className="text-orange-400 drop-shadow-[0_0_20px_rgba(251,146,60,0.3)]">Neural Web.</span>
             </h2>
           </div>
-          <div className="hidden lg:block h-[300px] w-full">
-             <Suspense fallback={<div className="w-full h-full bg-zinc-900 rounded-2xl animate-pulse" />}>
-                <SkillSphere skills={domains.flatMap(d => d.items || [])} />
-             </Suspense>
-          </div>
+          <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
+            A visualized network of interconnected technical stacks and engineering expertise.
+          </p>
         </div>
-        
-        <p className="max-w-2xl text-zinc-400 text-sm md:text-base leading-relaxed border-l-2 border-orange-500 pl-5 mb-8">
-            Deploying resilient architectures across the full stack. Focus on performance optimization, scalable data structures, and algorithmic efficiency.
-        </p>
 
-        {/* Main Interface Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* Left: Domain Selector & Console */}
-          <div className="lg:col-span-3 flex flex-col gap-6">
-            <div className="space-y-3">
-               <p className="text-xs font-semibold text-zinc-500 uppercase tracking-widest pl-1">Select Domain</p>
-               <div className="grid grid-cols-1 gap-3">
-                 {domains.map((domain) => (
-                   <CapabilityCard 
-                     key={domain.key} 
-                     domain={domain} 
-                     isActive={activeDomain === domain.key}
-                     onClick={() => setActiveDomain(domain.key)}
-                   />
-                 ))}
-               </div>
-            </div>
-
-            <div className="lg:hidden w-full aspect-square -my-10">
-               <Suspense fallback={<div className="w-full h-full bg-zinc-900 rounded-2xl animate-pulse" />}>
-                  <SkillSphere skills={domains.flatMap(d => d.items || [])} />
-               </Suspense>
-            </div>
-          </div>
-
-          {/* Center: Skills Visual */}
-          <div className="lg:col-span-6 flex items-center justify-center min-h-[300px]">
-             <div className="w-full grid grid-cols-3 gap-3 p-4">
-               {allSkills.slice(0, 9).map((skill, i) => {
-                 const colors = [
-                   { bg: "bg-violet-100", text: "text-violet-700", dot: "bg-violet-500" },
-                   { bg: "bg-amber-100",  text: "text-amber-700",  dot: "bg-amber-500"  },
-                   { bg: "bg-emerald-100",text: "text-emerald-700",dot: "bg-emerald-500"},
-                   { bg: "bg-rose-100",   text: "text-rose-700",   dot: "bg-rose-500"   },
-                   { bg: "bg-sky-100",    text: "text-sky-700",    dot: "bg-sky-500"    },
-                   { bg: "bg-indigo-100", text: "text-indigo-700", dot: "bg-indigo-500" },
-                   { bg: "bg-orange-100", text: "text-orange-700", dot: "bg-orange-500" },
-                   { bg: "bg-teal-100",   text: "text-teal-700",   dot: "bg-teal-500"   },
-                   { bg: "bg-pink-100",   text: "text-pink-700",   dot: "bg-pink-500"   },
-                 ];
-                 const c = colors[i % colors.length];
-                  return (
-                    <div key={i} className="p-4 rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col items-center gap-2 text-center shadow-lg hover:border-zinc-700 hover:bg-zinc-800 transition-all group">
-                      <div className={`w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform border border-zinc-700`}>
-                        <span className={`text-zinc-100 font-bold text-[10px]`}>{skill.name?.slice(0,2).toUpperCase()}</span>
-                      </div>
-                      <span className="text-[10px] font-bold text-zinc-400 leading-tight uppercase tracking-wider">{skill.name}</span>
-                      <div className={`w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]`} />
-                    </div>
-                  );
-               })}
-             </div>
-          </div>
-
-          {/* Right: Technical Manifest */}
-          <div className="lg:col-span-3 relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeDomain}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                 transition={{ duration: 0.3 }}
-                 className="w-full bg-zinc-900 border border-zinc-800 shadow-2xl rounded-xl p-8 h-full flex flex-col hover:border-zinc-700 transition-all duration-500"
-               >
-                  <div className="space-y-6 flex-1">
-                     <div className="flex items-center justify-between">
-                        <span className="text-[10px] uppercase tracking-widest text-orange-500 font-bold px-3 py-1 bg-orange-500/10 rounded-lg border border-orange-500/20">DOMAIN LOG</span>
-                     </div>
-
-                     <div className="space-y-3">
-                        <h3 className="text-xl font-bold text-white">{currentDomain?.title || "Unknown Domain"}</h3>
-                        <p className="text-zinc-400 text-sm leading-relaxed">{currentDomain?.summary || "No description available."}</p>
-                     </div>
-
-                      <div className="grid grid-cols-1 gap-3 pt-4">
-                         {(currentDomain?.items || []).map((skill, si) => {
-                           const pct = skill.level === 'Expert' ? '100%' : skill.level === 'Advanced' ? '85%' : skill.level === 'Intermediate' ? '65%' : '45%';
-                           return (
-                             <div key={skill.name} className="flex flex-col gap-2 p-4 rounded-xl bg-zinc-950/50 border border-zinc-800 hover:border-zinc-700 transition-all group">
-                               <div className="flex items-center justify-between">
-                                 <p className="text-white text-sm font-bold tracking-tight">{skill.name}</p>
-                                 <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{skill.level || "Learning"}</span>
-                               </div>
-                               <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden mt-1">
-                                  <div className={`h-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)] rounded-full transition-all duration-1000`} style={{ width: pct }} />
-                               </div>
-                             </div>
-                           );
-                         })}
-                      </div>
-                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+        <SkillNetwork domains={domains} />
       </div>
     </section>
   );

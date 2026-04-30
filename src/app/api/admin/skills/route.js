@@ -24,11 +24,14 @@ export async function PUT(request) {
   try {
     const { domains } = await request.json();
     
-    // Clear and rebuild for simplicity (as requested to keep code small and systematic)
+    // Deduplicate domains by key to prevent unique constraint errors
+    const uniqueDomains = Array.from(new Map(domains.map(d => [d.key, d])).values());
+    
+    // Clear and rebuild
     await prisma.skillItem.deleteMany();
     await prisma.skillDomain.deleteMany();
     
-    for (const domain of domains) {
+    for (const domain of uniqueDomains) {
       await prisma.skillDomain.create({
         data: {
           key: domain.key,
@@ -38,7 +41,10 @@ export async function PUT(request) {
           items: {
             create: domain.items.map(item => ({
               name: item.name,
-              level: item.level
+              level: item.level,
+              iconName: item.iconName,
+              x: item.x,
+              y: item.y
             }))
           }
         }

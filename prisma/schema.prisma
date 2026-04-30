@@ -121,13 +121,17 @@ model SkillDomain {
 }
 
 model SkillItem {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  level     String?
-  domainId  String      @db.ObjectId
-  domain    SkillDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  level       String?
+  description String?     // Added for detailed skill info
+  iconName    String?     // For react-icons/si icons
+  x           Float?      // Position in the neural web
+  y           Float?      // Position in the neural web
+  domainId    String      @db.ObjectId
+  domain      SkillDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model GalleryItem {

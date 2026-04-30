@@ -6,71 +6,93 @@ import EditSectionButton from "./admin/EditSectionButton";
 
 
 
-const EducationItem = ({ institution, period, detail, degree, side, isVisible, index, imageUrl }) => (
-  <div
-    className={`relative flex items-center justify-between w-full mb-12 md:mb-16 ${
-      side === "left" ? "md:flex-row-reverse" : "md:flex-row"
-    }`}
-  >
-    {/* Timeline dot */}
-    <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full border-4 border-zinc-950 bg-orange-500 z-10 shadow-sm" />
+const EducationItem = ({ institution, period, detail, degree, isVisible, index, imageUrl, skills, description }) => {
+  const skillList = skills ? skills.split(",").map(s => s.trim()) : [];
+  
+  return (
+    <div className="relative pl-8 md:pl-20 pb-16 group/item">
+      {/* Architectural Timeline Line */}
+      <div className="absolute left-[3px] top-4 h-full w-px bg-zinc-900 group-last/item:h-0" />
+      
+      {/* Timeline Node with Pulse */}
+      <div className="absolute left-[-2px] top-4 w-3 h-3 rounded-full bg-zinc-950 border-2 border-orange-500 z-10 transition-all shadow-[0_0_15px_rgba(249,115,22,0.5)] group-hover/item:scale-125" />
+      
+      <div
+        className={`group relative w-full rounded-3xl bg-zinc-900/30 backdrop-blur-xl border border-zinc-800/50 hover:border-orange-500/40 transition-all duration-700 overflow-hidden flex flex-col shadow-2xl ${
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        }`}
+        style={{ transitionDelay: `${index * 150}ms` }}
+      >
+        {/* Subtle Background Mesh */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
+             style={{ backgroundImage: 'radial-gradient(#f97316 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }} />
 
-    {/* Content Card */}
-    <div
-      className={`group w-[calc(100%-40px)] md:w-[45%] ml-auto md:ml-0 rounded-[2rem] bg-zinc-900/40 backdrop-blur-md border border-zinc-800/50 hover:border-orange-500/30 transition-all duration-500 overflow-hidden flex flex-col sm:flex-row ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
-      style={{ transitionDelay: `${index * 150}ms` }}
-    >
-      {/* Marginal Expanding Image Section */}
-      {imageUrl && (
-        <div className="relative overflow-hidden flex-shrink-0 bg-zinc-950 transition-all duration-700 ease-in-out w-16 sm:w-24 md:w-32 group-hover:w-full sm:group-hover:w-56 md:group-hover:w-64 aspect-video sm:aspect-auto border-r border-zinc-800/50">
-          <img 
-            src={imageUrl} 
-            alt={institution} 
-            className="w-full h-full object-cover opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/20 to-zinc-900/60 group-hover:from-transparent transition-all duration-700" />
-          
-          {/* Subtle accent line */}
-          <div className="absolute inset-y-0 right-0 w-[1px] bg-zinc-800 group-hover:bg-orange-500/30 transition-colors" />
-        </div>
-      )}
-
-      {/* Content Section */}
-      <div className="flex-1 p-6 md:p-8 flex flex-col gap-6">
-        <div className="flex items-center justify-between">
-           <div className="px-3 py-1 rounded-full bg-zinc-950 border border-zinc-800 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{period}</span>
+        {/* 1. Header: Technical Metadata */}
+        <div className="px-6 py-4 border-b border-zinc-800/50 flex items-center justify-between bg-zinc-950/40">
+           <div className="flex items-center gap-4">
+              <span className="font-mono text-[11px] font-black text-orange-500 uppercase tracking-[0.2em]">{period}</span>
+              <div className="h-4 w-px bg-zinc-800" />
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="font-mono text-[10px] font-bold text-zinc-500 uppercase tracking-widest">System Verified</span>
+              </div>
            </div>
-           <span className="text-[9px] font-bold text-zinc-500 border border-zinc-800 px-3 py-1 rounded-full uppercase tracking-[0.2em] group-hover:text-orange-500 group-hover:border-orange-500/30 transition-all">Verified</span>
+           <span className="font-mono text-[10px] text-zinc-600 font-bold">#EDU_{index + 1}</span>
         </div>
-        
-        <div className="space-y-3">
-           <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-tight group-hover:text-orange-500 transition-colors">
-             {institution}
-           </h3>
-           <div className="flex items-center gap-2">
-             <div className="w-4 h-[1px] bg-zinc-700" />
-             <p className="text-sm font-bold text-zinc-400 uppercase tracking-widest leading-none">
-               {degree}
-             </p>
+
+        {/* 2. Main Content: Technical Ledger */}
+        <div className="p-8 md:p-10 flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+           {/* Logo Component */}
+           {imageUrl && (
+             <div className="relative flex-shrink-0 group-hover:rotate-3 transition-transform duration-500">
+               <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden bg-zinc-950 border-2 border-zinc-800 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:border-orange-500/50 transition-all duration-500">
+                 <img 
+                   src={imageUrl} 
+                   alt={institution} 
+                   className="w-full h-full object-contain" 
+                 />
+               </div>
+               {/* Decorative corner accent */}
+               <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-orange-500/50 rounded-br-lg" />
+             </div>
+           )}
+
+           <div className="flex-1 space-y-5">
+              <div className="space-y-2">
+                 <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight group-hover:text-orange-500 transition-colors duration-500">
+                   {institution}
+                 </h3>
+                 <div className="inline-block px-3 py-1 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                   <p className="text-[10px] md:text-xs font-black text-orange-500 uppercase tracking-[0.15em]">
+                     {degree}
+                   </p>
+                 </div>
+              </div>
+
+              {(description || detail) && (
+                <p className="text-sm md:text-base leading-relaxed text-zinc-400 font-medium max-w-4xl border-l-2 border-zinc-800 pl-6 group-hover:border-orange-500/30 transition-all">
+                  {description || detail}
+                </p>
+              )}
            </div>
         </div>
 
-        {detail && (
-          <p className="text-sm leading-relaxed text-zinc-500 group-hover:text-zinc-400 transition-colors">
-            {detail}
-          </p>
+        {/* 3. Footer: Competency Tags */}
+        {skillList.length > 0 && (
+          <div className="px-8 md:px-10 py-6 border-t border-zinc-800/50 bg-zinc-950/40">
+            <div className="flex flex-wrap gap-3">
+               {skillList.map(skill => (
+                 <span key={skill} className="px-4 py-1.5 rounded-xl bg-zinc-900/50 border border-zinc-800 text-[10px] font-black text-zinc-500 uppercase tracking-widest hover:border-orange-500/40 hover:text-white hover:bg-zinc-800 transition-all cursor-default">
+                    {skill}
+                 </span>
+               ))}
+            </div>
+          </div>
         )}
       </div>
     </div>
-
-    {/* Spacer for the other side on desktop */}
-    <div className="hidden md:block md:w-[45%]" />
-  </div>
-);
+  );
+};
 
 const Education = () => {
   const [education, setEducation] = useState([]);
@@ -90,7 +112,6 @@ const Education = () => {
         console.error("Education: Error fetching", err);
       } finally {
         setIsLoading(false);
-        // Fallback visibility if observer fails
         setTimeout(() => setIsVisible(true), 300);
       }
     };
@@ -107,24 +128,7 @@ const Education = () => {
     return () => observer.disconnect();
   }, []);
 
-  if (isLoading) return (
-    <section className="w-full py-20 bg-zinc-950">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 space-y-12 animate-pulse">
-        <div className="flex justify-between items-end gap-6">
-          <div className="space-y-4">
-             <div className="w-40 h-8 bg-zinc-900 rounded-lg"></div>
-             <div className="w-64 h-16 bg-zinc-900 rounded-xl"></div>
-          </div>
-          <div className="w-32 h-20 bg-zinc-900 rounded-xl"></div>
-        </div>
-        <div className="space-y-8">
-          {[1,2].map(i => (
-            <div key={i} className="h-40 w-full md:w-[45%] bg-zinc-900 rounded-xl"></div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  if (isLoading) return null;
 
   return (
     <section
@@ -136,13 +140,13 @@ const Education = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Engineering Header */}
-        <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+        <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-20 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
            <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
                  <GraduationCap size={16} className="text-orange-500" />
                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Academic Verification</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
                 Educational <br />
                 <span className="text-orange-500">
                   Ledger.
@@ -150,26 +154,26 @@ const Education = () => {
               </h2>
            </div>
            <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
-              Formal academic training and educational background.
+              Formal academic training and verified educational background.
            </p>
         </div>
 
         <div className="relative">
-          {/* Vertical Timeline Line */}
-          <div className="absolute left-[15px] md:left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-zinc-900" />
+          {/* Vertical Timeline Line - Moved to Left */}
+          <div className="absolute left-[5px] top-0 bottom-0 w-px bg-zinc-800" />
 
-          {/* Timeline Items */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             {education.map((item, index) => (
               <EducationItem
                 key={item.id}
                 index={index}
-                side={index % 2 === 0 ? "left" : "right"}
                 institution={item.institution}
                 period={item.period}
                 detail={item.detail}
                 degree={item.degree}
                 imageUrl={item.imageUrl}
+                skills={item.skills}
+                description={item.description}
                 isVisible={isVisible}
               />
             ))}
