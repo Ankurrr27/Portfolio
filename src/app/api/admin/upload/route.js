@@ -25,20 +25,13 @@ export async function POST(request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const result = await new Promise((resolve, reject) => {
-      cloudinary.uploader.upload_stream(
-        { 
-          resource_type: "auto", 
-          folder: "portfolio",
-          transformation: [
-            { aspect_ratio: aspectRatio, crop: "fill", gravity: "auto" }
-          ]
-        },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      ).end(buffer);
+    const mimeType = file.type || "image/jpeg";
+    const dataURI = `data:${mimeType};base64,${buffer.toString("base64")}`;
+
+    const result = await cloudinary.uploader.upload(dataURI, {
+      resource_type: "auto",
+      folder: "portfolio",
+      timeout: 120000
     });
 
     return NextResponse.json({ 

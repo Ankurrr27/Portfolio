@@ -38,6 +38,7 @@ const Achievements = () => {
       try {
         const res = await fetch("/api/achievements");
         const data = await res.json();
+        
         if (data.achievements) setAchievements(data.achievements);
         if (data.codingStats) setCodingStats(data.codingStats);
       } catch (err) {
@@ -49,8 +50,6 @@ const Achievements = () => {
     fetchData();
   }, []);
 
-
-
   return (
     <section
       ref={sectionRef}
@@ -58,6 +57,7 @@ const Achievements = () => {
       id="achievements"
     >
       <EditSectionButton href="/admin/achievements" label="Edit Achievements" />
+      
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* Engineering Header */}
