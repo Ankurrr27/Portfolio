@@ -13,7 +13,7 @@ const WhatsNewButton = () => {
   const { resolvedTheme } = useTheme();
   return (
     <button
-      className={`relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
+      className={`relative inline-flex min-h-9 min-w-9 md:min-h-11 md:min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
         resolvedTheme === "dark"
           ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-orange-500 hover:text-orange-500"
           : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-orange-500 hover:text-orange-500"
@@ -21,7 +21,7 @@ const WhatsNewButton = () => {
       aria-label="What's new"
       type="button"
     >
-      <Sparkles size={18} />
+      <Sparkles className="w-4 h-4 md:w-[18px] md:h-[18px]" />
       <span className="absolute top-2.5 right-2.5 flex h-2 w-2">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
         <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
@@ -59,15 +59,15 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
+      className={`fixed top-1.5 md:top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
         isScrolled
-          ? "w-[calc(100%-2rem)] md:w-[90%] lg:w-[78%]"
-          : "w-[calc(100%-2rem)] max-w-7xl"
+          ? "w-[calc(100%-1.5rem)] md:w-[90%] lg:w-[78%]"
+          : "w-[calc(100%-1.5rem)] max-w-7xl"
       }`}
     >
       <GlassSurface
         width="100%"
-        height={56}
+        height={isScrolled ? 48 : 52}
         borderRadius={10}
         brightness={resolvedTheme === "dark" ? 15 : 98}
         opacity={resolvedTheme === "dark" ? 0.4 : 0.6}
@@ -75,9 +75,9 @@ const Navbar = () => {
         mixBlendMode="normal"
         backgroundOpacity={resolvedTheme === "dark" ? 0.12 : 0.2}
         saturation={1.4}
-        className="w-full min-h-14"
+        className="w-full"
       >
-      <div className="w-full h-full px-4 md:px-6 flex items-center justify-between">
+      <div className="w-full h-full px-3 md:px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-1.5 group">
             <span className={`text-xl font-black tracking-tighter transition-colors duration-300 uppercase ${
@@ -116,14 +116,14 @@ const Navbar = () => {
             <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`cursor-pointer min-h-11 min-w-11 p-2 rounded-md border transition-all active:scale-95 flex items-center justify-center ${
+              className={`cursor-pointer min-h-9 min-w-9 p-1.5 md:min-h-11 md:min-w-11 md:p-2 rounded-md border transition-all active:scale-95 flex items-center justify-center ${
                 resolvedTheme === "dark"
                   ? "border-zinc-800 bg-zinc-900 text-white hover:bg-zinc-800"
                   : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-orange-500 hover:text-orange-500"
               }`}
               aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+              {isMobileMenuOpen ? <AiOutlineClose size={18} /> : <AiOutlineMenu size={18} />}
             </button>
           </div>
         </div>
