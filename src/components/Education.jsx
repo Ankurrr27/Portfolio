@@ -8,7 +8,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
   
   return (
     <div
-      className={`group relative w-full rounded-2xl bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/60 transition-all duration-700 overflow-hidden flex flex-col md:flex-row shadow-2xl hover:border-orange-500/30 ${
+      className={`panel group relative w-full transition-all duration-300 overflow-hidden flex flex-col md:flex-row hover:border-zinc-700 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
@@ -23,7 +23,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
            <img 
              src={imageUrl} 
              alt={institution} 
-             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+             className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-300"
            />
            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent opacity-60" />
         </div>
@@ -33,20 +33,20 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
       <div className="flex-1 p-6 md:p-8 flex flex-col justify-center relative z-20">
          {/* Top Row: Pill Tags */}
          <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="px-3 py-1 rounded-full bg-orange-500/10 text-[10px] font-bold text-orange-400 uppercase tracking-widest border border-orange-500/20 flex items-center gap-1.5">
+            <span className="chip text-orange-400 border-orange-500/30 flex items-center gap-1.5">
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
               {period}
             </span>
-            <span className="px-3 py-1 rounded-full bg-zinc-800/50 text-[10px] font-bold text-zinc-300 uppercase tracking-widest border border-zinc-700/50">
+            <span className="chip text-zinc-300">
               {degree}
             </span>
-            <span className="px-3 py-1 rounded-full bg-blue-600 text-[10px] font-bold text-white uppercase tracking-widest">
+            <span className="chip text-blue-300 border-blue-500/30">
               VERIFIED
             </span>
          </div>
 
          {/* Title */}
-         <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight mb-3 group-hover:text-orange-500 transition-colors duration-300">
+         <h3 className="text-2xl md:text-3xl font-semibold text-white tracking-tight leading-tight mb-3 group-hover:text-orange-500 transition-colors duration-200">
            {institution}
          </h3>
 
@@ -61,7 +61,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
          {skillList.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-auto">
                {skillList.map(skill => (
-                 <span key={skill} className="px-3 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-500 uppercase tracking-widest hover:border-orange-500/40 hover:text-orange-400 transition-colors cursor-default">
+                 <span key={skill} className="chip hover:border-orange-500/40 hover:text-orange-400 transition-colors cursor-default">
                     {skill}
                  </span>
                ))}
@@ -122,32 +122,29 @@ const Education = () => {
   return (
     <section
       ref={containerRef}
-      className="w-full relative pt-32 pb-24 bg-zinc-950 overflow-visible border-b border-zinc-900 px-6 md:px-12 lg:px-24"
+      className="section-shell overflow-visible"
       id="education"
     >
       <EditSectionButton href="/admin/education" label="Edit Education" />
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="section-container relative z-10">
         
         {/* Engineering Header */}
-        <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-20 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+        <div className={`flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-14 transition-all duration-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
+              <div className="section-kicker">
                  <GraduationCap size={16} className="text-orange-500" />
-                 <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Academic Verification</span>
+                 <span>Education</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                Educational <br />
-                <span className="text-orange-500">
-                  Ledger.
-                </span>
+              <h2 className="section-title">
+                Academic <span className="accent-text">foundation.</span>
               </h2>
            </div>
-           <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
+           <p className="section-copy max-w-sm md:text-right">
               Formal academic training and verified educational background.
            </p>
         </div>
 
-        <div className="relative space-y-10">
+        <div className="relative space-y-6">
           {education.map((item, index) => (
             <EducationItem
               key={item.id}

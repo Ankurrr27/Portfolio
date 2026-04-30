@@ -1,43 +1,42 @@
 "use client";
-import React, { Suspense, lazy } from "react";
-import { Cpu, Sparkles, Zap, Loader2 } from "lucide-react";
-import InfiniteMenu from "./ui/InfiniteMenu";
 
-const Spline = lazy(() => import("@splinetool/react-spline"));
+import React from "react";
+import { Cpu, Zap } from "lucide-react";
+import InfiniteMenu from "./ui/InfiniteMenu";
 
 const getLogoUrl = (skillName) => {
   const name = skillName.toLowerCase().trim();
-  
+
   const mapping = {
-    "sc": "scala",
-    "cpp": "cplusplus",
-    "java": "java",
-    "js": "javascript",
-    "ts": "typescript",
-    "github": "github",
-    "git": "git",
-    "vscode": "vscode",
-    "figma": "figma",
-    "docker": "docker",
-    "html": "html5",
-    "css": "css3",
-    "python": "python",
-    "react": "react",
-    "next": "nextjs",
-    "nodejs": "nodejs",
-    "express": "express",
-    "angular": "angularjs",
-    "mongodb": "mongodb",
-    "tailwind": "tailwindcss",
-    "aws": "amazonwebservices",
-    "postgresql": "postgresql",
-    "firebase": "firebase",
-    "rust": "rust",
-    "go": "go",
-    "kubernetes": "kubernetes",
-    "mysql": "mysql",
-    "redis": "redis",
-    "linux": "linux"
+    sc: "scala",
+    cpp: "cplusplus",
+    java: "java",
+    js: "javascript",
+    ts: "typescript",
+    github: "github",
+    git: "git",
+    vscode: "vscode",
+    figma: "figma",
+    docker: "docker",
+    html: "html5",
+    css: "css3",
+    python: "python",
+    react: "react",
+    next: "nextjs",
+    nodejs: "nodejs",
+    express: "express",
+    angular: "angularjs",
+    mongodb: "mongodb",
+    tailwind: "tailwindcss",
+    aws: "amazonwebservices",
+    postgresql: "postgresql",
+    firebase: "firebase",
+    rust: "rust",
+    go: "go",
+    kubernetes: "kubernetes",
+    mysql: "mysql",
+    redis: "redis",
+    linux: "linux",
   };
 
   const slug = mapping[name] || name.replace(/[^a-z0-9]/g, "");
@@ -75,125 +74,80 @@ const HARDCODED_SKILLS = [
 const Skills = () => {
   const [selectedSkill, setSelectedSkill] = React.useState(null);
 
-  const allSkills = React.useMemo(() => 
-    HARDCODED_SKILLS.map(item => ({
-      image: getLogoUrl(item.name),
-      title: item.name,
-      description: item.level,
-      link: "#"
-    })), []);
+  const allSkills = React.useMemo(
+    () =>
+      HARDCODED_SKILLS.map((item) => ({
+        image: getLogoUrl(item.name),
+        title: item.name,
+        description: item.level,
+        link: "#",
+      })),
+    []
+  );
 
   return (
-    <section id="skills" className="w-full pt-32 pb-24 px-0 bg-zinc-950 relative overflow-hidden border-b border-zinc-900">
-      <div className="absolute inset-x-0 top-28 h-px bg-zinc-900" />
-      
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 mb-16">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+    <section id="skills" className="section-shell overflow-hidden">
+      <div className="section-container relative z-10 mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
-               <Cpu size={16} className="text-blue-500" />
-               <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Neural Skill Web</span>
+            <div className="section-kicker">
+              <Cpu size={16} className="text-orange-500" />
+              <span>Skills</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-              Technical <br />
-              <span className="text-blue-500 drop-shadow-[0_0_20px_rgba(59,130,246,0.3)]">Skill Sphere.</span>
+            <h2 className="section-title">
+              Technical <span className="accent-text">toolkit.</span>
             </h2>
           </div>
-          <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
-            A high-density 3D visualization of my technical stack and engineering expertise.
+          <p className="section-copy max-w-sm md:text-right">
+            A focused map of languages, frameworks, databases, and tools I use to build reliable software.
           </p>
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[110rem] px-4 md:px-8 lg:px-14">
-        <div className="relative min-h-[700px] flex flex-col lg:flex-row gap-12 items-center overflow-hidden rounded-[3rem] bg-black/20 shadow-2xl p-4 md:p-8">
-          
-          {/* Left: 3D Sphere Container */}
-          <div className="relative flex-1 w-full h-[500px] lg:h-[700px] overflow-hidden group">
-            {/* Control Label */}
-            <div className="absolute top-6 left-6 z-20 flex items-center gap-2 rounded-full border border-white/5 bg-zinc-950/40 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-500 shadow-xl backdrop-blur-md">
-              <Sparkles size={13} className="text-blue-500/50" />
-              Neural_Architecture
+      <div className="section-container">
+        <div className="panel grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-8 p-4 md:p-6">
+          <div className="relative h-[480px] md:h-[560px] overflow-hidden rounded-lg bg-zinc-950 border border-zinc-800">
+            <div className="absolute left-4 top-4 z-20 section-kicker bg-zinc-950/80">
+              Stack Map
             </div>
-
-            {/* The Sphere Menu */}
-            <div className="relative z-10 h-full w-full">
-              <InfiniteMenu 
-                items={allSkills} 
-                scale={1.8} 
-                hideInfo={true}
-                onItemChange={setSelectedSkill}
-              />
-            </div>
+            <InfiniteMenu items={allSkills} scale={1.45} hideInfo={true} onItemChange={setSelectedSkill} />
           </div>
 
-          {/* Right: Info Panel */}
-          <div className="w-full lg:w-[450px] shrink-0 space-y-6 relative z-20">
-            <div className="p-10 rounded-[3rem] bg-zinc-900/40 backdrop-blur-3xl border border-white/5 shadow-2xl relative overflow-hidden group">
-              <div className="space-y-8 relative z-10">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-500/5 border border-blue-500/10 flex items-center justify-center">
-                    <Zap size={24} className="text-blue-500/40" />
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.4em]">Node Analysis</h4>
-                    <p className="text-xs text-zinc-500 font-mono">STABLE_CONNECTION</p>
-                  </div>
+          <aside className="panel-subtle p-6 flex flex-col justify-between min-h-[320px]">
+            <div className="space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="icon-box">
+                  <Zap size={20} />
                 </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">Selected Skill</h4>
+                  <p className="text-sm text-zinc-400">Hover the map to inspect a tool.</p>
+                </div>
+              </div>
 
-                {selectedSkill ? (
-                  <div className="space-y-10 animate-in fade-in slide-in-from-right-8 duration-700">
-                    <div className="flex items-center gap-8">
-                      <div className="w-24 h-24 rounded-3xl bg-black/40 border border-white/5 p-5 flex items-center justify-center shadow-2xl">
-                        <img src={selectedSkill.image} alt={selectedSkill.title} className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-500" />
-                      </div>
-                      <div>
-                        <h3 className="text-4xl font-bold text-white tracking-tight">{selectedSkill.title}</h3>
-                        <div className="flex items-center gap-2 mt-3">
-                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                          <span className="text-xs font-bold text-zinc-400 uppercase tracking-[0.2em]">
-                            {selectedSkill.description}
-                          </span>
-                        </div>
-                      </div>
+              {selectedSkill ? (
+                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
+                  <div className="flex items-center gap-5">
+                    <div className="w-20 h-20 rounded-lg bg-zinc-950 border border-zinc-800 p-4 flex items-center justify-center">
+                      <img src={selectedSkill.image} alt={selectedSkill.title} className="w-full h-full object-contain grayscale" />
                     </div>
-
-                    <div className="space-y-5">
-                      <div className="flex justify-between items-end">
-                        <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest font-mono">0x00_EFFICIENCY</span>
-                        <span className="text-xs font-bold text-blue-500/60 font-mono">98.4%</span>
-                      </div>
-                      <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                        <div className="h-full bg-blue-500/40 w-[98%]" />
-                      </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-white tracking-tight">{selectedSkill.title}</h3>
+                      <p className="mt-2 text-xs font-semibold text-orange-500 uppercase tracking-wide">{selectedSkill.description}</p>
                     </div>
-
-                    <p className="text-sm text-zinc-500 leading-relaxed font-light">
-                      High-frequency production experience in {selectedSkill.title}, focusing on scalable architecture and performance optimization within the Neural Skill Web.
-                    </p>
                   </div>
-                ) : (
-                  <div className="py-24 flex flex-col items-center justify-center text-center space-y-6 opacity-30">
-                    <div className="w-20 h-20 rounded-full border border-dashed border-white/10 animate-spin-slow" />
-                    <p className="text-xs font-medium text-zinc-600 uppercase tracking-[0.3em]">Awaiting Node Selection...</p>
-                  </div>
-                )}
-              </div>
-            </div>
 
-            {/* Minimal HUD info */}
-            <div className="flex gap-8 px-8 opacity-40">
-              <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-zinc-700 uppercase tracking-widest">Sys_Log</span>
-                <span className="text-[10px] font-mono text-zinc-500">INIT_OK</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[9px] font-bold text-zinc-700 uppercase tracking-widest">Network</span>
-                <span className="text-[10px] font-mono text-zinc-500">ENCRYPTED</span>
-              </div>
+                  <p className="section-copy">
+                    Practical production experience with {selectedSkill.title}, focused on maintainable implementation and clear system boundaries.
+                  </p>
+                </div>
+              ) : (
+                <div className="py-16 border border-dashed border-zinc-800 rounded-lg text-center">
+                  <p className="text-xs font-semibold text-zinc-600 uppercase tracking-wide">Awaiting selection</p>
+                </div>
+              )}
             </div>
-          </div>
-
+          </aside>
         </div>
       </div>
     </section>

@@ -25,7 +25,7 @@ const SocialIcon = ({ platform, url }) => {
       href={url} 
       target="_blank" 
       rel="noopener noreferrer"
-      className="p-1.5 rounded-lg bg-zinc-950/50 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-300 backdrop-blur-sm border border-zinc-800/50"
+      className="p-1.5 rounded-md bg-zinc-950 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors duration-200 border border-zinc-800"
       onClick={(e) => e.stopPropagation()}
     >
       <Icon size={16} />
@@ -39,7 +39,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay: index * 0.1 }}
-    className="group relative h-full flex flex-col bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:border-zinc-700 hover:bg-zinc-800/80"
+    className="panel group relative h-full flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-700"
   >
     {/* Image Container */}
     <div className="relative h-48 md:h-56 overflow-hidden bg-zinc-950 border-b border-zinc-800">
@@ -47,7 +47,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
         <img
           src={project.imageUrl}
           alt={project.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300 opacity-90 group-hover:opacity-100"
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center text-zinc-700">
@@ -57,7 +57,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
       
       {/* Platform Badges */}
       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-        <span className="px-3 py-1 rounded-lg bg-zinc-900/90 text-[10px] font-bold text-zinc-100 tracking-widest shadow-sm backdrop-blur-md border border-zinc-700">
+        <span className="chip bg-zinc-950/90 text-zinc-100">
            {project.language || "CODE"}
         </span>
       </div>
@@ -75,7 +75,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
     {/* Content */}
     <div className="p-5 md:p-6 flex flex-col flex-1">
       <div className="flex items-center justify-between mb-3">
-         <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-orange-500 transition-colors uppercase tracking-tight">
+         <h3 className="text-lg font-semibold text-white line-clamp-1 group-hover:text-orange-500 transition-colors tracking-tight">
            {project.name}
          </h3>
       </div>
@@ -86,16 +86,16 @@ const ProjectCard = ({ project, index, onOpen }) => (
 
       {/* Metrics Row */}
       <div className="grid grid-cols-3 gap-3 mb-6">
-         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center group-hover:border-zinc-700 transition-colors">
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Stars</p>
+         <div className="panel-subtle p-3 text-center group-hover:border-zinc-700 transition-colors">
+            <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Stars</p>
             <p className="text-sm text-white font-bold">{project.stars || 0}</p>
          </div>
-         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center group-hover:border-zinc-700 transition-colors">
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Status</p>
-            <p className="text-sm text-emerald-500 font-bold">Live</p>
+         <div className="panel-subtle p-3 text-center group-hover:border-zinc-700 transition-colors">
+            <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Status</p>
+            <p className="text-sm text-orange-500 font-bold">Live</p>
          </div>
-         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center group-hover:border-zinc-700 transition-colors">
-            <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Forks</p>
+         <div className="panel-subtle p-3 text-center group-hover:border-zinc-700 transition-colors">
+            <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Forks</p>
             <p className="text-sm text-orange-500 font-bold">{project.forks || 0}</p>
          </div>
       </div>
@@ -150,32 +150,32 @@ const Projects = () => {
     : projects.filter(p => p.language === activeFilter);
 
   return (
-    <div id="projects" className="w-full bg-zinc-950 relative scroll-mt-20 border-b border-zinc-900 pt-32 pb-24 px-6 md:px-12 lg:px-24">
+    <div id="projects" className="section-shell">
       <EditSectionButton href="/admin/projects" label="Edit Projects" />
       
       {/* Engineering Header */}
-      <div className="max-w-7xl mx-auto flex flex-col items-start text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 mb-6">
+      <div className="section-container flex flex-col items-start text-left">
+        <div className="section-kicker mb-6">
            <Terminal size={16} className="text-orange-500" />
-           <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Portfolio Projects</span>
+           <span>Portfolio Projects</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-[1.1]">
-          Technical <br /> <span className="text-orange-500">Architecture.</span>
+        <h2 className="section-title mb-6">
+          Selected engineering <span className="accent-text">work.</span>
         </h2>
-        <p className="text-zinc-400 text-base max-w-2xl leading-relaxed">
-           Deep dives into scalable systems, performance-driven implementations, and complex algorithmic structures.
+        <p className="section-copy max-w-2xl">
+           Practical systems, product surfaces, and implementations built with clear constraints and maintainable architecture.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto py-8">
+      <div className="section-container py-8">
          <div className="flex flex-wrap gap-3 mb-10">
             {uniqueLanguages.map(lang => (
                <button
                  key={lang}
                  onClick={() => setActiveFilter(lang)}
-                 className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
+                 className={`px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wide transition-all duration-200 border ${
                    activeFilter === lang 
-                     ? "bg-orange-500 text-white border-orange-400 shadow-[0_0_15px_rgba(251,146,60,0.4)]" 
+                     ? "bg-orange-500 text-white border-orange-500" 
                      : "bg-zinc-900/50 text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300"
                  }`}
                >
@@ -228,7 +228,7 @@ const Projects = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[4000] flex items-center justify-center p-4 md:p-6 bg-zinc-950/90 backdrop-blur-xl"
+            className="fixed inset-0 z-[4000] flex items-center justify-center p-4 md:p-6 bg-zinc-950/95"
             onClick={() => {
               setSelectedProject(null);
               setActiveImage(null);
@@ -240,21 +240,21 @@ const Projects = () => {
                exit={{ scale: 0.9, opacity: 0, y: 30 }}
                transition={{ type: "spring", damping: 25, stiffness: 300 }}
                onClick={(e) => e.stopPropagation()}
-               className="w-full max-w-5xl h-full max-h-[85vh] bg-zinc-900/80 border border-zinc-800 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col relative"
+               className="w-full max-w-5xl h-full max-h-[85vh] panel overflow-hidden flex flex-col relative"
              >
                {/* Modal Header - Slightly more compact */}
-               <div className="shrink-0 flex items-center justify-between p-5 md:p-6 border-b border-zinc-800/50 bg-zinc-900/40 backdrop-blur-md relative z-10">
+               <div className="shrink-0 flex items-center justify-between p-5 md:p-6 border-b border-zinc-800/50 bg-zinc-900 relative z-10">
                   <div className="flex items-center gap-4">
                      <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500">
                         <Terminal size={20} />
                      </div>
                      <div>
-                        <h3 className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase leading-none">
+                        <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
                            {selectedProject.name.replace(/_/g, ' ')}
                         </h3>
                         <div className="flex items-center gap-2 mt-1.5">
-                           <span className="flex items-center gap-1.5 text-[9px] font-bold text-emerald-500 uppercase tracking-widest bg-emerald-500/5 px-2 py-0.5 rounded-md border border-emerald-500/10">
-                              <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" /> Live
+                           <span className="flex items-center gap-1.5 text-xs font-semibold text-orange-500 uppercase tracking-wide bg-orange-500/10 px-2 py-0.5 rounded-md border border-orange-500/20">
+                              <div className="w-1 h-1 rounded-full bg-orange-500" /> Live
                            </span>
                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">
                               {selectedProject.language || "Native Module"}
@@ -267,7 +267,7 @@ const Projects = () => {
                       setSelectedProject(null);
                       setActiveImage(null);
                     }}
-                    className="group w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-800/50 hover:bg-orange-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-orange-400 transition-all duration-300 shadow-xl active:scale-95"
+                    className="group w-10 h-10 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-orange-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-orange-400 transition-all duration-200 active:scale-95"
                   >
                     <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
@@ -281,7 +281,7 @@ const Projects = () => {
                      <div className="lg:col-span-8 space-y-8">
                         {/* Hero Image Section */}
                         <div className="relative group">
-                           <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center shadow-2xl">
+                           <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center shadow-xl">
                               <img 
                                 key={activeImage || selectedProject.imageUrl}
                                 src={activeImage || selectedProject.imageUrl} 
@@ -291,11 +291,11 @@ const Projects = () => {
                               
                               {/* Quick Stats Overlay - Compact */}
                               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-700/50 backdrop-blur-md shadow-xl">
+                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-900/90 border border-zinc-700/50 shadow-xl">
                                     <FaGithub size={12} className="text-zinc-400" />
                                     <span className="text-[9px] font-bold text-white uppercase tracking-widest">{selectedProject.stars || 0}</span>
                                  </div>
-                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-700/50 backdrop-blur-md shadow-xl">
+                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-900/90 border border-zinc-700/50 shadow-xl">
                                     <Share2 size={12} className="text-orange-500" />
                                     <span className="text-[9px] font-bold text-white uppercase tracking-widest">{selectedProject.socialLinks?.length || 0} Hub</span>
                                  </div>
@@ -306,7 +306,7 @@ const Projects = () => {
                         {/* Description Section */}
                         <div className="space-y-4">
                            <div className="flex items-center gap-3">
-                              <h4 className="text-[9px] font-black text-orange-500 uppercase tracking-[0.4em] px-3 whitespace-nowrap bg-zinc-900/50 py-1 rounded-full border border-orange-500/20">System Overview</h4>
+                           <h4 className="text-xs font-semibold text-orange-500 uppercase tracking-wide px-3 whitespace-nowrap bg-zinc-900/50 py-1 rounded-md border border-orange-500/20">Project Overview</h4>
                               <div className="h-px flex-1 bg-zinc-800/50" />
                            </div>
                            <p className="text-zinc-300 text-base leading-relaxed font-medium">
@@ -320,9 +320,9 @@ const Projects = () => {
                         
                         {/* Community Hub (Featured Socials) */}
                         {selectedProject.socialLinks && selectedProject.socialLinks.length > 0 && (
-                          <div className="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800 shadow-inner">
-                             <h4 className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-                                <Share2 size={10} className="text-orange-500" /> Community Hub
+                          <div className="panel-subtle p-5">
+                             <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                <Share2 size={12} className="text-orange-500" /> Links
                              </h4>
                              <div className="grid grid-cols-4 gap-3">
                                 {selectedProject.socialLinks.map((link, i) => (
@@ -332,7 +332,7 @@ const Projects = () => {
                                     target="_blank"
                                     rel="noopener"
                                     whileHover={{ scale: 1.1, y: -2 }}
-                                    className="aspect-square rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-orange-500/50 transition-all shadow-xl"
+                                    className="aspect-square rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-orange-500/50 transition-all"
                                   >
                                      <SocialIcon platform={link.platform} url={link.url} />
                                   </motion.a>
@@ -344,19 +344,19 @@ const Projects = () => {
                         {/* Project Gallery */}
                         {(selectedProject.galleryUrls && selectedProject.galleryUrls.length > 0) && (
                           <div className="space-y-4">
-                             <h4 className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] pl-2 border-l-2 border-orange-500">Asset Manifest</h4>
+                             <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-orange-500">Gallery</h4>
                              <div className="grid grid-cols-2 gap-3">
                                 {selectedProject.galleryUrls.map((url, i) => (
                                   <motion.div 
                                     key={i} 
                                     whileHover={{ scale: 1.05 }}
-                                    className={`aspect-video rounded-xl overflow-hidden border-2 cursor-pointer group relative bg-zinc-950 shadow-2xl transition-all duration-300 ${
+                                    className={`aspect-video rounded-lg overflow-hidden border-2 cursor-pointer group relative bg-zinc-950 shadow-xl transition-all duration-200 ${
                                       (activeImage === url) ? "border-orange-500" : "border-zinc-800 hover:border-zinc-600"
                                     }`}
                                     onClick={() => setActiveImage(url)}
                                   >
                                      <img src={url} className="w-full h-full object-cover transition-all duration-700 opacity-60 group-hover:opacity-100" />
-                                     <div className="absolute inset-0 bg-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
+                                     <div className="absolute inset-0 bg-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <Maximize2 size={16} className="text-white drop-shadow-lg" />
                                      </div>
                                   </motion.div>
@@ -367,10 +367,10 @@ const Projects = () => {
   
                         {/* Tech Stack Chips */}
                         <div className="space-y-4">
-                           <h4 className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] pl-2 border-l-2 border-orange-500">Engine Stack</h4>
+                           <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-orange-500">Tech Stack</h4>
                             <div className="flex flex-wrap gap-2">
                               {(selectedProject.topics || []).map(topic => (
-                                <span key={topic} className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-[9px] font-bold text-zinc-400 hover:text-white hover:border-zinc-600 transition-all cursor-default uppercase tracking-widest shadow-md">
+                                <span key={topic} className="chip hover:text-white hover:border-zinc-600 transition-all cursor-default">
                                    {topic}
                                 </span>
                               ))}
@@ -384,7 +384,7 @@ const Projects = () => {
                                 href={selectedProject.htmlUrl} 
                                 target="_blank" 
                                 rel="noopener"
-                                className="group flex items-center justify-between p-4 rounded-2xl bg-white text-zinc-950 font-black text-[10px] uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98]"
+                                className="group flex items-center justify-between p-4 rounded-lg bg-white text-zinc-950 font-bold text-xs uppercase tracking-wide hover:bg-orange-500 hover:text-white transition-all duration-200 shadow-xl active:scale-[0.98]"
                               >
                                 <span className="flex items-center gap-3"><FaGithub size={18} /> Access Source</span>
                                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -397,7 +397,7 @@ const Projects = () => {
                                   rel="noopener"
                                   className="group flex items-center justify-between p-4 rounded-2xl bg-zinc-800/50 border border-zinc-700 text-white font-black text-[10px] uppercase tracking-widest hover:bg-zinc-700 transition-all duration-300 shadow-xl active:scale-[0.98]"
                                 >
-                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-orange-500" /> Launch System</span>
+                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-orange-500" /> Launch Project</span>
                                   <Maximize2 size={16} className="text-zinc-500 group-hover:text-white transition-colors" />
                                 </a>
                               )}
@@ -408,7 +408,6 @@ const Projects = () => {
                </div>
 
                 {/* Background Decorative Element */}
-                <div className="absolute top-0 right-0 -z-10 w-1/3 h-full bg-gradient-to-l from-orange-500/5 to-transparent pointer-events-none" />
              </motion.div>
           </motion.div>
         )}

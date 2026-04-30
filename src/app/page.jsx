@@ -9,7 +9,6 @@ import Projects from '../components/Projects';
 import Education from '../components/Education';
 import Responsibilities from '../components/Responsibilities';
 import Footer from '../components/Footer';
-import Cursor from '../components/Cursor';
 import Achievements from '../components/Achievements';
 import Gallery from '../components/Gallery';
 
@@ -75,7 +74,6 @@ const App = () => {
       <Responsibilities />
       <Education />
       <Footer totalViews={totalViews} />
-      <Cursor />
     </div>
   );
 };

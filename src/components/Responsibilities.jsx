@@ -1,223 +1,69 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { Briefcase, Users, Award, ShieldCheck, ExternalLink, Globe } from "lucide-react";
-import { FaInstagram, FaLinkedin } from "react-icons/fa6";
-import EditSectionButton from "./admin/EditSectionButton";
-import RippleGrid from "./ui/RippleGrid";
 
-const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl, socialLinks }) => {
+import React, { useEffect, useRef, useState } from "react";
+import { ExternalLink, ShieldCheck } from "lucide-react";
+import EditSectionButton from "./admin/EditSectionButton";
+
+const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const displayRoles = isExpanded ? roles : [roles[0]];
   const hasMore = roles.length > 1;
 
-  // Per-org branding config
-  const isIIITians = organization === "IIITians Network";
-  const isTechKnow = organization === "TechKnow | Technical Council, IIIT Kota";
-  const isNeon     = organization === "Neon Cinematics";
-  const isUDBHAV   = organization === "UDBHAV - Inter IIIT Hackathon";
-
-  const containerStyles = isIIITians
-    ? "bg-gradient-to-br from-[#111f10] via-[#1e2e1c] to-[#111f10] border-[#3a5238]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-    : isTechKnow
-    ? "bg-gradient-to-br from-[#181400] via-[#221c00] to-[#181400] border-[#5a4a00]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-    : isNeon
-    ? "bg-gradient-to-br from-[#130d1f] via-[#1c1230] to-[#130d1f] border-[#4a2a7a]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-    : isUDBHAV
-    ? "bg-gradient-to-br from-[#1f0e00] via-[#2e1600] to-[#1f0e00] border-[#7a3a00]/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-    : "bg-zinc-900/60 border-zinc-800/60 shadow-2xl";
-
-  // Full-card ripple — high fadeDistance & low vignette to fill edges
-  const rippleConfig = isIIITians
-    ? { gridColor: "#4ade80", opacity: 0.20, rippleIntensity: 0.06, gridSize: 8,  gridThickness: 20, glowIntensity: 0.15 }
-    : isTechKnow
-    ? { gridColor: "#d4a017", opacity: 0.22, rippleIntensity: 0.05, gridSize: 9,  gridThickness: 18, glowIntensity: 0.18 }
-    : isNeon
-    ? { gridColor: "#a855f7", opacity: 0.20, rippleIntensity: 0.05, gridSize: 9,  gridThickness: 18, glowIntensity: 0.14 }
-    : isUDBHAV
-    ? { gridColor: "#f97316", opacity: 0.20, rippleIntensity: 0.06, gridSize: 8,  gridThickness: 18, glowIntensity: 0.14 }
-    : null;
-
   return (
     <div
-      className={`group relative w-full rounded-2xl backdrop-blur-xl border transition-all duration-700 overflow-hidden hover:border-blue-500/30 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      } ${containerStyles}`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      className={`panel w-full overflow-hidden transition-all duration-300 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
+      style={{ transitionDelay: `${index * 80}ms` }}
     >
-      {/* RippleGrid animated background — full card coverage */}
-      {rippleConfig && (
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-2xl">
-          <RippleGrid
-            enableRainbow={false}
-            gridColor={rippleConfig.gridColor}
-            opacity={rippleConfig.opacity}
-            rippleIntensity={rippleConfig.rippleIntensity}
-            gridSize={rippleConfig.gridSize}
-            gridThickness={rippleConfig.gridThickness}
-            glowIntensity={rippleConfig.glowIntensity}
-            fadeDistance={4.0}
-            vignetteStrength={0.6}
-            mouseInteraction={true}
-            mouseInteractionRadius={1.2}
-          />
-        </div>
-      )}
-
-      {/* Texture Overlay for IIITians */}
-      {isIIITians && (
-        <>
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] mix-blend-overlay" />
-          {/* Logo Watermark Overlay - alternates left/right */}
-          <div className={`absolute -top-8 w-72 h-72 opacity-[0.08] pointer-events-none transition-all duration-1000 group-hover:opacity-[0.14] group-hover:scale-110 ${
-            index % 2 === 0 ? "-left-10 -rotate-12 group-hover:rotate-0" : "-right-10 rotate-12 group-hover:rotate-0"
-          }`}>
-             <img 
-               src="/images/iiitians.jpg" 
-               alt="" 
-               className="w-full h-full object-contain filter brightness-0 invert" 
-             />
-          </div>
-        </>
-      )}
-
-      <div className="flex flex-col md:flex-row relative z-10">
-        {/* Left Side: Logo/Icon Space */}
-        <div className={`w-full md:w-24 lg:w-32 shrink-0 relative border-b md:border-b-0 md:border-r flex items-start justify-center p-6 md:pt-8 h-auto ${
-          isIIITians ? "bg-transparent border-transparent"
-          : isTechKnow ? "bg-transparent border-transparent"
-          : "bg-zinc-950 border-zinc-800/60"
-        }`}>
-          {(!isIIITians && !isTechKnow) && (
-            logoUrl ? (
-              <img
-                src={logoUrl}
-                alt={organization}
-                className="w-16 h-16 md:w-12 md:h-12 lg:w-16 lg:h-16 object-contain opacity-80 group-hover:opacity-100 transition-all duration-500"
-              />
-            ) : (
-              <div className="w-16 h-16 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-xl border flex items-center justify-center transition-colors bg-zinc-900 border-zinc-800 text-blue-500 group-hover:text-blue-400">
-                <Users size={32} />
-              </div>
-            )
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:w-28 shrink-0 border-b md:border-b-0 md:border-r border-zinc-800 bg-zinc-950 p-6 flex items-start justify-center">
+          {logoUrl ? (
+            <img src={logoUrl} alt={organization} className="w-14 h-14 object-contain opacity-90" />
+          ) : (
+            <div className="icon-box">
+              <ShieldCheck size={22} />
+            </div>
           )}
         </div>
 
-        {/* Right Side: Content Area */}
-        <div className="flex-1 p-6 md:p-8 flex flex-col relative z-20">
-          {/* Organization Header */}
-          <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex-1">
+        <div className="flex-1 p-6 md:p-8">
+          <div className="mb-8 flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <h3 className={`text-xl md:text-2xl font-bold tracking-tight leading-tight transition-colors duration-300 ${
-                  isIIITians ? "text-[#d4f484] group-hover:text-white"
-                  : isTechKnow ? "text-[#f0c040] group-hover:text-white"
-                  : isNeon     ? "text-[#d8b4fe] group-hover:text-white"
-                  : isUDBHAV   ? "text-[#fb923c] group-hover:text-white"
-                  : "text-white group-hover:text-blue-500"
-                }`}>
+                <h3 className="text-xl md:text-2xl font-semibold tracking-tight leading-tight text-white">
                   {organization}
                 </h3>
                 {organizationUrl && (
-                  <a
-                    href={organizationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`transition-colors ${
-                      isIIITians ? "text-[#d4f484]/50 hover:text-white"
-                      : isTechKnow ? "text-[#f0c040]/50 hover:text-white"
-                      : isNeon     ? "text-[#d8b4fe]/50 hover:text-white"
-                      : isUDBHAV   ? "text-[#fb923c]/50 hover:text-white"
-                      : "text-zinc-500 hover:text-blue-500"
-                    }`}
-                  >
+                  <a href={organizationUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-orange-500 transition-colors">
                     <ExternalLink size={18} />
                   </a>
                 )}
               </div>
-              <p className={`font-bold text-[10px] uppercase tracking-widest mt-1 ${
-                isIIITians ? "text-[#d4f484]/60"
-                : isTechKnow ? "text-[#f0c040]/60"
-                : isNeon     ? "text-[#d8b4fe]/60"
-                : isUDBHAV   ? "text-[#fb923c]/60"
-                : "text-zinc-500"
-              }`}>
-                {period}
-              </p>
+              <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">{period}</p>
             </div>
-
-            {/* IIITians Social Quick-Links */}
-            {isIIITians && socialLinks && (
-              <div className="flex items-center gap-2 shrink-0">
-                {socialLinks.map((link, i) => {
-                  const iconMap = {
-                    instagram: { Icon: FaInstagram, color: "hover:text-pink-400", bg: "hover:bg-pink-500/10" },
-                    linkedin:  { Icon: FaLinkedin,  color: "hover:text-blue-400", bg: "hover:bg-blue-500/10" },
-                    website:   { Icon: Globe,       color: "hover:text-[#d4f484]", bg: "hover:bg-[#d4f484]/10" },
-                  };
-                  const { Icon, color, bg } = iconMap[link.type] || { Icon: ExternalLink, color: "hover:text-white", bg: "hover:bg-white/10" };
-                  return (
-                    <a
-                      key={i}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`p-2 rounded-xl border border-[#d4f484]/10 bg-black/20 text-[#d4f484]/40 ${color} ${bg} transition-all duration-300 hover:scale-110 hover:border-[#d4f484]/20`}
-                    >
-                      <Icon size={16} />
-                    </a>
-                  );
-                })}
-              </div>
-            )}
           </div>
 
-          {/* Roles Journey */}
-          <div className="relative space-y-12 pl-6">
-            {/* Vertical Journey Line */}
-            {roles.length > 1 && (
-              <div className={`absolute left-[7px] top-2 bottom-2 w-0.5 transition-colors ${
-                isIIITians ? "bg-[#d4f484]/10 group-hover:bg-[#d4f484]/30" : "bg-zinc-800 group-hover:bg-blue-500/20"
-              }`} />
-            )}
+          <div className="relative space-y-8 pl-6">
+            {roles.length > 1 && <div className="absolute left-[7px] top-2 bottom-2 w-px bg-zinc-800" />}
 
             {displayRoles.map((role, rIndex) => (
-              <div key={rIndex} className="relative animate-in fade-in slide-in-from-top-2 duration-500">
-                {/* Connector Dot */}
-                <div className={`absolute -left-[23px] top-1.5 w-2.5 h-2.5 rounded-full border-2 z-10 ${
-                  isIIITians 
-                    ? `border-[#1b2b1a] ${rIndex === 0 ? "bg-[#d4f484]" : "bg-[#d4f484]/30"}`
-                    : `border-zinc-950 ${rIndex === 0 ? "bg-blue-500" : "bg-zinc-700"}`
-                }`} />
-                
+              <div key={rIndex} className="relative animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className={`absolute -left-[23px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-950 ${rIndex === 0 ? "bg-orange-500" : "bg-zinc-700"}`} />
+
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-wrap items-center gap-3">
-                    <h4 className={`text-lg font-bold ${isIIITians ? "text-white" : "text-zinc-100"}`}>{role.title}</h4>
-                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider border transition-all ${
-                      isIIITians 
-                        ? "bg-[#d4f484]/10 text-[#d4f484] border-[#d4f484]/20 group-hover:bg-[#d4f484]/20" 
-                        : "bg-zinc-800 text-zinc-400 border-zinc-700/50"
-                    }`}>
-                      {role.period}
-                    </span>
+                    <h4 className="text-lg font-semibold text-zinc-100">{role.title}</h4>
+                    <span className="chip">{role.period}</span>
                   </div>
 
-                  {role.description && (
-                    <p className={`text-sm md:text-base leading-relaxed font-medium max-w-3xl ${
-                      isIIITians ? "text-[#d4f484]/70 group-hover:text-white/90" : "text-zinc-400"
-                    }`}>
-                      {role.description}
-                    </p>
-                  )}
+                  {role.description && <p className="text-sm md:text-base leading-relaxed font-medium max-w-3xl text-zinc-400">{role.description}</p>}
 
                   {role.points && role.points.length > 0 && (
                     <ul className="space-y-2">
                       {role.points.map((point, pIndex) => (
-                        <li key={pIndex} className={`flex gap-3 text-sm leading-relaxed ${
-                          isIIITians ? "text-[#d4f484]/50 group-hover:text-[#d4f484]/80" : "text-zinc-400"
-                        }`}>
-                          <span className={`shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full ${
-                            isIIITians ? "bg-[#d4f484]/30" : "bg-blue-500/40"
-                          }`} />
+                        <li key={pIndex} className="flex gap-3 text-sm leading-relaxed text-zinc-400">
+                          <span className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500/60" />
                           {point}
                         </li>
                       ))}
@@ -230,16 +76,9 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
             {hasMore && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className={`group/btn flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-colors mt-4 relative z-30 ${
-                  isIIITians ? "text-[#d4f484] hover:text-white" : "text-blue-500 hover:text-blue-400"
-                }`}
+                className="text-xs font-semibold uppercase tracking-wide text-orange-500 hover:text-orange-400 transition-colors"
               >
-                <span>{isExpanded ? "Show less" : `Show ${roles.length - 1} more role${roles.length - 1 > 1 ? "s" : ""}`}</span>
-                <div className={`w-4 h-4 rounded-full flex items-center justify-center transition-transform duration-300 ${
-                  isExpanded ? "rotate-180" : ""
-                } ${isIIITians ? "bg-[#d4f484]/10" : "bg-blue-500/10"}`}>
-                   <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
-                </div>
+                {isExpanded ? "Show less" : `Show ${roles.length - 1} more role${roles.length - 1 > 1 ? "s" : ""}`}
               </button>
             )}
           </div>
@@ -253,7 +92,6 @@ const Responsibilities = () => {
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef(null);
 
-  // Hardcoded data as requested
   const responsibilities = [
     {
       id: "iiitians",
@@ -267,8 +105,8 @@ const Responsibilities = () => {
           points: [
             "Collaborating across verticals to ensure smooth execution of activities.",
             "Strengthening engagement and translating strategic ideas into impactful outcomes.",
-            "Driving the overall growth and outreach of the network across IIITs."
-          ]
+            "Driving the overall growth and outreach of the network across IIITs.",
+          ],
         },
         {
           title: "Lead - Social Media & Outreach team",
@@ -276,8 +114,8 @@ const Responsibilities = () => {
           description: "Oversaw and maintained the online presence across multiple platforms to improve visibility.",
           points: [
             "Strengthened the network by building meaningful collaborations.",
-            "Connecting students and communities across different IIITs through digital outreach."
-          ]
+            "Connecting students and communities across different IIITs through digital outreach.",
+          ],
         },
         {
           title: "Member - Social Media & Outreach team",
@@ -285,16 +123,11 @@ const Responsibilities = () => {
           description: "Managed and grew the official Instagram page through creative strategies.",
           points: [
             "Explored creative ways to increase reach and engagement.",
-            "Collaborated with peers to achieve notable growth milestones."
-          ]
-        }
+            "Collaborated with peers to achieve notable growth milestones.",
+          ],
+        },
       ],
       logoUrl: "/images/iiitians.jpg",
-      socialLinks: [
-        { type: "instagram", url: "https://www.instagram.com/iiitians_network/" },
-        { type: "linkedin", url: "https://www.linkedin.com/company/iiitians-network/" },
-        { type: "website", url: "https://iiitians.in" },
-      ]
     },
     {
       id: "techknow",
@@ -304,23 +137,23 @@ const Responsibilities = () => {
         {
           title: "Senior General Secretary Executive",
           period: "Aug 2025 - Present • 9 mos",
-          description: "Responsible for planning and managing all technical events at IIIT Kota, ensuring creative and smooth delivery.",
+          description: "Responsible for planning and managing technical events at IIIT Kota with clear coordination and delivery.",
           points: [
-            "Guiding the junior team and maintaining clear communication with faculty and sponsors.",
-            "Spearheading innovation in event management and execution."
-          ]
+            "Guiding the junior team and maintaining communication with faculty and sponsors.",
+            "Improving event management and execution quality.",
+          ],
         },
         {
           title: "Junior Event Manager Executive",
           period: "Aug 2024 - Aug 2025 • 1 yr 1 mo",
-          description: "Managed on-field event planning and team coordination for various technical symposiums.",
+          description: "Managed on-field event planning and team coordination for technical symposiums.",
           points: [
-            "Ensured smooth execution and impactful experiences for attendees.",
-            "Coordinated with cross-functional teams for logistical success."
-          ]
-        }
+            "Ensured smooth execution and useful attendee experiences.",
+            "Coordinated with cross-functional teams for logistics.",
+          ],
+        },
       ],
-      logoUrl: "/images/techknow.jpg"
+      logoUrl: "/images/techknow.jpg",
     },
     {
       id: "neon",
@@ -330,14 +163,14 @@ const Responsibilities = () => {
         {
           title: "Co-Lead",
           period: "Aug 2025 - Present • 9 mos",
-          description: "Guiding the visual storytelling and cinematic presence of the college through creative leadership.",
+          description: "Guiding visual storytelling and cinematic presence for the college through creative leadership.",
           points: [
             "Mentoring the junior team in video editing, poster design, and cinematography.",
-            "Capturing campus life through engaging visuals that strengthen online presence."
-          ]
-        }
+            "Capturing campus life through visuals that strengthen online presence.",
+          ],
+        },
       ],
-      logoUrl: null
+      logoUrl: null,
     },
     {
       id: "udbhav",
@@ -347,15 +180,15 @@ const Responsibilities = () => {
         {
           title: "Design Lead",
           period: "Jul 2025 - Feb 2026 • 8 mos",
-          description: "Headed the design efforts for the first-ever Inter IIIT Hackathon, ensuring a cohesive visual brand.",
+          description: "Headed design for the first Inter IIIT Hackathon, keeping the event brand cohesive.",
           points: [
-            "Guided and coordinated creative efforts throughout the event.",
-            "Crafted posters, brochures, and visual branding that captured the event's energy."
-          ]
-        }
+            "Guided and coordinated creative work throughout the event.",
+            "Created posters, brochures, and visual branding for event communication.",
+          ],
+        },
       ],
-      logoUrl: null
-    }
+      logoUrl: null,
+    },
   ];
 
   useEffect(() => {
@@ -371,34 +204,25 @@ const Responsibilities = () => {
   }, []);
 
   return (
-    <section
-      ref={containerRef}
-      className="w-full relative pt-32 pb-24 bg-zinc-950 overflow-visible border-b border-zinc-900 px-6 md:px-12 lg:px-24"
-      id="responsibilities"
-    >
+    <section ref={containerRef} className="section-shell overflow-visible" id="responsibilities">
       <EditSectionButton href="/admin/responsibilities" label="Edit Responsibilities" />
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* LinkedIn-style Engineering Header */}
-        <div className={`flex flex-col md:flex-row justify-between items-end gap-6 mb-20 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-           <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
-                 <ShieldCheck size={16} className="text-blue-500" />
-                 <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Leadership Manifest</span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                Positions of <br />
-                <span className="text-blue-500">
-                  Responsibility.
-                </span>
-              </h2>
-           </div>
-           <p className="max-w-xs text-zinc-400 text-sm md:text-base leading-relaxed text-left md:text-right">
-              Strategic roles and leadership initiatives beyond formal coursework.
-           </p>
+      <div className="section-container relative z-10">
+        <div className={`flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-14 transition-all duration-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="space-y-4">
+            <div className="section-kicker">
+              <ShieldCheck size={16} className="text-orange-500" />
+              <span>Responsibilities</span>
+            </div>
+            <h2 className="section-title">
+              Leadership <span className="accent-text">roles.</span>
+            </h2>
+          </div>
+          <p className="section-copy max-w-sm md:text-right">
+            Organizational work, team coordination, and ownership beyond formal coursework.
+          </p>
         </div>
 
-        <div className="relative space-y-10">
+        <div className="relative space-y-6">
           {responsibilities.map((item, index) => (
             <ResponsibilityItem
               key={item.id || index}
@@ -408,7 +232,6 @@ const Responsibilities = () => {
               roles={item.roles}
               logoUrl={item.logoUrl}
               organizationUrl={item.organizationUrl}
-              socialLinks={item.socialLinks}
               isVisible={isVisible}
             />
           ))}

@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 
-import GlassSurface from "./ui/GlassSurface";
-
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Gallery", "Responsibilities", "Education"];
 
 const Navbar = () => {
@@ -33,39 +31,29 @@ const Navbar = () => {
     <nav
       className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
         isScrolled
-          ? "w-[96%] md:w-[90%] lg:w-[75%] h-14"
-          : "w-[calc(100%-3rem)] max-w-7xl h-16"
+          ? "w-[96%] md:w-[90%] lg:w-[78%]"
+          : "w-[calc(100%-2rem)] max-w-7xl"
       }`}
     >
-      <GlassSurface
-        width="100%"
-        height="100%"
-        borderRadius={16}
-        brightness={30}
-        opacity={0.8}
-        blur={12}
-        backgroundOpacity={0.05}
-        className="w-full h-full shadow-[0_8px_32px_rgba(0,0,0,0.8)] relative"
-      >
-        <div className="w-full px-4 md:px-8 flex items-center justify-between h-full relative">
+      <div className="panel w-full h-14 px-4 md:px-6 flex items-center justify-between bg-zinc-950/95 backdrop-blur-sm">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-1.5 group">
-            <span className="text-xl font-bold text-white transition-colors duration-300">
+            <span className="text-lg font-bold text-white transition-colors duration-300">
               Ankur.
             </span>
-            <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
           </a>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1 rounded-xl bg-black/20 border border-white/5 relative">
+          <div className="hidden md:flex items-center gap-1 relative">
             {navLinks.map((link) => (
               <a
                 key={link}
                 href={`#${link.toLowerCase()}`}
-                className={`px-3 py-2 text-[9px] font-bold uppercase tracking-[0.15em] transition-all rounded-lg ${
+                className={`px-3 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all rounded-md ${
                   active === link 
-                    ? "bg-zinc-800 text-white shadow-sm" 
-                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                    ? "bg-orange-500 text-white" 
+                    : "text-zinc-400 hover:text-white hover:bg-zinc-900"
                 }`}
               >
                 {link}
@@ -77,14 +65,13 @@ const Navbar = () => {
           <div className="flex items-center gap-3 md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="cursor-pointer text-white p-2 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition-all active:scale-95"
+              className="cursor-pointer text-white p-2 rounded-md border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition-all active:scale-95"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
             </button>
           </div>
         </div>
-      </GlassSurface>
 
       {/* Mobile menu */}
       <AnimatePresence>
@@ -93,7 +80,7 @@ const Navbar = () => {
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[90%] max-h-[80vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl z-[900] p-6 backdrop-blur-xl"
+            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[90%] max-h-[80vh] overflow-y-auto panel z-[900] p-4"
           >
             <ul className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -104,9 +91,9 @@ const Navbar = () => {
                 >
                   <a
                     href={`#${link.toLowerCase()}`}
-                    className={`flex items-center px-4 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-colors ${
+                    className={`flex items-center px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors ${
                       active === link 
-                        ? "bg-white/10 text-orange-500" 
+                        ? "bg-orange-500 text-white" 
                         : "text-zinc-400 hover:bg-white/5 hover:text-white"
                     }`}
                   >
