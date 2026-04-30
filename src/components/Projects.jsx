@@ -1,11 +1,37 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaInstagram, FaDiscord, FaFacebook, FaLinkedin, FaYoutube, FaTelegram, FaThreads, FaXTwitter } from "react-icons/fa6";
 import { RxExternalLink } from "react-icons/rx";
-import { Terminal, X, Maximize2, Plus, ArrowRight } from "lucide-react";
+import { Terminal, X, Maximize2, Plus, ArrowRight, Share2 } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
 
+const SocialIcon = ({ platform, url }) => {
+  const icons = {
+    instagram: FaInstagram,
+    discord: FaDiscord,
+    facebook: FaFacebook,
+    linkedin: FaLinkedin,
+    youtube: FaYoutube,
+    telegram: FaTelegram,
+    threads: FaThreads,
+    twitter: FaXTwitter,
+    x: FaXTwitter,
+  };
+  const Icon = icons[platform.toLowerCase()] || Share2;
+  
+  return (
+    <a 
+      href={url} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="p-1.5 rounded-lg bg-zinc-950/50 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-300 backdrop-blur-sm border border-zinc-800/50"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <Icon size={16} />
+    </a>
+  );
+};
 
 const ProjectCard = ({ project, index, onOpen }) => (
   <motion.div
@@ -29,36 +55,46 @@ const ProjectCard = ({ project, index, onOpen }) => (
         </div>
       )}
       
+      {/* Platform Badges */}
       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
         <span className="px-3 py-1 rounded-lg bg-zinc-900/90 text-[10px] font-bold text-zinc-100 tracking-widest shadow-sm backdrop-blur-md border border-zinc-700">
            {project.language || "CODE"}
         </span>
       </div>
+
+      {/* Social Links Overlay (as requested in the image) */}
+      {project.socialLinks && project.socialLinks.length > 0 && (
+        <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-100">
+           {project.socialLinks.map((link, i) => (
+             <SocialIcon key={i} platform={link.platform} url={link.url} />
+           ))}
+        </div>
+      )}
     </div>
 
     {/* Content */}
     <div className="p-5 md:p-6 flex flex-col flex-1">
       <div className="flex items-center justify-between mb-3">
-         <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-orange-500 transition-colors">
+         <h3 className="text-lg font-bold text-white line-clamp-1 group-hover:text-orange-500 transition-colors uppercase tracking-tight">
            {project.name}
          </h3>
       </div>
 
-      <p className="text-zinc-400 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
+      <p className="text-zinc-400 text-sm leading-relaxed line-clamp-3 mb-6 flex-1 font-medium">
         {project.description || "No description available."}
       </p>
 
       {/* Metrics Row */}
       <div className="grid grid-cols-3 gap-3 mb-6">
-         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center">
+         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Stars</p>
             <p className="text-sm text-white font-bold">{project.stars || 0}</p>
          </div>
-         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center">
+         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Status</p>
             <p className="text-sm text-emerald-500 font-bold">Live</p>
          </div>
-         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center">
+         <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1">Forks</p>
             <p className="text-sm text-orange-500 font-bold">{project.forks || 0}</p>
          </div>
@@ -192,127 +228,188 @@ const Projects = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[4000] flex items-center justify-center p-4 md:p-8 bg-slate-900/40 backdrop-blur-sm"
-            className="fixed inset-0 z-[4000] flex items-center justify-center p-4 md:p-8 bg-zinc-950/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[4000] flex items-center justify-center p-4 md:p-6 bg-zinc-950/90 backdrop-blur-xl"
             onClick={() => {
               setSelectedProject(null);
               setActiveImage(null);
             }}
           >
             <motion.div 
-               initial={{ scale: 0.95, y: 20 }}
-               animate={{ scale: 1, y: 0 }}
-               exit={{ scale: 0.95, y: 20 }}
+               initial={{ scale: 0.9, opacity: 0, y: 30 }}
+               animate={{ scale: 1, opacity: 1, y: 0 }}
+               exit={{ scale: 0.9, opacity: 0, y: 30 }}
+               transition={{ type: "spring", damping: 25, stiffness: 300 }}
                onClick={(e) => e.stopPropagation()}
-               className="w-full max-w-5xl h-full md:h-[90vh] bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-800 overflow-hidden flex flex-col"
+               className="w-full max-w-5xl h-full max-h-[85vh] bg-zinc-900/80 border border-zinc-800 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col relative"
              >
-               {/* Clean Header */}
-               <div className="relative flex items-center justify-between p-6 md:p-8 border-b border-zinc-800 bg-zinc-950/50 backdrop-blur-xl">
-                  <div>
-                     <h3 className="text-2xl md:text-4xl font-bold text-white tracking-tight">{selectedProject.name}</h3>
-                     <p className="text-zinc-500 font-bold mt-2 flex items-center gap-2 uppercase text-[10px] tracking-widest">
-                        <FaGithub size={14} className="text-orange-500" /> {selectedProject.language || "Repository"}
-                     </p>
+               {/* Modal Header - Slightly more compact */}
+               <div className="shrink-0 flex items-center justify-between p-5 md:p-6 border-b border-zinc-800/50 bg-zinc-900/40 backdrop-blur-md relative z-10">
+                  <div className="flex items-center gap-4">
+                     <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500">
+                        <Terminal size={20} />
+                     </div>
+                     <div>
+                        <h3 className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase leading-none">
+                           {selectedProject.name.replace(/_/g, ' ')}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1.5">
+                           <span className="flex items-center gap-1.5 text-[9px] font-bold text-emerald-500 uppercase tracking-widest bg-emerald-500/5 px-2 py-0.5 rounded-md border border-emerald-500/10">
+                              <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" /> Live
+                           </span>
+                           <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">
+                              {selectedProject.language || "Native Module"}
+                           </span>
+                        </div>
+                     </div>
                   </div>
                   <button 
                     onClick={() => {
                       setSelectedProject(null);
                       setActiveImage(null);
                     }}
-                    className="p-3 rounded-2xl bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white border border-zinc-700 transition-all shadow-xl active:scale-95"
+                    className="group w-10 h-10 flex items-center justify-center rounded-xl bg-zinc-800/50 hover:bg-orange-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-orange-400 transition-all duration-300 shadow-xl active:scale-95"
                   >
-                    <X size={20} />
+                    <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
                </div>
  
-               <div className="p-6 md:p-8 overflow-y-auto flex-1 bg-zinc-900">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                     <div className="lg:col-span-8 space-y-10">
-                        
-                        {/* Main Image - Original Size / Unstretched */}
-                        {(activeImage || selectedProject.imageUrl) && (
-                          <div className="w-full rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center p-2 transition-all duration-300">
-                            <img 
-                              key={activeImage || selectedProject.imageUrl}
-                              src={activeImage || selectedProject.imageUrl} 
-                              alt={selectedProject.name} 
-                              className="w-full h-auto max-h-[60vh] object-contain rounded-2xl shadow-2xl animate-in fade-in zoom-in-95 duration-500"
-                            />
-                          </div>
-                        )}
- 
+               {/* Scrollable Content - Slightly more compact */}
+               <div className="flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                     
+                     {/* Primary Content (Left) */}
+                     <div className="lg:col-span-8 space-y-8">
+                        {/* Hero Image Section */}
+                        <div className="relative group">
+                           <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center shadow-2xl">
+                              <img 
+                                key={activeImage || selectedProject.imageUrl}
+                                src={activeImage || selectedProject.imageUrl} 
+                                alt={selectedProject.name} 
+                                className="w-full h-full object-cover animate-in fade-in zoom-in-95 duration-700"
+                              />
+                              
+                              {/* Quick Stats Overlay - Compact */}
+                              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-700/50 backdrop-blur-md shadow-xl">
+                                    <FaGithub size={12} className="text-zinc-400" />
+                                    <span className="text-[9px] font-bold text-white uppercase tracking-widest">{selectedProject.stars || 0}</span>
+                                 </div>
+                                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900/80 border border-zinc-700/50 backdrop-blur-md shadow-xl">
+                                    <Share2 size={12} className="text-orange-500" />
+                                    <span className="text-[9px] font-bold text-white uppercase tracking-widest">{selectedProject.socialLinks?.length || 0} Hub</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+                        {/* Description Section */}
                         <div className="space-y-4">
-                           <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] border-l-2 border-orange-500 pl-4">Overview</h4>
-                           <p className="text-zinc-300 text-base leading-relaxed whitespace-pre-line">
-                             {selectedProject.description || "No description available."}
+                           <div className="flex items-center gap-3">
+                              <h4 className="text-[9px] font-black text-orange-500 uppercase tracking-[0.4em] px-3 whitespace-nowrap bg-zinc-900/50 py-1 rounded-full border border-orange-500/20">System Overview</h4>
+                              <div className="h-px flex-1 bg-zinc-800/50" />
+                           </div>
+                           <p className="text-zinc-300 text-base leading-relaxed font-medium">
+                             {selectedProject.description || "Project documentation is being finalized."}
                            </p>
                         </div>
                      </div>
  
-                     <div className="lg:col-span-4 space-y-8 lg:pl-4">
+                     {/* Sidebar Content (Right) */}
+                     <div className="lg:col-span-4 space-y-8">
                         
-                        {/* Project Gallery - Moved to Right Side */}
+                        {/* Community Hub (Featured Socials) */}
+                        {selectedProject.socialLinks && selectedProject.socialLinks.length > 0 && (
+                          <div className="p-5 rounded-2xl bg-zinc-900/50 border border-zinc-800 shadow-inner">
+                             <h4 className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+                                <Share2 size={10} className="text-orange-500" /> Community Hub
+                             </h4>
+                             <div className="grid grid-cols-4 gap-3">
+                                {selectedProject.socialLinks.map((link, i) => (
+                                  <motion.a
+                                    key={i}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener"
+                                    whileHover={{ scale: 1.1, y: -2 }}
+                                    className="aspect-square rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-orange-500/50 transition-all shadow-xl"
+                                  >
+                                     <SocialIcon platform={link.platform} url={link.url} />
+                                  </motion.a>
+                                ))}
+                             </div>
+                          </div>
+                        )}
+
+                        {/* Project Gallery */}
                         {(selectedProject.galleryUrls && selectedProject.galleryUrls.length > 0) && (
                           <div className="space-y-4">
-                             <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] border-l-2 border-orange-500 pl-4">Gallery</h4>
+                             <h4 className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] pl-2 border-l-2 border-orange-500">Asset Manifest</h4>
                              <div className="grid grid-cols-2 gap-3">
                                 {selectedProject.galleryUrls.map((url, i) => (
                                   <motion.div 
                                     key={i} 
                                     whileHover={{ scale: 1.05 }}
-                                    className={`aspect-video rounded-2xl overflow-hidden border cursor-pointer group relative bg-zinc-950 shadow-xl transition-all ${
-                                      (activeImage === url) ? "border-orange-500 ring-2 ring-orange-500/20" : "border-zinc-800 hover:border-zinc-700"
+                                    className={`aspect-video rounded-xl overflow-hidden border-2 cursor-pointer group relative bg-zinc-950 shadow-2xl transition-all duration-300 ${
+                                      (activeImage === url) ? "border-orange-500" : "border-zinc-800 hover:border-zinc-600"
                                     }`}
                                     onClick={() => setActiveImage(url)}
                                   >
                                      <img src={url} className="w-full h-full object-cover transition-all duration-700 opacity-60 group-hover:opacity-100" />
-                                     <div className="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
-                                        <Maximize2 size={16} className="text-white drop-shadow-md" />
+                                     <div className="absolute inset-0 bg-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[1px]">
+                                        <Maximize2 size={16} className="text-white drop-shadow-lg" />
                                      </div>
                                   </motion.div>
                                 ))}
                              </div>
                           </div>
                         )}
- 
-                        <div className="space-y-4 pt-2">
-                           <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] border-l-2 border-orange-500 pl-4">Tech Stack</h4>
+  
+                        {/* Tech Stack Chips */}
+                        <div className="space-y-4">
+                           <h4 className="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] pl-2 border-l-2 border-orange-500">Engine Stack</h4>
                             <div className="flex flex-wrap gap-2">
                               {(selectedProject.topics || []).map(topic => (
-                                <span key={topic} className="px-3 py-1.5 rounded-xl bg-zinc-800 border border-zinc-700 text-[10px] font-bold text-zinc-300 hover:text-white transition-all cursor-default shadow-lg uppercase tracking-widest">
+                                <span key={topic} className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-[9px] font-bold text-zinc-400 hover:text-white hover:border-zinc-600 transition-all cursor-default uppercase tracking-widest shadow-md">
                                    {topic}
                                 </span>
                               ))}
                            </div>
                         </div>
- 
-                        <div className="space-y-4 pt-2">
-                           <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] border-l-2 border-orange-500 pl-4">Links</h4>
-                            <div className="flex flex-col gap-3">
+  
+                        {/* Action Buttons */}
+                        <div className="space-y-3 pt-4 border-t border-zinc-800/50">
+                           <div className="flex flex-col gap-3">
                               <a 
                                 href={selectedProject.htmlUrl} 
                                 target="_blank" 
                                 rel="noopener"
-                                className="flex items-center justify-center gap-2 p-4 rounded-2xl bg-white text-zinc-950 font-bold text-sm hover:bg-zinc-200 hover:-translate-y-1 transition-all shadow-xl active:scale-95"
+                                className="group flex items-center justify-between p-4 rounded-2xl bg-white text-zinc-950 font-black text-[10px] uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-xl active:scale-[0.98]"
                               >
-                                <FaGithub size={18} /> Source Code
+                                <span className="flex items-center gap-3"><FaGithub size={18} /> Access Source</span>
+                                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                               </a>
+                              
                               {selectedProject.homepage && (
                                 <a 
                                   href={selectedProject.homepage} 
                                   target="_blank" 
                                   rel="noopener"
-                                  className="flex items-center justify-center gap-2 p-4 rounded-2xl border border-zinc-700 bg-zinc-800 text-white font-bold text-sm hover:bg-zinc-700 hover:-translate-y-1 transition-all shadow-xl active:scale-95"
+                                  className="group flex items-center justify-between p-4 rounded-2xl bg-zinc-800/50 border border-zinc-700 text-white font-black text-[10px] uppercase tracking-widest hover:bg-zinc-700 transition-all duration-300 shadow-xl active:scale-[0.98]"
                                 >
-                                  <RxExternalLink size={18} /> Live Website
+                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-orange-500" /> Launch System</span>
+                                  <Maximize2 size={16} className="text-zinc-500 group-hover:text-white transition-colors" />
                                 </a>
                               )}
                            </div>
                         </div>
                      </div>
-                 </div>
-              </div>
-            </motion.div>
+                  </div>
+               </div>
+
+                {/* Background Decorative Element */}
+                <div className="absolute top-0 right-0 -z-10 w-1/3 h-full bg-gradient-to-l from-orange-500/5 to-transparent pointer-events-none" />
+             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

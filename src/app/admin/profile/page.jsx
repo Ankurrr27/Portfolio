@@ -4,8 +4,31 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useAdmin } from "../../../context/AdminContext";
 import { Save, AlertCircle, User, Mail, MapPin } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { 
+  FaGithub, 
+  FaLinkedin, 
+  FaInstagram, 
+  FaDiscord, 
+  FaFacebook, 
+  FaYoutube, 
+  FaTelegram, 
+  FaThreads, 
+  FaXTwitter 
+} from "react-icons/fa6";
 import { profileContent as staticProfile } from "../../../data/profile";
+import { Plus, Trash2, Globe, Share2 } from "lucide-react";
+
+const PLATFORMS = [
+  { id: "instagram", name: "Instagram", icon: FaInstagram },
+  { id: "discord", name: "Discord", icon: FaDiscord },
+  { id: "threads", name: "Threads", icon: FaThreads },
+  { id: "linkedin", name: "LinkedIn", icon: FaLinkedin },
+  { id: "twitter", name: "X / Twitter", icon: FaXTwitter },
+  { id: "youtube", name: "YouTube", icon: FaYoutube },
+  { id: "telegram", name: "Telegram", icon: FaTelegram },
+  { id: "facebook", name: "Facebook", icon: FaFacebook },
+  { id: "website", name: "Website", icon: Globe },
+];
 
 export default function AdminProfilePage() {
   const { adminKey } = useAdmin();
@@ -13,7 +36,10 @@ export default function AdminProfilePage() {
   const [isUploadingLanyard, setIsUploadingLanyard] = useState(false);
   const [lanyardPreviewUrl, setLanyardPreviewUrl] = useState("");
   const [status, setStatus] = useState("");
-  const [profile, setProfile] = useState(staticProfile);
+  const [profile, setProfile] = useState({ ...staticProfile, socialLinks: [] });
+
+  // ... (rest of the logic remains same until return)
+  // ... (keeping useEffects and handlers)
 
   useEffect(() => {
     const controller = new AbortController();
@@ -73,6 +99,22 @@ export default function AdminProfilePage() {
 
   const updateField = (field, value) => {
     setProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  const addSocialLink = () => {
+    const nextLinks = [...(profile.socialLinks || []), { platform: "instagram", url: "" }];
+    updateField("socialLinks", nextLinks);
+  };
+
+  const removeSocialLink = (index) => {
+    const nextLinks = (profile.socialLinks || []).filter((_, i) => i !== index);
+    updateField("socialLinks", nextLinks);
+  };
+
+  const updateSocialLink = (index, field, value) => {
+    const nextLinks = [...(profile.socialLinks || [])];
+    nextLinks[index][field] = value;
+    updateField("socialLinks", nextLinks);
   };
 
   useEffect(() => {
@@ -214,11 +256,71 @@ export default function AdminProfilePage() {
           </div>
 
           <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
-            <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Links & Profiles</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Global Social Hub</h3>
+              <button
+                onClick={addSocialLink}
+                className="text-[10px] font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 bg-indigo-50 px-2 py-1 rounded-md transition-all"
+              >
+                <Plus size={12} /> Add Platform
+              </button>
+            </div>
+            
+            <p className="text-[10px] text-slate-500 font-medium">These links will appear in your website footer and contact sections.</p>
+
+            <div className="space-y-4">
+              {(profile.socialLinks || []).map((link, index) => {
+                const PlatformIcon = PLATFORMS.find(p => p.id === link.platform)?.icon || Share2;
+                return (
+                  <div key={index} className="flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
+                    <div className="relative shrink-0">
+                      <select
+                        value={link.platform}
+                        onChange={(e) => updateSocialLink(index, "platform", e.target.value)}
+                        className="appearance-none bg-slate-50 border border-slate-100 rounded-xl pl-8 pr-6 py-2 text-[10px] font-bold uppercase tracking-widest focus:bg-white focus:border-indigo-500/50 outline-none transition-all text-slate-700"
+                      >
+                        {PLATFORMS.map(p => (
+                          <option key={p.id} value={p.id}>{p.name}</option>
+                        ))}
+                      </select>
+                      <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400">
+                        <PlatformIcon size={12} />
+                      </div>
+                    </div>
+
+                    <input
+                      type="url"
+                      placeholder="Platform URL..."
+                      value={link.url}
+                      onChange={(e) => updateSocialLink(index, "url", e.target.value)}
+                      className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                    />
+
+                    <button
+                      onClick={() => removeSocialLink(index)}
+                      className="p-2 rounded-lg text-slate-300 hover:text-rose-500 hover:bg-rose-50 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                );
+              })}
+
+              {(profile.socialLinks || []).length === 0 && (
+                <div className="py-8 text-center border border-slate-100 border-dashed rounded-2xl bg-slate-50/50">
+                  <Share2 size={24} className="mx-auto text-slate-200 mb-2" />
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No social links added yet</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
+            <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Developer IDs</h3>
             <div className="space-y-4">
               {[
-                { label: "LinkedIn URL", key: "linkedinUrl" },
                 { label: "GitHub URL", key: "githubUrl" },
+                { label: "LinkedIn URL", key: "linkedinUrl" },
                 { label: "LeetCode URL", key: "leetcodeUrl" },
                 { label: "GFG URL", key: "geeksforgeeksUrl" },
               ].map(field => (

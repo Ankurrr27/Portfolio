@@ -7,6 +7,7 @@ import About from '../components/About';
 import Skills from '../components/Skills';
 import Projects from '../components/Projects';
 import Education from '../components/Education';
+import Responsibilities from '../components/Responsibilities';
 import Footer from '../components/Footer';
 import Cursor from '../components/Cursor';
 import Achievements from '../components/Achievements';
@@ -71,6 +72,7 @@ const App = () => {
       <Projects />
       <Achievements />
       <Gallery />
+      <Responsibilities />
       <Education />
       <Footer totalViews={totalViews} />
       <Cursor />

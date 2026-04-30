@@ -85,8 +85,7 @@ const Skills = () => {
 
   return (
     <section id="skills" className="w-full pt-32 pb-24 px-0 bg-zinc-950 relative overflow-hidden border-b border-zinc-900">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(37,99,235,0.18),transparent_34%),radial-gradient(circle_at_18%_70%,rgba(249,115,22,0.16),transparent_28%),linear-gradient(180deg,#09090b_0%,#020617_100%)]" />
-      <div className="absolute inset-x-0 top-28 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+      <div className="absolute inset-x-0 top-28 h-px bg-zinc-900" />
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 relative z-10 mb-16">
         <div className="flex flex-col md:flex-row justify-between items-end gap-8">

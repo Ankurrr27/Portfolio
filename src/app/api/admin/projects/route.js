@@ -44,6 +44,7 @@ export async function GET(request) {
       ...gp,
       imageUrl: dbMap[gp.slug]?.imageUrl || null,
       galleryUrls: dbMap[gp.slug]?.galleryUrls || [],
+      socialLinks: dbMap[gp.slug]?.socialLinks || [],
     }));
 
     // If GitHub is rate-limited/down, surface DB projects so admin can still manage
@@ -63,6 +64,7 @@ export async function GET(request) {
           updated_at: p.updatedAt?.toISOString(),
           imageUrl: p.imageUrl || null,
           galleryUrls: p.galleryUrls || [],
+          socialLinks: p.socialLinks || [],
         }));
       } else {
         finalList = pickProjects(fallbackProjects);
@@ -125,7 +127,7 @@ export async function PATCH(request) {
 
   try {
     const body = await request.json();
-    const { slug, imageUrl, galleryUrls } = body;
+    const { slug, imageUrl, galleryUrls, socialLinks } = body;
 
     if (!slug) {
       return NextResponse.json({ error: "slug is required" }, { status: 400 });
@@ -136,12 +138,13 @@ export async function PATCH(request) {
       data: {
         ...(imageUrl !== undefined && { imageUrl }),
         ...(galleryUrls !== undefined && { galleryUrls }),
+        ...(socialLinks !== undefined && { socialLinks }),
       },
     });
 
     return NextResponse.json({ project: updated });
   } catch (error) {
-    console.error("Failed to update project images:", error);
+    console.error("Failed to update project data:", error);
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 }

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Import, Star, CheckCircle2, ChevronDown, Image as ImageIcon, ArrowUp, ArrowDown } from "lucide-react";
+import { Import, Star, CheckCircle2, ChevronDown, Image as ImageIcon, ArrowUp, ArrowDown, Share2 } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
 import AdminSectionCard from "./AdminSectionCard";
 import ProjectImageEditor from "./ProjectImageEditor";
+import ProjectSocialEditor from "./ProjectSocialEditor";
 
 export default function AdminProjectPicker({
   githubUsername,
@@ -18,7 +19,8 @@ export default function AdminProjectPicker({
   isLoading,
 }) {
   const [expandedSlug, setExpandedSlug] = useState(null);
-  const [localImages, setLocalImages] = useState({}); // track updated images locally
+  const [expandedType, setExpandedType] = useState("photos"); // "photos" or "socials"
+  const [localData, setLocalData] = useState({}); // track updated data locally
   const [searchQuery, setSearchQuery] = useState("");
 
   const featuredProjects = selectedSlugs
@@ -31,12 +33,13 @@ export default function AdminProjectPicker({
            (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
   });
 
-  const handleImagesSaved = (updatedProject) => {
-    setLocalImages((prev) => ({
+  const handleDataSaved = (updatedProject) => {
+    setLocalData((prev) => ({
       ...prev,
       [updatedProject.slug]: {
         imageUrl: updatedProject.imageUrl,
         galleryUrls: updatedProject.galleryUrls,
+        socialLinks: updatedProject.socialLinks,
       },
     }));
   };
@@ -44,8 +47,8 @@ export default function AdminProjectPicker({
   const renderProjectCard = (project, isSelected, index) => {
     const canSelect = isSelected || selectedSlugs.length < projectLimit;
     const isExpanded = expandedSlug === project.slug;
-    const imgData = localImages[project.slug] || {};
-    const cover = imgData.imageUrl || project.imageUrl || projectImages?.[project.slug];
+    const projectData = localData[project.slug] || {};
+    const cover = projectData.imageUrl || project.imageUrl || projectImages?.[project.slug];
 
     return (
       <div
@@ -132,33 +135,69 @@ export default function AdminProjectPicker({
                   ) : "Select"}
                 </button>
 
-                {/* Expand photos only for selected */}
+                {/* Expand controls only for selected */}
                 {isSelected && (
-                  <button
-                    onClick={() => setExpandedSlug(isExpanded ? null : project.slug)}
-                    className="text-xs font-semibold px-3 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors flex items-center gap-1"
-                  >
-                    <ImageIcon size={12} /> Photos
-                    <ChevronDown size={12} className={`transition-transform ${isExpanded ? "rotate-180" : ""}`} />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => {
+                        if (isExpanded && expandedType === "photos") {
+                          setExpandedSlug(null);
+                        } else {
+                          setExpandedSlug(project.slug);
+                          setExpandedType("photos");
+                        }
+                      }}
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
+                        isExpanded && expandedType === "photos" ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      <ImageIcon size={12} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (isExpanded && expandedType === "socials") {
+                          setExpandedSlug(null);
+                        } else {
+                          setExpandedSlug(project.slug);
+                          setExpandedType("socials");
+                        }
+                      }}
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
+                        isExpanded && expandedType === "socials" ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      <Share2 size={12} />
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Expanded Image Editor */}
+        {/* Expanded Editors */}
         {isSelected && isExpanded && (
-          <div className="border-t border-slate-100 p-5 bg-white">
-            <ProjectImageEditor
-              project={{
-                slug: project.slug,
-                name: project.name,
-                imageUrl: imgData.imageUrl ?? (project.imageUrl || projectImages?.[project.slug] || ""),
-                galleryUrls: imgData.galleryUrls ?? (project.galleryUrls || []),
-              }}
-              onSaved={handleImagesSaved}
-            />
+          <div className="border-t border-slate-100 p-5 bg-white animate-in slide-in-from-top-2 duration-300">
+            {expandedType === "photos" ? (
+              <ProjectImageEditor
+                project={{
+                  slug: project.slug,
+                  name: project.name,
+                  imageUrl: projectData.imageUrl ?? (project.imageUrl || projectImages?.[project.slug] || ""),
+                  galleryUrls: projectData.galleryUrls ?? (project.galleryUrls || []),
+                }}
+                onSaved={handleDataSaved}
+              />
+            ) : (
+              <ProjectSocialEditor
+                project={{
+                  slug: project.slug,
+                  name: project.name,
+                  socialLinks: projectData.socialLinks ?? (project.socialLinks || []),
+                }}
+                onSaved={handleDataSaved}
+              />
+            )}
           </div>
         )}
       </div>

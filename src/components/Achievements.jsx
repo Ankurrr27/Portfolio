@@ -27,28 +27,15 @@ const categoryColors = [
 
 
 
+import { fallbackAchievements } from "../data/achievements";
+
 const Achievements = () => {
-  const [achievements, setAchievements] = useState([]);
-  const [codingStats, setCodingStats] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [achievements] = useState(fallbackAchievements);
+  const [codingStats] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const sectionRef = useRef(null);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/achievements");
-        const data = await res.json();
-        
-        if (data.achievements) setAchievements(data.achievements);
-        if (data.codingStats) setCodingStats(data.codingStats);
-      } catch (err) {
-        console.error("Achievements: Error", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  // Static implementation - no dynamic fetching as requested
 
   return (
     <section

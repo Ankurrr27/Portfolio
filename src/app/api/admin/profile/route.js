@@ -58,6 +58,7 @@ export async function PUT(request) {
       cgpa: p.cgpa,
       leetcodeSolved: p.leetcodeSolved,
       gfgSolved: p.gfgSolved,
+      socialLinks: p.socialLinks || [],
     };
 
     const writeProfile = (data) => {

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import GlassSurface from "./ui/GlassSurface";
 
-const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Education", "Gallery"];
+const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Gallery", "Responsibilities", "Education"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
