@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
+import GlassSurface from "./ui/GlassSurface";
 
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Gallery", "Responsibilities", "Education"];
 
@@ -35,10 +37,21 @@ const Navbar = () => {
           : "w-[calc(100%-2rem)] max-w-7xl"
       }`}
     >
-      <div className="panel w-full min-h-14 px-4 md:px-6 flex items-center justify-between bg-zinc-950/95 backdrop-blur-sm">
+      <GlassSurface
+        width="100%"
+        height={56}
+        borderRadius={10}
+        brightness={55}
+        opacity={0.82}
+        blur={12}
+        backgroundOpacity={0.12}
+        saturation={1.35}
+        className="w-full min-h-14"
+      >
+      <div className="w-full h-full px-4 md:px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-1.5 group">
-            <span className="text-lg font-bold text-white transition-colors duration-300">
+            <span className="text-lg font-bold text-zinc-950 transition-colors duration-300 dark:text-white">
               Ankur.
             </span>
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
@@ -53,7 +66,7 @@ const Navbar = () => {
                 className={`px-3 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all rounded-md ${
                   active === link 
                     ? "bg-orange-500 text-white" 
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-900"
+                    : "text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-900"
                 }`}
               >
                 {link}
@@ -62,16 +75,23 @@ const Navbar = () => {
           </div>
 
           {/* Mobile controls */}
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
+          </div>
+
+          {/* Mobile controls */}
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="cursor-pointer text-white min-h-11 min-w-11 p-2 rounded-md border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition-all active:scale-95 flex items-center justify-center"
+              className="cursor-pointer text-zinc-700 min-h-11 min-w-11 p-2 rounded-md border border-zinc-200 bg-white hover:border-orange-500 hover:text-orange-500 transition-all active:scale-95 flex items-center justify-center dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
             </button>
           </div>
         </div>
+      </GlassSurface>
 
       {/* Mobile menu */}
       <AnimatePresence>
@@ -80,28 +100,40 @@ const Navbar = () => {
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[calc(100vw-2rem)] max-h-[75vh] overflow-y-auto panel z-[900] p-3"
+            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[calc(100vw-2rem)] max-h-[75vh] z-[900]"
           >
-            <ul className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <li
-                  key={link}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full"
-                >
-                  <a
-                    href={`#${link.toLowerCase()}`}
-                    className={`flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors ${
-                      active === link 
-                        ? "bg-orange-500 text-white" 
-                        : "text-zinc-400 hover:bg-white/5 hover:text-white"
-                    }`}
+            <GlassSurface
+              width="100%"
+              height="auto"
+              borderRadius={10}
+              brightness={55}
+              opacity={0.82}
+              blur={12}
+              backgroundOpacity={0.16}
+              saturation={1.35}
+              className="w-full"
+            >
+              <ul className="flex w-full max-h-[75vh] flex-col gap-2 overflow-y-auto p-3">
+                {navLinks.map((link) => (
+                  <li
+                    key={link}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full"
                   >
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
+                    <a
+                      href={`#${link.toLowerCase()}`}
+                      className={`flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors ${
+                        active === link 
+                          ? "bg-orange-500 text-white" 
+                          : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white"
+                      }`}
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </GlassSurface>
           </motion.div>
         )}
       </AnimatePresence>

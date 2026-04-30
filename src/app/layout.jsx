@@ -2,6 +2,7 @@ import './globals.css'
 
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -13,7 +14,7 @@ export const metadata = {
 }
 
 export const viewport = {
-  themeColor: "#7c3aed",
+  themeColor: "#09090b",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head />
       <body className="antialiased selection:bg-primary/30">
+        <ThemeProvider>
           {children}
+        </ThemeProvider>
       </body>
     </html>
   )

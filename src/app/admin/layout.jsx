@@ -20,6 +20,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Toaster } from "sonner";
+import ThemeToggle from "@/components/ThemeToggle";
 
 function AdminLayoutContent({ children }) {
   const { isAuthorized, isLoading, login, logout, adminKey } = useAdmin();
@@ -28,7 +29,7 @@ function AdminLayoutContent({ children }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 flex items-center justify-center">
         <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -55,7 +56,7 @@ function AdminLayoutContent({ children }) {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex text-slate-800 font-sans">
+    <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 flex text-slate-800 dark:text-zinc-100 font-sans">
       <Toaster position="top-right" richColors />
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
@@ -74,7 +75,7 @@ function AdminLayoutContent({ children }) {
       `}>
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex items-center gap-3 mb-10 pl-2">
-             <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm">A</div>
+             <div className="w-8 h-8 rounded-md bg-orange-500 flex items-center justify-center text-white font-bold shadow-sm">A</div>
              <h2 className="text-lg font-bold text-slate-900 tracking-tight">Admin Console</h2>
           </div>
 
@@ -89,12 +90,12 @@ function AdminLayoutContent({ children }) {
                   className={`
                     group flex items-center justify-between w-full px-4 py-2.5 rounded-md transition-all duration-200 font-medium text-sm
                     ${isActive 
-                      ? "bg-blue-50 text-blue-700" 
-                      : "text-slate-600 hover:text-blue-600 hover:bg-slate-50"}
+                      ? "bg-orange-500/10 text-orange-600 dark:text-orange-400" 
+                      : "text-slate-600 hover:text-orange-600 hover:bg-slate-50 dark:hover:bg-zinc-900"}
                   `}
                 >
                   <div className="flex items-center gap-3">
-                    <item.icon size={16} className={isActive ? "text-blue-700" : "text-slate-400 group-hover:text-blue-600 transition-colors"} />
+                    <item.icon size={16} className={isActive ? "text-orange-600 dark:text-orange-400" : "text-slate-400 group-hover:text-orange-600 transition-colors"} />
                     <span className="tracking-tight">{item.name}</span>
                   </div>
                   <ChevronRight size={14} className={`transition-transform duration-200 ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-1"}`} />
@@ -104,7 +105,11 @@ function AdminLayoutContent({ children }) {
           </nav>
         </div>
 
-        <div className="p-6 border-t border-slate-200">
+        <div className="p-6 border-t border-slate-200 dark:border-zinc-800 space-y-3">
+          <div className="hidden lg:flex items-center justify-between px-1">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Theme</span>
+            <ThemeToggle />
+          </div>
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-4 py-2.5 rounded-md hover:bg-slate-50 border border-slate-200 text-slate-600 transition-all duration-200 text-sm font-medium"
@@ -118,20 +123,23 @@ function AdminLayoutContent({ children }) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header Mobile */}
-        <header className="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200">
+        <header className="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
            <div className="flex items-center gap-3">
-             <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center text-white font-bold">A</div>
+             <div className="w-8 h-8 rounded-md bg-orange-500 flex items-center justify-center text-white font-bold">A</div>
              <h2 className="text-lg font-bold text-slate-900 tracking-tight">Admin</h2>
            </div>
-           <button 
-            onClick={() => setIsSidebarOpen(true)}
-            className="p-2 rounded-md hover:bg-slate-50 border border-slate-200 text-slate-600"
-           >
-             <Menu size={20} />
-           </button>
+           <div className="flex items-center gap-2">
+             <ThemeToggle />
+             <button 
+              onClick={() => setIsSidebarOpen(true)}
+              className="min-h-11 min-w-11 p-2 rounded-md hover:bg-slate-50 dark:hover:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 flex items-center justify-center"
+             >
+               <Menu size={20} />
+             </button>
+           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-slate-50">
+        <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-zinc-950">
            <div className="p-6 md:p-10 max-w-6xl">
              {children}
            </div>
