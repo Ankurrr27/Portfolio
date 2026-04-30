@@ -29,13 +29,13 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
+      className={`fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
         isScrolled
-          ? "w-[96%] md:w-[90%] lg:w-[78%]"
+          ? "w-[calc(100%-2rem)] md:w-[90%] lg:w-[78%]"
           : "w-[calc(100%-2rem)] max-w-7xl"
       }`}
     >
-      <div className="panel w-full h-14 px-4 md:px-6 flex items-center justify-between bg-zinc-950/95 backdrop-blur-sm">
+      <div className="panel w-full min-h-14 px-4 md:px-6 flex items-center justify-between bg-zinc-950/95 backdrop-blur-sm">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-1.5 group">
             <span className="text-lg font-bold text-white transition-colors duration-300">
@@ -65,7 +65,7 @@ const Navbar = () => {
           <div className="flex items-center gap-3 md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="cursor-pointer text-white p-2 rounded-md border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition-all active:scale-95"
+              className="cursor-pointer text-white min-h-11 min-w-11 p-2 rounded-md border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 transition-all active:scale-95 flex items-center justify-center"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
@@ -80,7 +80,7 @@ const Navbar = () => {
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[90%] max-h-[80vh] overflow-y-auto panel z-[900] p-4"
+            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[calc(100vw-2rem)] max-h-[75vh] overflow-y-auto panel z-[900] p-3"
           >
             <ul className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -91,7 +91,7 @@ const Navbar = () => {
                 >
                   <a
                     href={`#${link.toLowerCase()}`}
-                    className={`flex items-center px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors ${
+                    className={`flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors ${
                       active === link 
                         ? "bg-orange-500 text-white" 
                         : "text-zinc-400 hover:bg-white/5 hover:text-white"

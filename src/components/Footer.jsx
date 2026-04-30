@@ -53,7 +53,7 @@ const Footer = ({ totalViews = 0 }) => {
   if (isLoading) {
     return (
       <footer className="section-shell py-12">
-        <div className="section-container flex flex-col items-center gap-4 animate-pulse">
+        <div className="section-container flex flex-col items-start gap-4 animate-pulse">
           <div className="w-24 h-4 bg-zinc-900 rounded-full" />
           <div className="w-48 h-10 bg-zinc-900 rounded-lg" />
         </div>
@@ -66,8 +66,8 @@ const Footer = ({ totalViews = 0 }) => {
   return (
     <footer className="section-shell py-12 text-white">
       <div className="section-container">
-        <div className="panel mb-12 p-8 md:p-10">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+        <div className="panel mb-10 md:mb-12 p-5 md:p-10">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 md:gap-8">
             <div className="space-y-4 max-w-2xl">
               <div className="section-kicker">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
@@ -81,14 +81,14 @@ const Footer = ({ totalViews = 0 }) => {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
               <MagneticButton>
                 <a href={`mailto:${p.email || ""}`} className="primary-button group">
                   Contact <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </a>
               </MagneticButton>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 {p.socialLinks && p.socialLinks.length > 0 ? (
                   p.socialLinks.slice(0, 5).map((link, i) => (
                     <a
@@ -96,7 +96,7 @@ const Footer = ({ totalViews = 0 }) => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center"
+                      className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center"
                       title={link.platform}
                     >
                       <SocialIcon platform={link.platform} />
@@ -104,10 +104,10 @@ const Footer = ({ totalViews = 0 }) => {
                   ))
                 ) : (
                   <>
-                    <a href={p.githubUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center">
+                    <a href={p.githubUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center">
                       <FaGithub size={18} />
                     </a>
-                    <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center">
+                    <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center">
                       <FaLinkedin size={18} />
                     </a>
                   </>
@@ -168,7 +168,7 @@ const Footer = ({ totalViews = 0 }) => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 mt-8 border-t border-zinc-900">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 mt-8 border-t border-zinc-900">
           <p className="text-zinc-600 text-xs font-semibold uppercase tracking-wide">
             © {currentYear} • {p.fullName || "Admin"}
           </p>

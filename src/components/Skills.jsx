@@ -87,7 +87,7 @@ const Skills = () => {
 
   return (
     <section id="skills" className="section-shell overflow-hidden">
-      <div className="section-container relative z-10 mb-12">
+      <div className="section-container relative z-10 mb-8 md:mb-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div className="space-y-4">
             <div className="section-kicker">
@@ -105,15 +105,15 @@ const Skills = () => {
       </div>
 
       <div className="section-container">
-        <div className="panel grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-8 p-4 md:p-6">
-          <div className="relative h-[480px] md:h-[560px] overflow-hidden rounded-lg bg-zinc-950 border border-zinc-800">
-            <div className="absolute left-4 top-4 z-20 section-kicker bg-zinc-950/80">
+        <div className="panel grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-5 md:gap-8 p-3 md:p-6">
+          <div className="relative h-[360px] sm:h-[420px] md:h-[560px] overflow-hidden rounded-lg bg-zinc-950 border border-zinc-800">
+            <div className="absolute left-3 top-3 md:left-4 md:top-4 z-20 section-kicker bg-zinc-950/80">
               Stack Map
             </div>
-            <InfiniteMenu items={allSkills} scale={1.45} hideInfo={true} onItemChange={setSelectedSkill} />
+            <InfiniteMenu items={allSkills} scale={1.05} hideInfo={true} onItemChange={setSelectedSkill} />
           </div>
 
-          <aside className="panel-subtle p-6 flex flex-col justify-between min-h-[320px]">
+          <aside className="panel-subtle p-4 md:p-6 flex flex-col justify-between min-h-[260px] md:min-h-[320px]">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="icon-box">
@@ -121,18 +121,18 @@ const Skills = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">Selected Skill</h4>
-                  <p className="text-sm text-zinc-400">Hover the map to inspect a tool.</p>
+                  <p className="text-sm text-zinc-400">Tap or hover the map to inspect a tool.</p>
                 </div>
               </div>
 
               {selectedSkill ? (
-                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
-                  <div className="flex items-center gap-5">
-                    <div className="w-20 h-20 rounded-lg bg-zinc-950 border border-zinc-800 p-4 flex items-center justify-center">
+                <div className="space-y-5 md:space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">
+                  <div className="flex items-center gap-4 md:gap-5">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-zinc-950 border border-zinc-800 p-3 md:p-4 flex items-center justify-center shrink-0">
                       <img src={selectedSkill.image} alt={selectedSkill.title} className="w-full h-full object-contain grayscale" />
                     </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-white tracking-tight">{selectedSkill.title}</h3>
+                    <div className="min-w-0">
+                      <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight break-words">{selectedSkill.title}</h3>
                       <p className="mt-2 text-xs font-semibold text-orange-500 uppercase tracking-wide">{selectedSkill.description}</p>
                     </div>
                   </div>

@@ -17,7 +17,7 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
       style={{ transitionDelay: `${index * 80}ms` }}
     >
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-28 shrink-0 border-b md:border-b-0 md:border-r border-zinc-800 bg-zinc-950 p-6 flex items-start justify-center">
+        <div className="w-full md:w-28 shrink-0 border-b md:border-b-0 md:border-r border-zinc-800 bg-zinc-950 p-5 md:p-6 flex items-start md:justify-center">
           {logoUrl ? (
             <img src={logoUrl} alt={organization} className="w-14 h-14 object-contain opacity-90" />
           ) : (
@@ -27,11 +27,11 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
           )}
         </div>
 
-        <div className="flex-1 p-6 md:p-8">
-          <div className="mb-8 flex flex-col md:flex-row md:items-start justify-between gap-4">
+        <div className="flex-1 p-5 md:p-8">
+          <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="text-xl md:text-2xl font-semibold tracking-tight leading-tight text-white">
+                <h3 className="text-lg md:text-2xl font-semibold tracking-tight leading-tight text-white break-words">
                   {organization}
                 </h3>
                 {organizationUrl && (
@@ -44,16 +44,16 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
             </div>
           </div>
 
-          <div className="relative space-y-8 pl-6">
+          <div className="relative space-y-6 md:space-y-8 pl-5 md:pl-6">
             {roles.length > 1 && <div className="absolute left-[7px] top-2 bottom-2 w-px bg-zinc-800" />}
 
             {displayRoles.map((role, rIndex) => (
               <div key={rIndex} className="relative animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className={`absolute -left-[23px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-950 ${rIndex === 0 ? "bg-orange-500" : "bg-zinc-700"}`} />
+                <div className={`absolute -left-[19px] md:-left-[23px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-zinc-950 ${rIndex === 0 ? "bg-orange-500" : "bg-zinc-700"}`} />
 
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-wrap items-center gap-3">
-                    <h4 className="text-lg font-semibold text-zinc-100">{role.title}</h4>
+                    <h4 className="text-base md:text-lg font-semibold text-zinc-100">{role.title}</h4>
                     <span className="chip">{role.period}</span>
                   </div>
 
@@ -76,7 +76,7 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
             {hasMore && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="text-xs font-semibold uppercase tracking-wide text-orange-500 hover:text-orange-400 transition-colors"
+                className="min-h-11 text-xs font-semibold uppercase tracking-wide text-orange-500 hover:text-orange-400 transition-colors"
               >
                 {isExpanded ? "Show less" : `Show ${roles.length - 1} more role${roles.length - 1 > 1 ? "s" : ""}`}
               </button>
@@ -207,7 +207,7 @@ const Responsibilities = () => {
     <section ref={containerRef} className="section-shell overflow-visible" id="responsibilities">
       <EditSectionButton href="/admin/responsibilities" label="Edit Responsibilities" />
       <div className="section-container relative z-10">
-        <div className={`flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-14 transition-all duration-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+        <div className={`flex flex-col md:flex-row justify-between items-start md:items-end gap-5 md:gap-6 mb-10 md:mb-14 transition-all duration-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
           <div className="space-y-4">
             <div className="section-kicker">
               <ShieldCheck size={16} className="text-orange-500" />
@@ -222,7 +222,7 @@ const Responsibilities = () => {
           </p>
         </div>
 
-        <div className="relative space-y-6">
+        <div className="relative space-y-5 md:space-y-6">
           {responsibilities.map((item, index) => (
             <ResponsibilityItem
               key={item.id || index}

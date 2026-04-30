@@ -64,7 +64,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
 
       {/* Social Links Overlay (as requested in the image) */}
       {project.socialLinks && project.socialLinks.length > 0 && (
-        <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 delay-100">
+        <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300">
            {project.socialLinks.map((link, i) => (
              <SocialIcon key={i} platform={link.platform} url={link.url} />
            ))}
@@ -73,7 +73,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
     </div>
 
     {/* Content */}
-    <div className="p-5 md:p-6 flex flex-col flex-1">
+    <div className="p-4 md:p-6 flex flex-col flex-1">
       <div className="flex items-center justify-between mb-3">
          <h3 className="text-lg font-semibold text-white line-clamp-1 group-hover:text-orange-500 transition-colors tracking-tight">
            {project.name}
@@ -85,16 +85,16 @@ const ProjectCard = ({ project, index, onOpen }) => (
       </p>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-         <div className="panel-subtle p-3 text-center group-hover:border-zinc-700 transition-colors">
+      <div className="grid grid-cols-3 gap-2 md:gap-3 mb-6">
+         <div className="panel-subtle p-2.5 md:p-3 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Stars</p>
             <p className="text-sm text-white font-bold">{project.stars || 0}</p>
          </div>
-         <div className="panel-subtle p-3 text-center group-hover:border-zinc-700 transition-colors">
+         <div className="panel-subtle p-2.5 md:p-3 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Status</p>
             <p className="text-sm text-orange-500 font-bold">Live</p>
          </div>
-         <div className="panel-subtle p-3 text-center group-hover:border-zinc-700 transition-colors">
+         <div className="panel-subtle p-2.5 md:p-3 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Forks</p>
             <p className="text-sm text-orange-500 font-bold">{project.forks || 0}</p>
          </div>
@@ -103,7 +103,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
       <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
          <button 
            onClick={() => onOpen(project)}
-           className="text-sm font-bold text-orange-500 flex items-center gap-2 group/btn hover:text-orange-400 transition-colors uppercase tracking-widest"
+           className="min-h-11 text-sm font-bold text-orange-500 flex items-center gap-2 group/btn hover:text-orange-400 transition-colors uppercase tracking-wide"
          >
            View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
          </button>
@@ -168,12 +168,12 @@ const Projects = () => {
       </div>
 
       <div className="section-container py-8">
-         <div className="flex flex-wrap gap-3 mb-10">
+         <div className="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10">
             {uniqueLanguages.map(lang => (
                <button
                  key={lang}
                  onClick={() => setActiveFilter(lang)}
-                 className={`px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wide transition-all duration-200 border ${
+                 className={`min-h-11 px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wide transition-all duration-200 border ${
                    activeFilter === lang 
                      ? "bg-orange-500 text-white border-orange-500" 
                      : "bg-zinc-900/50 text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300"
@@ -185,9 +185,9 @@ const Projects = () => {
          </div>
          
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-[450px] bg-zinc-900 rounded-2xl border border-zinc-800 flex flex-col overflow-hidden animate-pulse">
+              <div key={i} className="h-[420px] md:h-[450px] bg-zinc-900 rounded-lg md:rounded-2xl border border-zinc-800 flex flex-col overflow-hidden animate-pulse">
                  <div className="h-48 md:h-56 bg-zinc-800/50 border-b border-zinc-800" />
                  <div className="p-5 flex-1 flex flex-col">
                     <div className="w-1/2 h-6 bg-zinc-800 rounded mb-4" />
@@ -203,7 +203,7 @@ const Projects = () => {
             ))}
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, index) => (
                 <ProjectCard 
@@ -228,7 +228,7 @@ const Projects = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[4000] flex items-center justify-center p-4 md:p-6 bg-zinc-950/95"
+            className="fixed inset-0 z-[4000] flex items-center justify-center p-3 md:p-6 bg-zinc-950/95"
             onClick={() => {
               setSelectedProject(null);
               setActiveImage(null);
@@ -240,16 +240,16 @@ const Projects = () => {
                exit={{ scale: 0.9, opacity: 0, y: 30 }}
                transition={{ type: "spring", damping: 25, stiffness: 300 }}
                onClick={(e) => e.stopPropagation()}
-               className="w-full max-w-5xl h-full max-h-[85vh] panel overflow-hidden flex flex-col relative"
+               className="w-full max-w-5xl h-full max-h-[92vh] md:max-h-[85vh] panel overflow-hidden flex flex-col relative"
              >
                {/* Modal Header - Slightly more compact */}
-               <div className="shrink-0 flex items-center justify-between p-5 md:p-6 border-b border-zinc-800/50 bg-zinc-900 relative z-10">
-                  <div className="flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500">
+               <div className="shrink-0 flex items-start justify-between gap-3 p-4 md:p-6 border-b border-zinc-800/50 bg-zinc-900 relative z-10">
+                  <div className="flex min-w-0 items-start gap-3 md:gap-4">
+                     <div className="w-10 h-10 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500 shrink-0">
                         <Terminal size={20} />
                      </div>
-                     <div>
-                        <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
+                     <div className="min-w-0">
+                        <h3 className="text-lg md:text-2xl font-bold text-white tracking-tight leading-tight break-words">
                            {selectedProject.name.replace(/_/g, ' ')}
                         </h3>
                         <div className="flex items-center gap-2 mt-1.5">
@@ -267,18 +267,18 @@ const Projects = () => {
                       setSelectedProject(null);
                       setActiveImage(null);
                     }}
-                    className="group w-10 h-10 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-orange-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-orange-400 transition-all duration-200 active:scale-95"
+                    className="group min-w-11 w-11 h-11 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-orange-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-orange-400 transition-all duration-200 active:scale-95 shrink-0"
                   >
                     <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
                </div>
  
                {/* Scrollable Content - Slightly more compact */}
-               <div className="flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+               <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
                      
                      {/* Primary Content (Left) */}
-                     <div className="lg:col-span-8 space-y-8">
+                     <div className="lg:col-span-8 space-y-6 md:space-y-8">
                         {/* Hero Image Section */}
                         <div className="relative group">
                            <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-zinc-800 bg-zinc-950 flex items-center justify-center shadow-xl">
@@ -305,8 +305,8 @@ const Projects = () => {
 
                         {/* Description Section */}
                         <div className="space-y-4">
-                           <div className="flex items-center gap-3">
-                           <h4 className="text-xs font-semibold text-orange-500 uppercase tracking-wide px-3 whitespace-nowrap bg-zinc-900/50 py-1 rounded-md border border-orange-500/20">Project Overview</h4>
+                           <div className="flex items-center gap-3 min-w-0">
+                           <h4 className="text-xs font-semibold text-orange-500 uppercase tracking-wide px-3 bg-zinc-900/50 py-1 rounded-md border border-orange-500/20">Project Overview</h4>
                               <div className="h-px flex-1 bg-zinc-800/50" />
                            </div>
                            <p className="text-zinc-300 text-base leading-relaxed font-medium">
@@ -316,7 +316,7 @@ const Projects = () => {
                      </div>
  
                      {/* Sidebar Content (Right) */}
-                     <div className="lg:col-span-4 space-y-8">
+                     <div className="lg:col-span-4 space-y-6 md:space-y-8">
                         
                         {/* Community Hub (Featured Socials) */}
                         {selectedProject.socialLinks && selectedProject.socialLinks.length > 0 && (
@@ -324,14 +324,14 @@ const Projects = () => {
                              <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-4 flex items-center gap-2">
                                 <Share2 size={12} className="text-orange-500" /> Links
                              </h4>
-                             <div className="grid grid-cols-4 gap-3">
+                             <div className="grid grid-cols-4 gap-2 md:gap-3">
                                 {selectedProject.socialLinks.map((link, i) => (
                                   <motion.a
                                     key={i}
                                     href={link.url}
                                     target="_blank"
                                     rel="noopener"
-                                    whileHover={{ scale: 1.1, y: -2 }}
+                                    whileHover={{ scale: 1.03, y: -1 }}
                                     className="aspect-square rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-orange-500/50 transition-all"
                                   >
                                      <SocialIcon platform={link.platform} url={link.url} />
@@ -345,11 +345,11 @@ const Projects = () => {
                         {(selectedProject.galleryUrls && selectedProject.galleryUrls.length > 0) && (
                           <div className="space-y-4">
                              <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-orange-500">Gallery</h4>
-                             <div className="grid grid-cols-2 gap-3">
+                             <div className="grid grid-cols-2 gap-2 md:gap-3">
                                 {selectedProject.galleryUrls.map((url, i) => (
                                   <motion.div 
                                     key={i} 
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ scale: 1.02 }}
                                     className={`aspect-video rounded-lg overflow-hidden border-2 cursor-pointer group relative bg-zinc-950 shadow-xl transition-all duration-200 ${
                                       (activeImage === url) ? "border-orange-500" : "border-zinc-800 hover:border-zinc-600"
                                     }`}
@@ -395,7 +395,7 @@ const Projects = () => {
                                   href={selectedProject.homepage} 
                                   target="_blank" 
                                   rel="noopener"
-                                  className="group flex items-center justify-between p-4 rounded-2xl bg-zinc-800/50 border border-zinc-700 text-white font-black text-[10px] uppercase tracking-widest hover:bg-zinc-700 transition-all duration-300 shadow-xl active:scale-[0.98]"
+                                  className="group flex min-h-11 items-center justify-between p-4 rounded-lg bg-zinc-800/50 border border-zinc-700 text-white font-bold text-xs uppercase tracking-wide hover:bg-zinc-700 transition-all duration-200 shadow-xl active:scale-[0.98]"
                                 >
                                   <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-orange-500" /> Launch Project</span>
                                   <Maximize2 size={16} className="text-zinc-500 group-hover:text-white transition-colors" />

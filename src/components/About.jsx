@@ -47,7 +47,7 @@ const About = () => {
   if (isLoading) {
     return (
       <section className="section-shell min-h-screen">
-        <div className="section-container flex flex-col lg:flex-row gap-14 items-center lg:items-start">
+        <div className="section-container flex flex-col lg:flex-row gap-8 lg:gap-14 items-start">
           <div className="w-full lg:w-7/12 flex flex-col justify-center space-y-8 animate-pulse">
             <div className="space-y-5">
               <div className="w-40 h-8 rounded-lg bg-zinc-900" />
@@ -74,8 +74,8 @@ const About = () => {
     <section id="about" ref={containerRef} className="section-shell overflow-hidden">
       <EditSectionButton href="/admin/profile" label="Edit Bio" />
 
-      <div className="section-container flex flex-col lg:flex-row gap-14 items-center lg:items-start relative z-10">
-        <div className="w-full lg:w-7/12 flex flex-col justify-center space-y-8">
+      <div className="section-container flex flex-col lg:flex-row gap-8 lg:gap-14 items-start relative z-10">
+        <div className="w-full lg:w-7/12 flex flex-col justify-center space-y-7 md:space-y-8">
           <div className="space-y-5">
             <div className="section-kicker">
               <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
@@ -84,7 +84,7 @@ const About = () => {
             <h2 className="section-title">
               Engineering with <span className="accent-text">clarity.</span>
             </h2>
-            <div className="flex gap-4 items-start border-l border-orange-500 pl-5 py-1">
+            <div className="flex gap-4 items-start border-l border-orange-500 pl-4 md:pl-5 py-1">
               <p className="section-copy max-w-xl">
                 {bio ||
                   "System resilience is part of the design process. My architecture choices are driven by data, performance, and long-term maintainability."}
@@ -115,7 +115,7 @@ const About = () => {
               className="w-full rounded-md object-cover aspect-square md:aspect-[4/5] opacity-90 transition-transform duration-300 group-hover:scale-[1.01]"
             />
 
-            <div className="absolute bottom-6 right-6 bg-zinc-950 px-5 py-3 rounded-lg shadow-xl border border-zinc-800">
+            <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-zinc-950 px-4 md:px-5 py-3 rounded-lg shadow-xl border border-zinc-800">
               <span className="block text-white font-bold text-xl tracking-tight">100%</span>
               <span className="block text-zinc-500 text-xs font-semibold uppercase tracking-wide">Uptime Target</span>
             </div>

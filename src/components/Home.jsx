@@ -40,7 +40,7 @@ const Home = ({ totalViews = 0 }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-[90dvh] flex items-center justify-center px-6 md:px-12 lg:px-24 overflow-hidden bg-zinc-950 border-b border-zinc-900"
+      className="relative w-full min-h-[88dvh] flex items-center justify-center px-4 sm:px-5 md:px-12 lg:px-24 overflow-hidden bg-zinc-950 border-b border-zinc-900"
       id="home"
     >
       <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,rgba(39,39,42,0.26)_1px,transparent_1px),linear-gradient(to_bottom,rgba(39,39,42,0.18)_1px,transparent_1px)] bg-[size:72px_72px] opacity-25" />
@@ -48,7 +48,7 @@ const Home = ({ totalViews = 0 }) => {
 
       <motion.div
         style={{ y: y1, opacity }}
-        className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8"
+        className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-8"
       >
         {isLoading ? (
           <div className="w-full md:w-[65%] flex flex-col items-start text-left space-y-8 pt-20 md:pt-16 lg:pt-0 animate-pulse">
@@ -60,7 +60,7 @@ const Home = ({ totalViews = 0 }) => {
             </div>
           </div>
         ) : (
-          <div className="w-full md:w-[66%] flex flex-col items-start text-left gap-8 pt-20 md:pt-16 lg:pt-0">
+          <div className="w-full md:w-[66%] flex flex-col items-start text-left gap-7 pt-20 md:pt-16 lg:pt-0">
 
           <div className="space-y-5">
             <motion.div
@@ -94,7 +94,7 @@ const Home = ({ totalViews = 0 }) => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-center gap-4 pt-4 w-full sm:w-auto"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 w-full sm:w-auto"
           >
             <MagneticButton>
               <a

@@ -11,7 +11,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
       className={`panel group relative w-full transition-all duration-300 overflow-hidden flex flex-col md:flex-row hover:border-zinc-700 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      style={{ transitionDelay: `${index * 80}ms` }}
     >
       {/* Left Side: Flush Image */}
       {imageUrl && (
@@ -30,7 +30,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
       )}
 
       {/* Right Side: Content Area */}
-      <div className="flex-1 p-6 md:p-8 flex flex-col justify-center relative z-20">
+      <div className="flex-1 p-5 md:p-8 flex flex-col justify-center relative z-20">
          {/* Top Row: Pill Tags */}
          <div className="flex flex-wrap items-center gap-2 mb-4">
             <span className="chip text-orange-400 border-orange-500/30 flex items-center gap-1.5">
@@ -46,7 +46,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
          </div>
 
          {/* Title */}
-         <h3 className="text-2xl md:text-3xl font-semibold text-white tracking-tight leading-tight mb-3 group-hover:text-orange-500 transition-colors duration-200">
+         <h3 className="text-xl md:text-3xl font-semibold text-white tracking-tight leading-tight mb-3 group-hover:text-orange-500 transition-colors duration-200 break-words">
            {institution}
          </h3>
 
@@ -129,7 +129,7 @@ const Education = () => {
       <div className="section-container relative z-10">
         
         {/* Engineering Header */}
-        <div className={`flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-14 transition-all duration-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+        <div className={`flex flex-col md:flex-row justify-between items-start md:items-end gap-5 md:gap-6 mb-10 md:mb-14 transition-all duration-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
            <div className="space-y-4">
               <div className="section-kicker">
                  <GraduationCap size={16} className="text-orange-500" />

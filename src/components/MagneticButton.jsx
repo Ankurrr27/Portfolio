@@ -27,7 +27,7 @@ const MagneticButton = ({ children, className = "", ...props }) => {
       onMouseLeave={handleMouseLeave}
       animate={{ x, y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className={`relative inline-block ${className}`}
+      className={`relative inline-flex w-full sm:w-auto ${className}`}
       {...props}
     >
       {children}
