@@ -24,6 +24,8 @@ export const SKILLS_DB = {
   "Swift": { icon: <SiSwift />, color: "#F05138", category: "lang", about: "Apple's language for high-performance iOS and macOS apps." },
   "Kotlin": { icon: <SiKotlin />, color: "#7F52FF", category: "lang", about: "Modern language for Android and multi-platform development." },
   "Dart": { icon: <SiDart />, color: "#0175C2", category: "lang", about: "Client-optimized language for fast apps on any platform." },
+  "JS": { icon: <SiJavascript />, color: "#F7DF1E", category: "lang", about: "The engine of the modern web." },
+  "TS": { icon: <SiTypescript />, color: "#3178C6", category: "lang", about: "Strongly typed Javascript." },
 
   // Frontend
   "HTML": { icon: <Layers size={14} />, color: "#E34F26", category: "front", about: "The standard markup language for web document structure." },
@@ -36,6 +38,9 @@ export const SKILLS_DB = {
   "Framer Motion": { icon: <SiFramer />, color: "#0055FF", category: "front", about: "Production-ready motion library for React." },
   "Vue": { icon: <SiVuedotjs />, color: "#4FC08D", category: "front", about: "The progressive JavaScript framework for building UIs." },
   "Angular": { icon: <SiAngular />, color: "#DD0031", category: "front", about: "Platform for building mobile and desktop web applications." },
+  "Tailwind CSS": { icon: <SiTailwindcss />, color: "#06B6D4", category: "front", about: "Utility-first CSS framework." },
+  "Next JS": { icon: <SiNextdotjs />, color: "#ffffff", category: "front", about: "The React framework for production." },
+  "Vite React": { icon: <SiVite />, color: "#646CFF", category: "front", about: "Vite-powered React development." },
 
   // Backend
   "Node.js": { icon: <SiNodedotjs />, color: "#339933", category: "back", about: "JavaScript runtime built on Chrome's V8 for scalable networking." },
@@ -47,6 +52,8 @@ export const SKILLS_DB = {
   "GraphQL": { icon: <SiGql />, color: "#E10098", category: "back", about: "Query language for APIs and runtime for fulfilling queries." },
   "Firebase": { icon: <SiFirebase />, color: "#FFCA28", category: "back", about: "Google's platform for building mobile and web applications." },
   "Redis": { icon: <SiRedis />, color: "#DC382D", category: "back", about: "In-memory data structure store used as a database and cache." },
+  "Node JS": { icon: <SiNodedotjs />, color: "#339933", category: "back", about: "JavaScript runtime." },
+  "CORS": { icon: <Globe size={14} />, color: "#fb923c", category: "back", about: "Cross-Origin Resource Sharing security." },
 
   // Databases
   "PostgreSQL": { icon: <SiPostgresql />, color: "#4169E1", category: "back", about: "Advanced open-source relational database management system." },
@@ -63,6 +70,8 @@ export const SKILLS_DB = {
   "VS Code": { icon: <SiVscodium />, color: "#007ACC", category: "tools", about: "Streamlined code editor with support for debugging and Git." },
   "Figma": { icon: <SiFigma />, color: "#F24E1E", category: "tools", about: "Collaborative interface design tool for modern teams." },
   "Linux": { icon: <SiLinux />, color: "#FCC624", category: "tools", about: "Open-source Unix-like operating system kernel." },
+  "GitHub": { icon: <SiGit />, color: "#ffffff", category: "tools", about: "Cloud-based hosting service for Git repositories." },
+  "Postman": { icon: <SiPostman />, color: "#FF6C37", category: "tools", about: "API platform." },
 
   // DSA & CS Fundamentals
   "Algorithms": { icon: <Cpu size={14} />, color: "#f97316", category: "dsa", about: "Systematic procedures for solving computational problems." },

@@ -93,7 +93,7 @@ export default function AdminSkillsPage() {
 
   const addSkill = (domainIndex) => {
     const newDomains = [...domains];
-    newDomains[domainIndex].items.push({ name: "", level: "Proficient", description: "", iconName: "", x: null, y: null });
+    newDomains[domainIndex].items.push({ name: "", level: "Proficient", description: "", iconName: "", logoUrl: "", x: null, y: null });
     setDomains(newDomains);
   };
 
@@ -118,6 +118,7 @@ export default function AdminSkillsPage() {
       level: "Proficient",
       description: "",
       iconName: "",
+      logoUrl: "",
       x: null,
       y: null
     });
@@ -253,6 +254,13 @@ export default function AdminSkillsPage() {
                         onChange={(e) => updateSkill(dIndex, sIndex, "description", e.target.value)}
                         placeholder="Brief description or key tools..."
                         className="w-full bg-white px-3 py-2 rounded border border-slate-200 text-xs text-slate-600 focus:border-blue-500 outline-none resize-none h-16"
+                      />
+                      <input 
+                        type="text" 
+                        value={skill.logoUrl || ""}
+                        onChange={(e) => updateSkill(dIndex, sIndex, "logoUrl", e.target.value)}
+                        placeholder="Logo URL (optional)"
+                        className="w-full bg-white px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-500 focus:border-blue-500 outline-none"
                       />
                     </div>
                   ))}

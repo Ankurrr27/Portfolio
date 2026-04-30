@@ -48,6 +48,9 @@ model Profile {
   leetcodeUrl      String?
   geeksforgeeksUrl String?
   codechefUrl      String?
+  lanyardColor     String?  @default("#f97316")
+  lanyardImageUrl  String?
+  showLanyard      Boolean  @default(true)
   maxProjects      Int      @default(6)
   maxAchievements  Int      @default(6)
   maxGalleryPhotos Int      @default(12)
@@ -126,6 +129,7 @@ model SkillItem {
   level       String?
   description String?     // Added for detailed skill info
   iconName    String?     // For react-icons/si icons
+  logoUrl     String?     // Custom logo URL for DomeGallery
   x           Float?      // Position in the neural web
   y           Float?      // Position in the neural web
   domainId    String      @db.ObjectId

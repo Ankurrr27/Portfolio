@@ -10,6 +10,7 @@ const skillItemSchema = z.object({
   description: z.string().optional().nullable(),
   x: z.number().optional().nullable(),
   y: z.number().optional().nullable(),
+  logoUrl: z.string().optional().nullable(),
 });
 
 const domainSchema = z.object({
@@ -66,6 +67,7 @@ export async function PUT(request) {
               name: item.name,
               level: item.level,
               iconName: item.iconName,
+              logoUrl: item.logoUrl,
               x: item.x,
               y: item.y
             }))

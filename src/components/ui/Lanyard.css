@@ -1,0 +1,34 @@
+.lanyard-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40vw;
+  height: 100vh;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.lanyard-wrapper canvas {
+  pointer-events: auto;
+}
+
+.lanyard-wrapper.enlarged {
+  width: 100vw;
+  z-index: 100;
+}
+
+.lanyard-wrapper canvas {
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .lanyard-wrapper {
+    width: 200px;
+    height: 300px;
+  }
+  .lanyard-wrapper.enlarged {
+    width: 100%;
+    height: 500px;
+    transform: none;
+  }
+}

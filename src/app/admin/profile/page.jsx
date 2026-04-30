@@ -181,17 +181,28 @@ export default function AdminProfilePage() {
                 { label: "Max Projects to Show", key: "maxProjects", type: "number" },
                 { label: "Max Achievements to Show", key: "maxAchievements", type: "number" },
                 { label: "Max Gallery Photos", key: "maxGalleryPhotos", type: "number" },
+                { label: "Lanyard Accent Color", key: "lanyardColor", type: "color" },
               ].map(field => (
                 <div key={field.key} className="space-y-2">
                   <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">
                     {field.label}
                   </label>
-                  <input
-                    type={field.type}
-                    value={profile[field.key] || ""}
-                    onChange={(e) => updateField(field.key, e.target.type === "number" ? parseInt(e.target.value) || 0 : e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
-                  />
+                  <div className="flex gap-3">
+                    <input
+                      type={field.type}
+                      value={profile[field.key] || (field.type === 'color' ? '#f97316' : "")}
+                      onChange={(e) => updateField(field.key, field.type === "number" ? parseInt(e.target.value) || 0 : e.target.value)}
+                      className={`${field.type === 'color' ? 'w-12 h-10 p-1' : 'w-full'} bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all`}
+                    />
+                    {field.type === 'color' && (
+                      <input 
+                        type="text"
+                        value={profile[field.key] || "#f97316"}
+                        onChange={(e) => updateField(field.key, e.target.value)}
+                        className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs outline-none"
+                      />
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -199,6 +210,51 @@ export default function AdminProfilePage() {
         </div>
 
         <div className="space-y-6">
+          <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
+            <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Lanyard Settings</h3>
+            <p className="text-xs text-slate-500 mb-4">Configure your 3D Interactive Identity Card.</p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <span className="text-xs font-bold text-slate-700">Show Lanyard</span>
+                <button
+                  onClick={() => updateField("showLanyard", !profile.showLanyard)}
+                  className={`w-12 h-6 rounded-full transition-all relative ${profile.showLanyard ? 'bg-indigo-600' : 'bg-slate-300'}`}
+                >
+                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${profile.showLanyard ? 'right-1' : 'left-1'}`} />
+                </button>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Lanyard Accent Color</label>
+                <div className="flex gap-3">
+                  <input
+                    type="color"
+                    value={profile.lanyardColor || "#f97316"}
+                    onChange={(e) => updateField("lanyardColor", e.target.value)}
+                    className="w-12 h-10 p-1 bg-slate-50 border border-slate-100 rounded-xl outline-none"
+                  />
+                  <input 
+                    type="text"
+                    value={profile.lanyardColor || "#f97316"}
+                    onChange={(e) => updateField("lanyardColor", e.target.value)}
+                    className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Card Image Override (URL)</label>
+                <input
+                  type="text"
+                  placeholder="Defaults to profile image"
+                  value={profile.lanyardImageUrl || ""}
+                  onChange={(e) => updateField("lanyardImageUrl", e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
             <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Cached Coding Stats</h3>
             <p className="text-xs text-slate-500 mb-4">Fallback values used if the LeetCode or GFG APIs fail to respond.</p>

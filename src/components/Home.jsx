@@ -99,6 +99,7 @@ const Home = ({ totalViews = 0 }) => {
         <div className="absolute top-[10%] right-[-5%] w-96 h-96 rounded-full bg-orange-500/10 blur-3xl animate-pulse" />
         <div className="absolute bottom-[15%] right-[10%] w-64 h-64 rounded-full bg-blue-500/10 blur-3xl" />
       </div>
+
       <motion.div
         style={{ y: y1, opacity }}
         className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8"
