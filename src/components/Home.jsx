@@ -17,6 +17,7 @@ const statLabel = (views) => `${views.toLocaleString()} portfolio visits`;
 const Home = ({ totalViews = 0 }) => {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [bgNodes, setBgNodes] = useState([]);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -31,6 +32,19 @@ const Home = ({ totalViews = 0 }) => {
     };
     fetchProfile();
     const timer = setTimeout(() => setIsLoading(false), 300);
+
+    // Generate random nodes only on the client
+    const nodes = [...Array(15)].map(() => ({
+      width: Math.random() * 4 + 2 + "px",
+      height: Math.random() * 4 + 2 + "px",
+      left: Math.random() * 100 + "%",
+      top: Math.random() * 100 + "%",
+      y: [0, Math.random() * -100 - 50],
+      duration: Math.random() * 10 + 10,
+      delay: Math.random() * 10,
+    }));
+    setBgNodes(nodes);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -52,12 +66,38 @@ const Home = ({ totalViews = 0 }) => {
       id="home"
     >
       {/* Background Decor */}
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[bottom_1px_center] dark:bg-grid-white/[0.02] dark:bg-[bottom_1px_center]" style={{ maskImage: "linear-gradient(to bottom, transparent, black)" }}></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-900/40 via-zinc-950 to-zinc-950" />
+      
+      {/* Floating Neural Nodes (Lightweight Background) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.15]">
+        {bgNodes.map((node, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-orange-500 rounded-full blur-[1px]"
+            style={{
+              width: node.width,
+              height: node.height,
+              left: node.left,
+              top: node.top,
+            }}
+            animate={{
+              y: node.y,
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: node.duration,
+              repeat: Infinity,
+              ease: "linear",
+              delay: node.delay,
+            }}
+          />
+        ))}
+      </div>
       
       {/* Decorative background blobs */}
       <div className="absolute top-0 right-0 w-full lg:w-[55%] h-full z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[10%] right-[-5%] w-96 h-96 rounded-full bg-orange-500/10 blur-3xl" />
-        <div className="absolute bottom-[15%] right-[10%] w-64 h-64 rounded-full bg-zinc-800/20 blur-2xl" />
+        <div className="absolute top-[10%] right-[-5%] w-96 h-96 rounded-full bg-orange-500/10 blur-3xl animate-pulse" />
+        <div className="absolute bottom-[15%] right-[10%] w-64 h-64 rounded-full bg-blue-500/10 blur-3xl" />
       </div>
       <motion.div
         style={{ y: y1, opacity }}

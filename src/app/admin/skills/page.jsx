@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useAdmin } from "../../../context/AdminContext";
-import { Save, AlertCircle, Plus, Trash2, Layers } from "lucide-react";
+import { Save, Plus, Trash2, Layers } from "lucide-react";
 import AdminSectionCard from "../../../components/admin/AdminSectionCard";
 import AdminField from "../../../components/admin/AdminField";
 import AdminEntryShell from "../../../components/admin/AdminEntryShell";
 import { SKILLS_DB } from "../../../lib/skills-db";
+import { toast } from "sonner";
 
 export default function AdminSkillsPage() {
   const { adminKey } = useAdmin();
   const [domains, setDomains] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -32,7 +32,7 @@ export default function AdminSkillsPage() {
 
   const handleSave = async () => {
     setIsLoading(true);
-    setStatus("");
+    const toastId = toast.loading("Saving skills configuration...");
     try {
       const orderedDomains = domains.map((d, index) => ({
         ...d,
@@ -44,10 +44,13 @@ export default function AdminSkillsPage() {
         headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
         body: JSON.stringify({ domains: orderedDomains }),
       });
-      if (res.ok) setStatus("Skills updated successfully.");
-      else throw new Error("Failed to save");
+      if (res.ok) {
+        toast.success("Skills updated successfully", { id: toastId });
+      } else {
+        throw new Error("Failed to save");
+      }
     } catch (err) {
-      setStatus(err.message);
+      toast.error(err.message, { id: toastId });
     } finally {
       setIsLoading(false);
     }
@@ -154,13 +157,6 @@ export default function AdminSkillsPage() {
           </button>
         </div>
       </header>
-
-      {status && (
-        <div className={`p-4 rounded-lg flex items-center gap-3 text-sm font-medium border ${status.includes("successfully") ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-rose-50 text-rose-700 border-rose-200"}`}>
-          <AlertCircle size={18} />
-          {status}
-        </div>
-      )}
 
       <div className="space-y-8">
         {domains.map((domain, dIndex) => (

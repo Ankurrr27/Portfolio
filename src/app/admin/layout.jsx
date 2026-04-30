@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Toaster } from "sonner";
 
 function AdminLayoutContent({ children }) {
   const { isAuthorized, isLoading, login, logout, adminKey } = useAdmin();
@@ -53,6 +54,7 @@ function AdminLayoutContent({ children }) {
 
   return (
     <div className="min-h-screen bg-slate-50 flex text-slate-800 font-sans">
+      <Toaster position="top-right" richColors />
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div 

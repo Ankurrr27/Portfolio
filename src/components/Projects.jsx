@@ -81,6 +81,7 @@ const Projects = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState(null);
   const [activeImage, setActiveImage] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("ALL");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -97,7 +98,10 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  if (isLoading) return null;
+  const uniqueLanguages = ["ALL", ...new Set(projects.map(p => p.language).filter(Boolean))];
+  const filteredProjects = activeFilter === "ALL" 
+    ? projects 
+    : projects.filter(p => p.language === activeFilter);
 
   return (
     <div id="projects" className="w-full bg-zinc-950 relative scroll-mt-20 border-b border-zinc-900 pt-32 pb-24 px-6 md:px-12 lg:px-24">
@@ -117,20 +121,58 @@ const Projects = () => {
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard 
-              key={project.id || project.slug} 
-              project={project} 
-              index={index} 
-              onOpen={(p) => {
-                setSelectedProject(p);
-                setActiveImage(null);
-              }}
-            />
-          ))}
-        </div>
+      <div className="max-w-7xl mx-auto py-8">
+         <div className="flex flex-wrap gap-3 mb-10">
+            {uniqueLanguages.map(lang => (
+               <button
+                 key={lang}
+                 onClick={() => setActiveFilter(lang)}
+                 className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 border ${
+                   activeFilter === lang 
+                     ? "bg-orange-500 text-white border-orange-400 shadow-[0_0_15px_rgba(251,146,60,0.4)]" 
+                     : "bg-zinc-900/50 text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300"
+                 }`}
+               >
+                 {lang}
+               </button>
+            ))}
+         </div>
+         
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-[450px] bg-zinc-900 rounded-2xl border border-zinc-800 flex flex-col overflow-hidden animate-pulse">
+                 <div className="h-48 md:h-56 bg-zinc-800/50 border-b border-zinc-800" />
+                 <div className="p-5 flex-1 flex flex-col">
+                    <div className="w-1/2 h-6 bg-zinc-800 rounded mb-4" />
+                    <div className="w-full h-4 bg-zinc-800 rounded mb-2" />
+                    <div className="w-5/6 h-4 bg-zinc-800 rounded mb-8" />
+                    <div className="grid grid-cols-3 gap-3 mb-6">
+                       <div className="h-16 bg-zinc-800 rounded-xl" />
+                       <div className="h-16 bg-zinc-800 rounded-xl" />
+                       <div className="h-16 bg-zinc-800 rounded-xl" />
+                    </div>
+                 </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => (
+                <ProjectCard 
+                  key={project.id || project.slug} 
+                  project={project} 
+                  index={index} 
+                  onOpen={(p) => {
+                    setSelectedProject(p);
+                    setActiveImage(null);
+                  }}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
       </div>
 
       {/* Project Detail Modal */}
