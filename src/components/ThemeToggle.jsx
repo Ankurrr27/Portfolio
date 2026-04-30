@@ -18,7 +18,11 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-zinc-200 bg-white text-zinc-700 shadow-sm transition-colors hover:border-orange-500 hover:text-orange-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-orange-500 dark:hover:text-orange-500"
+      className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
+        resolvedTheme === "dark"
+          ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-orange-500 hover:text-orange-500"
+          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-orange-500 hover:text-orange-500"
+      }`}
       aria-label="Toggle theme"
       type="button"
     >

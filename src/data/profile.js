@@ -1,10 +1,8 @@
 export const profileContent = {
   fullName: "Ankur",
-  headline:
-    "High-performance web architecture meets complex algorithm engineering.",
-  bio: "A dedicated B.Tech CSE student at IIIT Kota, driven by the passion to build impactful digital experiences. My expertise lies at the intersection of complex data structures and modern web development.",
-  longBio:
-    "Beyond the terminal, I find my rhythm on the piano and my focus on the basketball court. These pursuits keep my creativity sharp and my problem-solving skills agile.",
+  headline: "Building high-performance systems with algorithmic precision.",
+  bio: "B.Tech CSE @ IIIT Kota. Full-stack developer focused on scalable architecture and production-grade software.",
+  longBio: "I prioritize system stability and efficiency. My work bridges the gap between complex logic and intuitive interfaces.",
   email: "ankur.personal@gmail.com",
   resumeUrl: "/Resume.pdf",
   profileImageUrl: "/images/Ankur_Alora_1.0_Cropped.jpg",

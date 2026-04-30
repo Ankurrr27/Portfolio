@@ -66,7 +66,7 @@ const App = () => {
     <div className="overflow-x-hidden w-full">
       <Navbar />
       <Home totalViews={totalViews} />
-      <About />
+      <About totalViews={totalViews} />
       <Skills />
       <Projects />
       <Achievements />

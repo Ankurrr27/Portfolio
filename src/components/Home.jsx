@@ -4,13 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, ChevronRight, MapPin } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { useTheme } from "next-themes";
 
 import MagneticButton from "./MagneticButton";
+import Ballpit from "./ui/Ballpit";
 
 const fallbackProfile = {
   fullName: "Ankur",
-  headline: "High-performance web architecture meets complex algorithm engineering.",
-  bio: "B.Tech CSE student at IIIT Kota building scalable interfaces, clean backend systems, and engineering-heavy product experiences.",
+  headline: "Building high-performance systems with algorithmic precision.",
+  bio: "B.Tech CSE @ IIIT Kota. Full-stack developer focused on scalable architecture and production-grade software.",
   profileImageUrl: "/images/Ankur_Alora_1.0_Cropped.jpg",
   location: "IIIT Kota - Full Stack Developer",
   githubUrl: "https://github.com/Ankurrr27",
@@ -23,10 +25,60 @@ const proofPoints = [
   ["Systems", "Performance focus"],
 ];
 
+const ROLES = [
+  "Full Stack Developer",
+  "App Developer",
+  "UI/UX Designer",
+  "DSA Enthusiast",
+  "Engineering Lead",
+];
+
+const TYPING_SPEED = 68;
+const DELETING_SPEED = 38;
+const PAUSE_AFTER_TYPE = 1000;
+const PAUSE_AFTER_DELETE = 200;
+
+function useTypewriter(words) {
+  const [display, setDisplay] = useState("");
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = words[wordIndex % words.length];
+    
+    if (!isDeleting && display === current) {
+      const timeout = setTimeout(() => setIsDeleting(true), PAUSE_AFTER_TYPE);
+      return () => clearTimeout(timeout);
+    }
+    
+    if (isDeleting && display === "") {
+      const timeout = setTimeout(() => {
+        setIsDeleting(false);
+        setWordIndex((i) => (i + 1) % words.length);
+      }, PAUSE_AFTER_DELETE);
+      return () => clearTimeout(timeout);
+    }
+
+    const nextChar = isDeleting 
+      ? current.slice(0, display.length - 1)
+      : current.slice(0, display.length + 1);
+
+    const timeout = setTimeout(() => {
+      setDisplay(nextChar);
+    }, isDeleting ? DELETING_SPEED : TYPING_SPEED);
+
+    return () => clearTimeout(timeout);
+  }, [display, isDeleting, wordIndex, words]);
+
+  return display;
+}
+
 const Home = ({ totalViews = 0 }) => {
+  const { resolvedTheme } = useTheme();
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef(null);
+  const roleText = useTypewriter(ROLES);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -54,138 +106,118 @@ const Home = ({ totalViews = 0 }) => {
   const y = useTransform(scrollYProgress, [0, 1], [0, 80]);
   const opacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
+  const gridColor = resolvedTheme === "dark" ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.07)";
+
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-[92dvh] overflow-hidden border-b border-zinc-900 bg-zinc-950 px-4 pb-16 pt-28 sm:px-5 md:px-12 md:pt-32 lg:px-24"
+      className="relative w-full min-h-[92dvh] overflow-hidden bg-zinc-950 px-4 pb-16 pt-28 sm:px-5 md:px-12 md:pt-32 lg:px-24"
       id="home"
     >
-      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,rgba(39,39,42,0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(39,39,42,0.16)_1px,transparent_1px)] bg-[size:64px_64px] opacity-35" />
-      <div className="absolute inset-x-0 top-0 h-px bg-orange-500/50" />
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+        <Ballpit
+          count={150}
+          gravity={0.4}
+          friction={0.99}
+          wallBounce={0.8}
+          followCursor={true}
+          minSize={0.3}
+          maxSize={0.65}
+          colors={[0xff6600, 0x333333, 0x111111]}
+        />
+      </div>
+
+      <div 
+        className="absolute inset-0 pointer-events-none z-1" 
+        style={{
+          backgroundImage: `linear-gradient(to right, ${gridColor} 1px, transparent 1px), linear-gradient(to bottom, ${gridColor} 1px, transparent 1px)`,
+          backgroundSize: '64px 64px'
+        }}
+      />
 
       <motion.div
         style={{ y, opacity }}
-        className="section-container relative z-10 grid min-h-[calc(92dvh-9rem)] grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.8fr)]"
+        className="section-container relative z-10 flex min-h-[calc(92dvh-9rem)] flex-col items-center justify-center text-center"
       >
         {isLoading ? (
           <div className="w-full max-w-3xl animate-pulse space-y-6">
-            <div className="h-8 w-48 rounded-lg bg-zinc-900" />
             <div className="h-24 w-full rounded-xl bg-zinc-900" />
             <div className="h-20 w-full max-w-xl rounded-xl bg-zinc-900" />
           </div>
         ) : (
-          <>
-            <div className="flex flex-col items-start gap-7 text-left">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
+          <div className="flex flex-col items-center gap-10">
+            <div className="space-y-6">
+              <motion.h1
+                initial={{ opacity: 0, y: 28 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45 }}
-                className="section-kicker"
+                transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="max-w-5xl text-center text-[clamp(2.2rem,8vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-white"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
-                Available for serious builds
-              </motion.div>
+                Hello, I'm{" "}
+                <span className="text-orange-500">{p.fullName || "Ankur"}</span>{" "}
+                and I'm a
+                <br />
+                <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
+                  <span className="text-white">{roleText || "\u00A0"}</span>
+                  <span className="inline-block h-[1em] w-[2px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] bg-orange-500" />
+                </span>
+              </motion.h1>
 
-              <div className="space-y-5">
-                <motion.p
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.05 }}
-                  className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400"
-                >
-                  {p.fullName || "Ankur"} / Full-stack Developer
-                </motion.p>
-
-                <motion.h1
-                  initial={{ opacity: 0, y: 28 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="max-w-4xl text-left text-[clamp(2.45rem,8.5vw,5.8rem)] font-bold leading-[0.98] tracking-tight text-white"
-                >
-                  Engineering digital systems that feel fast, stable, and intentional.
-                </motion.h1>
-
-                <motion.p
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.18 }}
-                  className="section-copy max-w-2xl text-base md:text-lg"
-                >
-                  {p.headline || fallbackProfile.headline} I care about the whole path: clean UI, predictable backend behavior, and code that stays understandable as the product grows.
-                </motion.p>
-              </div>
-
-              <motion.div
+              <motion.p
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-                className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+                transition={{ duration: 0.5, delay: 0.18 }}
+                className="section-copy mx-auto max-w-2xl text-base md:text-lg"
               >
-                <MagneticButton>
-                  <a href="#projects" className="primary-button group">
-                    See the work
-                    <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
-                  </a>
-                </MagneticButton>
-
-                <MagneticButton>
-                  <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="secondary-button">
-                    Start a conversation
-                    <ArrowUpRight size={16} />
-                  </a>
-                </MagneticButton>
-              </motion.div>
-
-              <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
-                {proofPoints.map(([value, label]) => (
-                  <div key={value} className="panel-subtle p-4">
-                    <p className="text-lg font-bold text-white">{value}</p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-zinc-500">{label}</p>
-                  </div>
-                ))}
-              </div>
+                Clean code. Scalable systems. Shipped products.
+              </motion.p>
             </div>
 
-            <motion.aside
-              initial={{ opacity: 0, y: 24 }}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.2 }}
-              className="panel relative overflow-hidden p-3 md:p-4"
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row"
             >
-              <div className="relative overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950">
-                <img
-                  src={p.profileImageUrl || fallbackProfile.profileImageUrl}
-                  alt={p.fullName || "Ankur"}
-                  className="aspect-[4/5] w-full object-cover object-center opacity-95"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent p-5">
-                  <div className="flex items-center gap-2 text-sm font-medium text-zinc-300">
-                    <MapPin size={15} className="text-orange-500" />
-                    {(p.location || fallbackProfile.location).replace("â€¢", "-")}
-                  </div>
-                  <h2 className="mt-3 text-2xl font-bold tracking-tight text-white">{p.fullName || "Ankur"}</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                    Builder, problem solver, and engineering student turning complex ideas into useful software.
-                  </p>
-                </div>
-              </div>
+              <MagneticButton>
+                <a href="#projects" className="primary-button group px-10">
+                  See the work
+                  <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
+                </a>
+              </MagneticButton>
 
-              <div className="mt-3 grid grid-cols-3 gap-3">
-                <a href={p.githubUrl || "#"} target="_blank" rel="noopener noreferrer" className="panel-subtle flex min-h-12 items-center justify-center text-zinc-500 hover:text-orange-500">
-                  <FaGithub size={18} />
+              <MagneticButton>
+                <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="secondary-button px-10">
+                  Start a conversation
+                  <ArrowUpRight size={16} />
                 </a>
-                <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="panel-subtle flex min-h-12 items-center justify-center text-zinc-500 hover:text-orange-500">
-                  <FaLinkedin size={18} />
-                </a>
-                <div className="panel-subtle flex min-h-12 flex-col items-center justify-center">
-                  <span className="text-sm font-bold text-white">{totalViews.toLocaleString()}</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Views</span>
+              </MagneticButton>
+            </motion.div>
+
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 pt-10 border-t border-white/5 w-full max-w-5xl">
+              {[
+                { label: "Projects Worked", value: "10+" },
+                { label: "GitHub Repos", value: "25+" },
+                { label: "Total Contributions", value: "500+" },
+                { label: "Problems Solved", value: "600+" },
+              ].map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center sm:items-start group">
+                  <span className="text-3xl font-black text-white tracking-tighter group-hover:text-orange-500 transition-colors">{stat.value}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 group-hover:text-zinc-300 transition-colors">{stat.label}</span>
                 </div>
-              </div>
-            </motion.aside>
-          </>
+              ))}
+            </div>
+          </div>
         )}
       </motion.div>
+
+      <style>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+      `}</style>
     </section>
   );
 };

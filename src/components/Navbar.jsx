@@ -2,17 +2,43 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import GlassSurface from "./ui/GlassSurface";
 
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Gallery", "Responsibilities", "Education"];
 
+const WhatsNewButton = () => {
+  const { resolvedTheme } = useTheme();
+  return (
+    <button
+      className={`relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
+        resolvedTheme === "dark"
+          ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-orange-500 hover:text-orange-500"
+          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-orange-500 hover:text-orange-500"
+      }`}
+      aria-label="What's new"
+      type="button"
+    >
+      <Sparkles size={18} />
+      <span className="absolute top-2.5 right-2.5 flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+      </span>
+    </button>
+  );
+};
+
 const Navbar = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [active, setActive] = useState("Home");
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 20);
@@ -29,6 +55,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <nav
       className={`fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
@@ -41,20 +69,22 @@ const Navbar = () => {
         width="100%"
         height={56}
         borderRadius={10}
-        brightness={55}
-        opacity={0.82}
-        blur={12}
-        backgroundOpacity={0.12}
-        saturation={1.35}
+        brightness={resolvedTheme === "dark" ? 15 : 98}
+        opacity={resolvedTheme === "dark" ? 0.4 : 0.6}
+        blur={16}
+        mixBlendMode="normal"
+        backgroundOpacity={resolvedTheme === "dark" ? 0.12 : 0.2}
+        saturation={1.4}
         className="w-full min-h-14"
       >
       <div className="w-full h-full px-4 md:px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-1.5 group">
-            <span className="text-lg font-bold text-zinc-950 transition-colors duration-300 dark:text-white">
-              Ankur.
+            <span className={`text-xl font-black tracking-tighter transition-colors duration-300 uppercase ${
+              resolvedTheme === "dark" ? "text-white" : "text-zinc-900"
+            }`}>
+              Ankur
             </span>
-            <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
           </a>
 
           {/* Desktop nav */}
@@ -76,15 +106,21 @@ const Navbar = () => {
 
           {/* Mobile controls */}
           <div className="hidden md:flex items-center gap-3">
+            <WhatsNewButton />
             <ThemeToggle />
           </div>
 
           {/* Mobile controls */}
           <div className="flex items-center gap-2 md:hidden">
+            <WhatsNewButton />
             <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="cursor-pointer text-zinc-700 min-h-11 min-w-11 p-2 rounded-md border border-zinc-200 bg-white hover:border-orange-500 hover:text-orange-500 transition-all active:scale-95 flex items-center justify-center dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
+              className={`cursor-pointer min-h-11 min-w-11 p-2 rounded-md border transition-all active:scale-95 flex items-center justify-center ${
+                resolvedTheme === "dark"
+                  ? "border-zinc-800 bg-zinc-900 text-white hover:bg-zinc-800"
+                  : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-orange-500 hover:text-orange-500"
+              }`}
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
