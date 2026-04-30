@@ -2,18 +2,37 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Code2, Cpu, Shield, Zap } from "lucide-react";
+import { Braces, Code2, GitBranch, Layers3, ShieldCheck, Timer } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
 
-const Feature = ({ icon: Icon, title, desc }) => (
-  <div className="panel flex flex-col gap-2 p-5 hover:border-zinc-700 transition-colors duration-200">
-    <div className="icon-box mb-2">
-      <Icon size={20} strokeWidth={2.4} />
-    </div>
-    <h4 className="text-base font-semibold text-white">{title}</h4>
-    <p className="text-sm leading-relaxed text-zinc-400">{desc}</p>
-  </div>
-);
+const fallbackProfile = {
+  bio: "A dedicated B.Tech CSE student at IIIT Kota, driven by the passion to build impactful digital experiences. My expertise lies at the intersection of complex data structures and modern web development.",
+  longBio: "Beyond the terminal, I find rhythm in music and focus in sport. Both keep my creativity sharp and my problem-solving practical.",
+  aboutImageUrl: "/images/Ankur_Sem1_1.jpg",
+};
+
+const focusAreas = [
+  {
+    icon: Layers3,
+    title: "Product systems",
+    desc: "I think in flows, states, constraints, and maintainable interfaces rather than isolated screens.",
+  },
+  {
+    icon: Timer,
+    title: "Performance choices",
+    desc: "I care about fast feedback, clean loading states, and code paths that do not waste user time.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Reliable delivery",
+    desc: "I prefer predictable architecture, clear fallbacks, and features that remain stable after launch.",
+  },
+  {
+    icon: Braces,
+    title: "Algorithmic thinking",
+    desc: "Data structures and problem solving shape how I break down complex technical work.",
+  },
+];
 
 const About = () => {
   const [profile, setProfile] = useState(null);
@@ -41,86 +60,99 @@ const About = () => {
     layoutEffect: false,
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.98, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  const opacity = useTransform(scrollYProgress, [0, 0.28], [0, 1]);
 
   if (isLoading) {
     return (
       <section className="section-shell min-h-screen">
-        <div className="section-container flex flex-col lg:flex-row gap-8 lg:gap-14 items-start">
-          <div className="w-full lg:w-7/12 flex flex-col justify-center space-y-8 animate-pulse">
-            <div className="space-y-5">
-              <div className="w-40 h-8 rounded-lg bg-zinc-900" />
-              <div className="w-3/4 h-16 rounded-xl bg-zinc-900" />
-              <div className="w-full max-w-lg h-24 rounded-xl bg-zinc-900 mt-4" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-32 rounded-lg bg-zinc-900 border border-zinc-800" />
-              ))}
-            </div>
+        <div className="section-container grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-7 animate-pulse space-y-5">
+            <div className="h-8 w-32 rounded-lg bg-zinc-900" />
+            <div className="h-24 w-full max-w-2xl rounded-xl bg-zinc-900" />
+            <div className="h-28 w-full max-w-xl rounded-xl bg-zinc-900" />
           </div>
-          <div className="w-full lg:w-5/12 relative animate-pulse">
-            <div className="w-full aspect-square md:aspect-[4/5] rounded-lg bg-zinc-900" />
-          </div>
+          <div className="lg:col-span-5 h-96 rounded-lg bg-zinc-900 animate-pulse" />
         </div>
       </section>
     );
   }
 
-  const { bio, longBio, aboutImageUrl } = profile || {};
+  const p = profile || fallbackProfile;
 
   return (
     <section id="about" ref={containerRef} className="section-shell overflow-hidden">
       <EditSectionButton href="/admin/profile" label="Edit Bio" />
 
-      <div className="section-container flex flex-col lg:flex-row gap-8 lg:gap-14 items-start relative z-10">
-        <div className="w-full lg:w-7/12 flex flex-col justify-center space-y-7 md:space-y-8">
+      <div className="section-container grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+        <div className="lg:col-span-7">
           <div className="space-y-5">
             <div className="section-kicker">
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-              <span>About</span>
+              <Code2 size={16} className="text-orange-500" />
+              About the builder
             </div>
-            <h2 className="section-title">
-              Engineering with <span className="accent-text">clarity.</span>
+
+            <h2 className="section-title max-w-3xl">
+              I build like the product has to survive real users.
             </h2>
-            <div className="flex gap-4 items-start border-l border-orange-500 pl-4 md:pl-5 py-1">
-              <p className="section-copy max-w-xl">
-                {bio ||
-                  "System resilience is part of the design process. My architecture choices are driven by data, performance, and long-term maintainability."}
-              </p>
-            </div>
+
+            <p className="section-copy max-w-2xl text-base md:text-lg">
+              {p.bio || fallbackProfile.bio}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Feature icon={Zap} title="Performance First" desc="Optimizing the critical path with measurable tradeoffs." />
-            <Feature icon={Shield} title="Resilient Systems" desc="Designing stable flows with clear failure handling." />
-            <Feature icon={Cpu} title="Algorithmic Depth" desc="Using data structures and computation where they matter." />
-            <Feature icon={Code2} title="Clean Architecture" desc="Keeping codebases readable, scalable, and maintainable." />
+          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {focusAreas.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="panel p-5">
+                <div className="icon-box mb-4">
+                  <Icon size={19} />
+                </div>
+                <h3 className="text-base font-semibold text-white">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-400">{desc}</p>
+              </div>
+            ))}
           </div>
-
-          {longBio && (
-            <div className="panel p-5">
-              <p className="text-zinc-500 text-xs font-semibold uppercase tracking-wide mb-3">Extended Background</p>
-              <p className="text-zinc-300 text-sm leading-relaxed">{longBio}</p>
-            </div>
-          )}
         </div>
 
-        <motion.div style={{ scale, opacity }} className="w-full lg:w-5/12 relative">
-          <div className="panel relative overflow-hidden p-2 group">
-            <img
-              src={aboutImageUrl || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000"}
-              alt="Engineering workspace"
-              className="w-full rounded-md object-cover aspect-square md:aspect-[4/5] opacity-90 transition-transform duration-300 group-hover:scale-[1.01]"
-            />
+        <motion.div style={{ opacity, y: imageY }} className="lg:col-span-5">
+          <div className="panel overflow-hidden p-3">
+            <div className="relative overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950">
+              <img
+                src={p.aboutImageUrl || fallbackProfile.aboutImageUrl}
+                alt="Ankur at work"
+                className="aspect-[4/5] w-full object-cover opacity-95"
+              />
+              <div className="absolute left-4 top-4 rounded-md border border-orange-500/30 bg-orange-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+                IIIT Kota
+              </div>
+            </div>
 
-            <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 bg-zinc-950 px-4 md:px-5 py-3 rounded-lg shadow-xl border border-zinc-800">
-              <span className="block text-white font-bold text-xl tracking-tight">100%</span>
-              <span className="block text-zinc-500 text-xs font-semibold uppercase tracking-wide">Uptime Target</span>
+            <div className="grid grid-cols-2 gap-3 pt-3">
+              <div className="panel-subtle p-4">
+                <GitBranch size={18} className="text-orange-500" />
+                <p className="mt-3 text-lg font-bold text-white">Build</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-zinc-500">Ship usable work</p>
+              </div>
+              <div className="panel-subtle p-4">
+                <ShieldCheck size={18} className="text-orange-500" />
+                <p className="mt-3 text-lg font-bold text-white">Refine</p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-zinc-500">Improve with intent</p>
+              </div>
             </div>
           </div>
         </motion.div>
+
+        <div className="lg:col-span-12">
+          <div className="panel grid grid-cols-1 gap-6 p-5 md:grid-cols-[0.7fr_1fr] md:p-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-orange-500">Working principle</p>
+              <h3 className="mt-3 text-2xl font-bold tracking-tight text-white">Clean systems beat loud screens.</h3>
+            </div>
+            <p className="section-copy">
+              {p.longBio || fallbackProfile.longBio} The same mindset carries into my engineering work: keep the intent clear, reduce unnecessary complexity, and make every interaction earn its place.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
