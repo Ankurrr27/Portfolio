@@ -712,6 +712,13 @@ class InfiniteGridMenu {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.onload = () => resolve(img);
+            img.onerror = () => {
+              // Fallback to a transparent 1x1 pixel if image fails
+              const canvas = document.createElement('canvas');
+              canvas.width = 1;
+              canvas.height = 1;
+              resolve(canvas);
+            };
             img.src = item.image;
           })
       )
@@ -760,7 +767,7 @@ class InfiniteGridMenu {
     this.control.update(deltaTime, this.TARGET_FRAME_DURATION);
 
     let positions = this.instancePositions.map(p => vec3.transformQuat(vec3.create(), p, this.control.orientation));
-    const scale = 0.14;
+    const scale = 0.22;
     const SCALE_INTENSITY = 0.6;
     positions.forEach((p, ndx) => {
       const s = (Math.abs(p[2]) / this.SPHERE_RADIUS) * SCALE_INTENSITY + (1 - SCALE_INTENSITY);
@@ -788,7 +795,7 @@ class InfiniteGridMenu {
     gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
 
-    gl.clearColor(0, 0, 0, 0);
+    gl.clearColor(0.015, 0.015, 0.015, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     gl.uniformMatrix4fv(this.discLocations.uWorldMatrix, false, this.worldMatrix);
@@ -863,10 +870,14 @@ class InfiniteGridMenu {
       this.onMovementChange(isMoving);
     }
 
-    if (!this.control.isPointerDown) {
-      const nearestVertexIndex = this.#findNearestVertexIndex();
+    const nearestVertexIndex = this.#findNearestVertexIndex();
+    if (nearestVertexIndex !== this.nearestVertexIndex) {
+      this.nearestVertexIndex = nearestVertexIndex;
       const itemIndex = nearestVertexIndex % Math.max(1, this.items.length);
       this.onActiveItemChange(itemIndex);
+    }
+
+    if (!this.control.isPointerDown) {
       const snapDirection = vec3.normalize(vec3.create(), this.#getVertexWorldPosition(nearestVertexIndex));
       this.control.snapTargetDirection = snapDirection;
     } else {
@@ -910,7 +921,7 @@ const defaultItems = [
   }
 ];
 
-export default function InfiniteMenu({ items = [], scale = 1.0 }) {
+export default function InfiniteMenu({ items = [], scale = 1.0, onItemChange, hideInfo = false }) {
   const canvasRef = useRef(null);
   const [activeItem, setActiveItem] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
@@ -919,10 +930,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
     const canvas = canvasRef.current;
     let sketch;
 
-    const handleActiveItem = index => {
-      const itemIndex = index % items.length;
-      setActiveItem(items[itemIndex]);
-    };
+    const handleActiveItem = index => setActiveItem(items[index % items.length]);
 
     if (canvas) {
       sketch = new InfiniteGridMenu(
@@ -949,6 +957,12 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
     };
   }, [items, scale]);
 
+  useEffect(() => {
+    if (activeItem && onItemChange) {
+      onItemChange(activeItem);
+    }
+  }, [activeItem, onItemChange]);
+
   const handleButtonClick = () => {
     if (!activeItem?.link) return;
     if (activeItem.link.startsWith('http')) {
@@ -960,9 +974,13 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      <canvas id="infinite-grid-menu-canvas" ref={canvasRef} />
+      <canvas 
+        id="infinite-grid-menu-canvas" 
+        ref={canvasRef} 
+        style={{ width: '100%', height: '100%', display: 'block' }}
+      />
 
-      {activeItem && (
+      {activeItem && !hideInfo && (
         <>
           <h2 className={`face-title ${isMoving ? 'inactive' : 'active'}`}>{activeItem.title}</h2>
 
