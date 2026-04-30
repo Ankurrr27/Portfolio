@@ -51,6 +51,8 @@ model Profile {
   lanyardColor     String?  @default("#f97316")
   lanyardImageUrl  String?
   showLanyard      Boolean  @default(true)
+  college          String?  @default("Your College")
+  qualification    String?  @default("Your Degree")
   maxProjects      Int      @default(6)
   maxAchievements  Int      @default(6)
   maxGalleryPhotos Int      @default(12)

@@ -7,6 +7,7 @@ import GlassSurface from "./ui/GlassSurface";
 import Lanyard from "./ui/Lanyard";
 
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Education", "Gallery"];
+const fallbackProfileImage = "/images/Ankur_Alora_1.0_Cropped.jpg";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,9 +50,17 @@ const Navbar = () => {
   const lanyardData = {
     name: profile?.fullName || "ANKUR",
     role: profile?.headline || "Full Stack Engineer",
+    college: profile?.college || "Indian Institute of Information Technology",
+    qualification: profile?.qualification || "B.Tech CSE",
+    bio: profile?.bio || "",
     social: profile?.linkedinUrl ? "@" + profile.linkedinUrl.split('/').pop() : "@ankurrr27",
-    color: profile?.lanyardColor || "#f97316",
-    imageUrl: profile?.lanyardImageUrl || profile?.profileImageUrl || "/assets/profile.jpg"
+    color: profile?.lanyardColor || "#2563eb",
+    imageUrl: profile?.lanyardImageUrl || profile?.profileImageUrl || fallbackProfileImage,
+    links: {
+      github: profile?.githubUrl,
+      linkedin: profile?.linkedinUrl,
+      twitter: profile?.twitterUrl || "#", 
+    }
   };
 
   const showLanyard = profile?.showLanyard !== false; // Default true

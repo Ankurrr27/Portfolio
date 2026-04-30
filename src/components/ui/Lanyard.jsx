@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import { Canvas, extend, useFrame } from '@react-three/fiber';
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
 import { useTexture, Environment, Lightformer } from '@react-three/drei';
 import { Physics, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
@@ -82,17 +82,47 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, userData, isEnlar
     dir = new THREE.Vector3();
     
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
-  const texture = useTexture(lanyardTexture);
+  const { width, height } = useThree((state) => state.size);
   
   const [curve] = useState(
     () => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
   );
+
+  // Create dynamic rope texture
+  const ropeTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    
+    // Blue background
+    ctx.fillStyle = '#2563eb';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Institutional Text
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 40px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    const text = "INDIAN INSTITUTE OF INFORMATION TECHNOLOGY KOTA • ";
+    const repeatedText = text.repeat(3);
+    ctx.fillText(repeatedText, canvas.width / 2, canvas.height / 2);
+    
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.repeat.set(1, 1);
+    return tex;
+  }, []);
+
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  const ropeLength = isEnlarged ? 0.3 : 0.35;
+
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], ropeLength]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], ropeLength]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], ropeLength]);
   useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.5, 0]]);
 
   useEffect(() => {
@@ -141,7 +171,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, userData, isEnlar
   });
 
   curve.curveType = 'chordal';
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
   return (
     <>
@@ -156,13 +185,13 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, userData, isEnlar
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
-          color={userData.color || "white"}
+          color="white"
           depthTest={false}
-          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
+          resolution={[width, height]}
           useMap
-          map={texture}
-          repeat={[-4, 1]}
-          lineWidth={1}
+          map={ropeTexture}
+          repeat={[-1, 1]}
+          lineWidth={0.15}
         />
       </mesh>
     </>

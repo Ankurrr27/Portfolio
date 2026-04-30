@@ -22,22 +22,68 @@ export async function PUT(request) {
 
   try {
     const body = await request.json();
-    const { profile } = body;
+    const { profile: p } = body;
 
-    // Strip Prisma-managed readonly fields and old invalid keys before upsert
-    const { 
-      id, createdAt, updatedAt, 
-      githubUsername, leetcodeUsername, gfgUsername, 
-      ...safeProfile 
-    } = profile;
+    if (!p || typeof p !== "object") {
+      return NextResponse.json({ error: "Profile payload is required" }, { status: 400 });
+    }
 
-    const updatedProfile = await prisma.profile.upsert({
-      where: { email: safeProfile.email || "ankur.personal@gmail.com" },
-      update: safeProfile,
-      create: safeProfile,
-    });
+    const fallbackEmail = "ankur.personal@gmail.com";
+    const email = p.email || fallbackEmail;
 
-    return NextResponse.json({ profile: updatedProfile });
+    // Explicitly map fields to prevent "Unknown argument" errors
+    const safeData = {
+      fullName: p.fullName,
+      headline: p.headline,
+      bio: p.bio,
+      longBio: p.longBio,
+      email,
+      resumeUrl: p.resumeUrl,
+      profileImageUrl: p.profileImageUrl,
+      aboutImageUrl: p.aboutImageUrl,
+      location: p.location,
+      githubUrl: p.githubUrl,
+      linkedinUrl: p.linkedinUrl,
+      leetcodeUrl: p.leetcodeUrl,
+      geeksforgeeksUrl: p.geeksforgeeksUrl,
+      codechefUrl: p.codechefUrl,
+      lanyardColor: p.lanyardColor,
+      lanyardImageUrl: p.lanyardImageUrl,
+      showLanyard: p.showLanyard === true,
+      college: p.college,
+      qualification: p.qualification,
+      maxProjects: Number.parseInt(p.maxProjects, 10) || 6,
+      maxAchievements: Number.parseInt(p.maxAchievements, 10) || 6,
+      maxGalleryPhotos: Number.parseInt(p.maxGalleryPhotos, 10) || 12,
+      cgpa: p.cgpa,
+      leetcodeSolved: p.leetcodeSolved,
+      gfgSolved: p.gfgSolved,
+    };
+
+    const writeProfile = (data) => {
+      if (p.id) {
+        return prisma.profile.update({
+          where: { id: p.id },
+          data,
+        });
+      }
+
+      return prisma.profile.upsert({
+        where: { email },
+        update: data,
+        create: data,
+      });
+    };
+
+    try {
+      const updatedProfile = await writeProfile(safeData);
+      return NextResponse.json({ profile: updatedProfile });
+    } catch (upsertError) {
+      console.warn("Primary profile write failed, retrying without newly added fields...", upsertError);
+      const { showLanyard, college, qualification, ...retryData } = safeData;
+      const updatedProfile = await writeProfile(retryData);
+      return NextResponse.json({ profile: updatedProfile });
+    }
   } catch (error) {
     console.error("Profile update error:", error);
     return NextResponse.json({ error: "Failed to update profile" }, { status: 500 });

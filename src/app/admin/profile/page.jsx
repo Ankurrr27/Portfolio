@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { useAdmin } from "../../../context/AdminContext";
 import { Save, AlertCircle, User, Mail, MapPin } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
@@ -243,14 +244,85 @@ export default function AdminProfilePage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Card Image Override (URL)</label>
+                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">College Name</label>
                 <input
                   type="text"
-                  placeholder="Defaults to profile image"
-                  value={profile.lanyardImageUrl || ""}
-                  onChange={(e) => updateField("lanyardImageUrl", e.target.value)}
+                  value={profile.college || ""}
+                  onChange={(e) => updateField("college", e.target.value)}
                   className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
                 />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Qualification / Degree</label>
+                <input
+                  type="text"
+                  value={profile.qualification || ""}
+                  onChange={(e) => updateField("qualification", e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Lanyard Photo</label>
+                <div className="flex flex-col gap-4">
+                  {profile.lanyardImageUrl || profile.profileImageUrl ? (
+                    <div className="relative w-full aspect-square max-w-[200px] mx-auto rounded-2xl overflow-hidden border border-slate-100 group">
+                      <img 
+                        src={profile.lanyardImageUrl || profile.profileImageUrl} 
+                        alt="Lanyard" 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                         <span className="text-[10px] text-white font-bold">CURRENT PREVIEW</span>
+                      </div>
+                    </div>
+                  ) : null}
+                  
+                  <div className="relative">
+                    <input
+                      id="lanyard-upload"
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        
+                        const toastId = toast.loading("Uploading lanyard photo...");
+                        try {
+                          const formData = new FormData();
+                          formData.append("file", file);
+                          
+                          const res = await fetch("/api/admin/upload", {
+                            method: "POST",
+                            headers: {
+                              "x-admin-key": adminKey,
+                            },
+                            body: formData,
+                          });
+                          
+                          const data = await res.json();
+                          if (data.url) {
+                            updateField("lanyardImageUrl", data.url);
+                            toast.success("Photo uploaded!", { id: toastId });
+                          } else {
+                            throw new Error(data.error);
+                          }
+                        } catch (err) {
+                          toast.error("Upload failed: " + err.message, { id: toastId });
+                        }
+                      }}
+                    />
+                    <label 
+                      htmlFor="lanyard-upload"
+                      className="flex items-center justify-center gap-2 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-widest cursor-pointer transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                      Click to Upload Photo
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
