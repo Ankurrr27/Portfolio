@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 
+import GlassSurface from "./ui/GlassSurface";
+
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Education", "Gallery"];
 
 const Navbar = () => {
@@ -29,19 +31,30 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 px-6 md:px-8 flex items-center justify-between rounded-2xl border bg-zinc-950/40 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_8px_32px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${
         isScrolled
-          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14 border-white/10 shadow-[inset_0_0_12px_rgba(255,255,255,0.05)]"
-          : "w-[calc(100%-3rem)] max-w-7xl h-16 border-white/10"
+          ? "w-[92%] md:w-[80%] lg:w-[65%] h-14"
+          : "w-[calc(100%-3rem)] max-w-7xl h-16"
       }`}
     >
-      {/* Logo */}
-      <a href="#home" className="flex items-center gap-1.5 group">
-        <span className="text-xl font-bold text-white transition-colors duration-300">
-          Ankur.
-        </span>
-        <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
-      </a>
+      <GlassSurface
+        width="100%"
+        height="100%"
+        borderRadius={16}
+        brightness={30}
+        opacity={0.8}
+        blur={12}
+        backgroundOpacity={0.05}
+        className="w-full h-full shadow-[0_8px_32px_rgba(0,0,0,0.8)]"
+      >
+        <div className="w-full px-6 md:px-8 flex items-center justify-between h-full">
+          {/* Logo */}
+          <a href="#home" className="flex items-center gap-1.5 group">
+            <span className="text-xl font-bold text-white transition-colors duration-300">
+              Ankur.
+            </span>
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+          </a>
 
       {/* Desktop nav */}
       <div className="hidden md:flex items-center gap-1.5 p-1 rounded-xl bg-black/20 border border-white/5">
@@ -70,6 +83,9 @@ const Navbar = () => {
           {isMobileMenuOpen ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </button>
       </div>
+
+      </div>
+      </GlassSurface>
 
       {/* Mobile menu */}
       <AnimatePresence>

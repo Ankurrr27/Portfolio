@@ -84,15 +84,25 @@ const Projects = () => {
   const [activeFilter, setActiveFilter] = useState("ALL");
 
   useEffect(() => {
+    // Check cache first
+    const cached = localStorage.getItem("portfolio_projects");
+    if (cached) {
+      setProjects(JSON.parse(cached));
+      setIsLoading(false);
+    }
+
     const fetchProjects = async () => {
       try {
         const res = await fetch("/api/projects");
         const data = await res.json();
-        if (data.projects) setProjects(data.projects);
+        if (data.projects) {
+          setProjects(data.projects);
+          localStorage.setItem("portfolio_projects", JSON.stringify(data.projects));
+        }
       } catch (err) {
         console.error("Projects: Error fetching", err);
       } finally {
-        setIsLoading(false);
+        if (!cached) setIsLoading(false);
       }
     };
     fetchProjects();

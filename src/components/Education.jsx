@@ -90,18 +90,29 @@ const Education = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    // Check cache first
+    const cached = localStorage.getItem("portfolio_education");
+    if (cached) {
+      setEducation(JSON.parse(cached));
+      setIsLoading(false);
+      setTimeout(() => setIsVisible(true), 100);
+    }
+
     const fetchEducation = async () => {
       try {
         const res = await fetch("/api/education");
         const data = await res.json();
         if (data.education && data.education.length > 0) {
           setEducation(data.education);
+          localStorage.setItem("portfolio_education", JSON.stringify(data.education));
         }
       } catch (err) {
         console.error("Education: Error fetching", err);
       } finally {
-        setIsLoading(false);
-        setTimeout(() => setIsVisible(true), 300);
+        if (!cached) {
+          setIsLoading(false);
+          setTimeout(() => setIsVisible(true), 300);
+        }
       }
     };
     fetchEducation();
