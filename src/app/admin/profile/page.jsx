@@ -10,16 +10,21 @@ import { profileContent as staticProfile } from "../../../data/profile";
 export default function AdminProfilePage() {
   const { adminKey } = useAdmin();
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploadingLanyard, setIsUploadingLanyard] = useState(false);
+  const [lanyardPreviewUrl, setLanyardPreviewUrl] = useState("");
   const [status, setStatus] = useState("");
   const [profile, setProfile] = useState(staticProfile);
 
   useEffect(() => {
+    const controller = new AbortController();
+    
     const loadData = async () => {
       setIsLoading(true);
       try {
         const res = await fetch("/api/admin/profile", {
           headers: { "x-admin-key": adminKey },
           cache: "no-store",
+          signal: controller.signal
         });
         const data = await res.json();
 
@@ -27,13 +32,17 @@ export default function AdminProfilePage() {
           setProfile(data.profile);
         }
       } catch (error) {
-        console.error("Failed to load profile", error);
+        if (error.name !== 'AbortError') {
+          console.error("Failed to load profile:", error);
+          toast.error("Database connection slow. Retrying...");
+        }
       } finally {
         setIsLoading(false);
       }
     };
 
     if (adminKey) loadData();
+    return () => controller.abort();
   }, [adminKey]);
 
   const handleSave = async () => {
@@ -64,6 +73,65 @@ export default function AdminProfilePage() {
 
   const updateField = (field, value) => {
     setProfile(prev => ({ ...prev, [field]: value }));
+  };
+
+  useEffect(() => {
+    return () => {
+      if (lanyardPreviewUrl) URL.revokeObjectURL(lanyardPreviewUrl);
+    };
+  }, [lanyardPreviewUrl]);
+
+  const handleLanyardUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (lanyardPreviewUrl) URL.revokeObjectURL(lanyardPreviewUrl);
+    const previewUrl = URL.createObjectURL(file);
+    setLanyardPreviewUrl(previewUrl);
+    setIsUploadingLanyard(true);
+
+    const toastId = toast.loading("Uploading lanyard photo...");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      console.debug("Lanyard upload: file selected", {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+      });
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: {
+          "x-admin-key": adminKey,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      const uploadedUrl = data.url || data.secure_url;
+
+      console.debug("Lanyard upload: API response", {
+        ok: res.ok,
+        uploadedUrl,
+        data,
+      });
+
+      if (!res.ok || !uploadedUrl) {
+        throw new Error(data.error || "Upload failed");
+      }
+
+      updateField("lanyardImageUrl", uploadedUrl);
+      setLanyardPreviewUrl("");
+      toast.success("Photo uploaded. Save profile to publish it.", { id: toastId });
+    } catch (err) {
+      toast.error("Upload failed: " + err.message, { id: toastId });
+    } finally {
+      setIsUploadingLanyard(false);
+      event.target.value = "";
+    }
   };
 
   return (
@@ -266,15 +334,24 @@ export default function AdminProfilePage() {
               <div className="space-y-2">
                 <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Lanyard Photo</label>
                 <div className="flex flex-col gap-4">
-                  {profile.lanyardImageUrl || profile.profileImageUrl ? (
+                  {lanyardPreviewUrl || profile.lanyardImageUrl || profile.profileImageUrl ? (
                     <div className="relative w-full aspect-square max-w-[200px] mx-auto rounded-2xl overflow-hidden border border-slate-100 group">
                       <img 
-                        src={profile.lanyardImageUrl || profile.profileImageUrl} 
+                        src={lanyardPreviewUrl || profile.lanyardImageUrl || profile.profileImageUrl} 
                         alt="Lanyard" 
                         className="w-full h-full object-cover"
+                        onError={(event) => {
+                          if (event.currentTarget.src !== window.location.origin + staticProfile.profileImageUrl) {
+                            event.currentTarget.src = staticProfile.profileImageUrl;
+                          } else {
+                            event.currentTarget.style.display = "none";
+                          }
+                        }}
                       />
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                         <span className="text-[10px] text-white font-bold">CURRENT PREVIEW</span>
+                         <span className="text-[10px] text-white font-bold">
+                           {isUploadingLanyard ? "UPLOADING..." : "CURRENT PREVIEW"}
+                         </span>
                       </div>
                     </div>
                   ) : null}
@@ -285,34 +362,8 @@ export default function AdminProfilePage() {
                       type="file"
                       className="hidden"
                       accept="image/*"
-                      onChange={async (e) => {
-                        const file = e.target.files[0];
-                        if (!file) return;
-                        
-                        const toastId = toast.loading("Uploading lanyard photo...");
-                        try {
-                          const formData = new FormData();
-                          formData.append("file", file);
-                          
-                          const res = await fetch("/api/admin/upload", {
-                            method: "POST",
-                            headers: {
-                              "x-admin-key": adminKey,
-                            },
-                            body: formData,
-                          });
-                          
-                          const data = await res.json();
-                          if (data.url) {
-                            updateField("lanyardImageUrl", data.url);
-                            toast.success("Photo uploaded!", { id: toastId });
-                          } else {
-                            throw new Error(data.error);
-                          }
-                        } catch (err) {
-                          toast.error("Upload failed: " + err.message, { id: toastId });
-                        }
-                      }}
+                      disabled={isUploadingLanyard}
+                      onChange={handleLanyardUpload}
                     />
                     <label 
                       htmlFor="lanyard-upload"

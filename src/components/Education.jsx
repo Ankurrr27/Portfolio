@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { GraduationCap } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
-import ScrollStack, { ScrollStackItem } from "./ui/ScrollStack";
 
 const EducationItem = ({ institution, period, detail, degree, isVisible, index, imageUrl, skills, description }) => {
   const skillList = skills ? skills.split(",").map(s => s.trim()) : [];
@@ -148,31 +147,21 @@ const Education = () => {
            </p>
         </div>
 
-        <div className="relative min-h-screen">
-          <ScrollStack 
-            useWindowScroll={true} 
-            itemDistance={40}
-            itemScale={0.05}
-            itemStackDistance={20}
-            baseScale={0.9}
-            blurAmount={2}
-          >
-            {education.map((item, index) => (
-              <ScrollStackItem key={item.id}>
-                <EducationItem
-                  index={index}
-                  institution={item.institution}
-                  period={item.period}
-                  detail={item.detail}
-                  degree={item.degree}
-                  imageUrl={item.imageUrl}
-                  skills={item.skills}
-                  description={item.description}
-                  isVisible={isVisible}
-                />
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
+        <div className="relative space-y-10">
+          {education.map((item, index) => (
+            <EducationItem
+              key={item.id}
+              index={index}
+              institution={item.institution}
+              period={item.period}
+              detail={item.detail}
+              degree={item.degree}
+              imageUrl={item.imageUrl}
+              skills={item.skills}
+              description={item.description}
+              isVisible={isVisible}
+            />
+          ))}
         </div>
       </div>
     </section>

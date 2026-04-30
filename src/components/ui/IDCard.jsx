@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useGLTF, useTexture } from '@react-three/drei';
-import { BallCollider, CuboidCollider, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
+import { useGLTF } from '@react-three/drei';
+import { BallCollider, CuboidCollider, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 
 const cardGLB = '/assets/lanyard/card.glb';
@@ -21,9 +21,13 @@ export default function IDCard({
   userData = { 
     name: "ANKUR", 
     role: "Full Stack Engineer", 
-    imageUrl: "/assets/profile.jpg",
+    imageUrl: fallbackProfileImage,
     color: "#f97316",
-    social: "@ankurrr27"
+    college: "IIIT KOTA",
+    qualification: "B.Tech CSE",
+    instagram: "@ankurrr27",
+    linkedin: "@ankur-personal",
+    social: "@ankur-personal"
   },
   isEnlarged = false,
   onToggleEnlarge
@@ -31,6 +35,7 @@ export default function IDCard({
   const { nodes, materials } = useGLTF(cardGLB);
   const vec = new THREE.Vector3();
   const [hovered, setHovered] = useState(false);
+  const imageUrl = userData.imageUrl || fallbackProfileImage;
   
   // Create dynamic texture
   const dynamicTexture = useMemo(() => {
@@ -38,126 +43,134 @@ export default function IDCard({
     canvas.width = 1024;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d');
+    const accent = userData.color || '#2563eb';
+
+    const roundedRect = (x, y, width, height, radius) => {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    };
     
     const draw = (img) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Main Card Body (Deep Dark Base)
-      const radius = 60;
-      const x = 30, y = 30, w = canvas.width - 60, h = canvas.height - 60;
-      
-      // Outer Glow/Border Layer (Manual path for compatibility)
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + w - radius, y);
-      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-      ctx.lineTo(x + w, y + h - radius);
-      ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-      ctx.lineTo(x + radius, y + h);
-      ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.closePath();
+      const x = 34;
+      const y = 34;
+      const w = canvas.width - 68;
+      const h = canvas.height - 68;
 
-      ctx.fillStyle = '#080808';
+      roundedRect(x, y, w, h, 58);
+      ctx.fillStyle = '#f8fafc';
       ctx.fill();
 
-      // Subtle Pattern Background (Technical Grid/Circuit)
-      ctx.strokeStyle = '#ffffff08';
-      ctx.lineWidth = 1;
-      for(let i=0; i<canvas.width; i+=40) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
-      }
-
-      // Accent Edge
-      ctx.strokeStyle = userData.color || '#2563eb';
-      ctx.lineWidth = 10;
-      ctx.stroke();
-
-      // Top Header Section
-      ctx.fillStyle = (userData.color || '#2563eb') + '15';
-      ctx.beginPath();
-      ctx.moveTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.lineTo(x + w - radius, y);
-      ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-      ctx.lineTo(x + w, 230);
-      ctx.lineTo(x, 230);
-      ctx.closePath();
-      ctx.fill();
-      
-      // Technical Specs (Top Left)
-      ctx.fillStyle = userData.color || '#2563eb';
-      ctx.font = 'bold 30px monospace';
-      ctx.textAlign = 'left';
-      ctx.fillText('REF_ID: 2024-ANK-27', 80, 100);
-      ctx.font = '24px monospace';
-      ctx.fillText('SYS_AUTH: VERIFIED', 80, 140);
-
-      // Main Identity Label (Top Right)
-      ctx.textAlign = 'right';
-      ctx.font = 'bold 28px sans-serif';
-      ctx.fillText('INDIAN INSTITUTE OF INFORMATION TECHNOLOGY', canvas.width - 80, 110);
-      ctx.font = 'bold 35px sans-serif';
-      ctx.fillText('OFFICIAL IDENTITY CARD', canvas.width - 80, 160);
-      
-      // Profile Picture Section
       ctx.save();
-      ctx.beginPath();
-      ctx.arc(canvas.width / 2, 430, 200, 0, Math.PI * 2);
+      roundedRect(x, y, w, h, 58);
       ctx.clip();
-      if (img) {
-        ctx.drawImage(img, canvas.width / 2 - 200, 230, 400, 400);
-      } else {
-        ctx.fillStyle = '#151515';
-        ctx.fill();
-      }
-      ctx.restore();
-      
-      // Image Ring
+
+      const heroHeight = 650;
+      const heroGradient = ctx.createLinearGradient(x, y, x + w, y + heroHeight);
+      heroGradient.addColorStop(0, '#b7f315');
+      heroGradient.addColorStop(0.48, '#25b99a');
+      heroGradient.addColorStop(1, '#8dea12');
+      ctx.fillStyle = heroGradient;
+      ctx.fillRect(x, y, w, heroHeight);
+
+      ctx.fillStyle = '#005b63';
       ctx.beginPath();
-      ctx.arc(canvas.width / 2, 430, 200, 0, Math.PI * 2);
-      ctx.strokeStyle = userData.color || '#2563eb';
-      ctx.lineWidth = 12;
+      ctx.arc(x + 38, y + 230, 290, -Math.PI / 2, Math.PI / 2);
+      ctx.lineTo(x + 38, y + 520);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#c3f21f';
+      ctx.beginPath();
+      ctx.arc(x + w - 25, y + 110, 260, Math.PI / 2, Math.PI * 1.5);
+      ctx.lineTo(x + w - 25, y + 400);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#d5f72d';
+      ctx.beginPath();
+      ctx.moveTo(x + 10, y + 420);
+      ctx.quadraticCurveTo(x + w * 0.5, y + 335, x + w - 10, y + 420);
+      ctx.quadraticCurveTo(x + w * 0.5, y + 520, x + 10, y + 420);
+      ctx.fill();
+
+      ctx.fillStyle = '#0e9f86';
+      ctx.beginPath();
+      ctx.moveTo(x + 10, y + 420);
+      ctx.quadraticCurveTo(x + w * 0.5, y + 470, x + w - 10, y + 420);
+      ctx.quadraticCurveTo(x + w * 0.5, y + 370, x + 10, y + 420);
+      ctx.fill();
+
+      const photoX = 160;
+      const photoY = 142;
+      const photoW = 704;
+      const photoH = 560;
+      if (img) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(photoX, photoY, photoW, photoH);
+        ctx.clip();
+        ctx.drawImage(img, photoX, photoY, photoW, photoH);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = 'rgba(0,91,99,0.35)';
+        ctx.fillRect(photoX, photoY, photoW, photoH);
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 42px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('PHOTO', canvas.width / 2, 420);
+      }
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(x, y + heroHeight, w, h - heroHeight);
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(0,91,99,0.18)';
+      ctx.lineWidth = 4;
+      roundedRect(x + 2, y + 2, w - 4, h - 4, 56);
       ctx.stroke();
 
-      // Primary Information
+      ctx.fillStyle = '#14a486';
+      ctx.font = '900 72px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '900 110px sans-serif';
-      ctx.fillText(userData.name.toUpperCase(), canvas.width / 2, 770);
-      
-      ctx.fillStyle = (userData.color || '#2563eb');
-      ctx.font = 'bold 40px monospace';
-      ctx.fillText(`> ${userData.role.toUpperCase()}`, canvas.width / 2, 830);
+      ctx.fillText('Ankur', canvas.width / 2 - 36, 760);
+      ctx.font = 'italic 900 72px sans-serif';
+      ctx.fillText('Alora', canvas.width / 2 + 172, 760);
 
-      // Separator Line
-      ctx.strokeStyle = '#ffffff15';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(100, 870); ctx.lineTo(canvas.width - 100, 870); ctx.stroke();
+      ctx.fillStyle = '#12535a';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.fillText('Full Stack Developer', canvas.width / 2, 810);
 
-      // Bottom Details
-      if (isEnlarged) {
-         ctx.fillStyle = '#999999';
-         ctx.font = '35px sans-serif';
-         ctx.fillText(userData.college.toUpperCase(), canvas.width / 2, 920);
-         ctx.fillText(userData.qualification, canvas.width / 2, 970);
-         
-         ctx.fillStyle = '#ffffff';
-         ctx.font = 'bold 45px monospace';
-         ctx.fillText(userData.social, canvas.width / 2, 1020);
-      } else {
-         ctx.fillStyle = '#777777';
-         ctx.font = 'bold 35px monospace';
-         ctx.fillText(userData.social, canvas.width / 2, 950);
-      }
+      ctx.fillStyle = '#0f5961';
+      ctx.font = '900 24px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('IIIT', 110, 942);
+      ctx.fillText('KOTA', 110, 974);
+
+      ctx.font = 'bold 20px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('ID: ANKUR-27', canvas.width / 2, 954);
+
+      ctx.textAlign = 'right';
+      ctx.fillText('IG @ankurrr27', canvas.width - 110, 936);
+      ctx.fillText('IN @ankur-personal', canvas.width - 110, 970);
     };
 
     draw();
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.anisotropy = 16;
+    texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = false;
     texture.rotation = Math.PI;
     texture.center.set(0.5, 0.5);
@@ -174,6 +187,9 @@ export default function IDCard({
         texture.needsUpdate = true;
       };
       img.onerror = () => {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("ID card image failed to load:", src);
+        }
         if (allowFallback && src !== fallbackProfileImage) {
           loadCardImage(fallbackProfileImage, false);
         }
@@ -181,10 +197,21 @@ export default function IDCard({
       img.src = src;
     };
 
-    loadCardImage(userData.imageUrl || fallbackProfileImage);
+    loadCardImage(imageUrl);
 
     return texture;
-  }, [userData, isEnlarged]);
+  }, [
+    imageUrl,
+    isEnlarged,
+    userData.college,
+    userData.color,
+    userData.name,
+    userData.instagram,
+    userData.linkedin,
+    userData.qualification,
+    userData.role,
+    userData.social,
+  ]);
 
   // The large identity-card presentation is the resting size; selection adds subtle emphasis.
   const baseScale = 2.2;
@@ -244,31 +271,52 @@ export default function IDCard({
             }
           }}
         >
-          {/* Main Card Face - Use a Plane for reliable 1:1 mapping */}
-          <mesh 
-            position={[0, 0, 0.01]} 
-            onPointerOver={() => { hover(true); setHovered(true); }}
-            onPointerOut={() => { hover(false); setHovered(false); }}
-          >
-            <planeGeometry args={[1.5, 2.1]} />
-            <meshPhysicalMaterial
-              map={dynamicTexture}
-              transparent
-              clearcoat={isMobile ? 0 : 1}
-              clearcoatRoughness={0.15}
-              roughness={0.1}
-              metalness={0.2}
-              emissive={"#000000"}
-              emissiveIntensity={0}
-            />
-          </mesh>
-
           {/* The 3D Model Body */}
           <mesh geometry={nodes.card.geometry}>
             <meshPhysicalMaterial
               color="#0a0a0a"
               metalness={0.8}
               roughness={0.2}
+            />
+          </mesh>
+          {/* Thick 3D rim behind the printed face */}
+          <mesh position={[0, 0, 0.08]} renderOrder={5}>
+            <boxGeometry args={[1.68, 2.34, 0.12]} />
+            <meshPhysicalMaterial
+              color="#053f46"
+              metalness={0.65}
+              roughness={0.22}
+              clearcoat={1}
+              clearcoatRoughness={0.18}
+              emissive="#052f34"
+              emissiveIntensity={0.12}
+            />
+          </mesh>
+          <mesh position={[0, 0, 0.155]} renderOrder={6}>
+            <boxGeometry args={[1.56, 2.2, 0.035]} />
+            <meshPhysicalMaterial
+              color="#14a486"
+              metalness={0.5}
+              roughness={0.18}
+              clearcoat={1}
+              clearcoatRoughness={0.12}
+            />
+          </mesh>
+          {/* Main Card Face - rendered above the rim */}
+          <mesh
+            position={[0, 0, 0.18]}
+            renderOrder={999}
+            onPointerOver={() => { hover(true); setHovered(true); }}
+            onPointerOut={() => { hover(false); setHovered(false); }}
+          >
+            <planeGeometry args={[1.44, 2.04]} />
+            <meshBasicMaterial
+              map={dynamicTexture}
+              transparent
+              side={THREE.DoubleSide}
+              depthTest={false}
+              depthWrite={false}
+              toneMapped={false}
             />
           </mesh>
           <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />

@@ -14,10 +14,10 @@ const GlassSurface = ({
   displace = 0,
   backgroundOpacity = 0,
   saturation = 1,
-  distortionScale = -180,
+  distortionScale = 0,
   redOffset = 0,
-  greenOffset = 10,
-  blueOffset = 20,
+  greenOffset = 0,
+  blueOffset = 0,
   xChannel = 'R',
   yChannel = 'G',
   mixBlendMode = 'difference',
@@ -130,10 +130,11 @@ const GlassSurface = ({
       return false;
     }
 
+    const isChromium = /Chrome|Chromium|Edg/.test(navigator.userAgent);
     const isWebkit = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
-    if (isWebkit || isFirefox) {
+    if (isChromium || isWebkit || isFirefox) {
       return false;
     }
 

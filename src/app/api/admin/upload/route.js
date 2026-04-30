@@ -1,6 +1,78 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthorized } from "../../../../lib/admin";
-import crypto from "crypto";
+import { cloudinary, isCloudinaryConfigured } from "../../../../lib/cloudinary";
+
+export const runtime = "nodejs";
+
+const MAX_FILE_SIZE_BYTES = 8 * 1024 * 1024;
+const UPLOAD_TIMEOUT_MS = 45_000;
+const RETRY_DELAYS_MS = [0, 1000, 2500];
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function uploadToCloudinary(buffer, options) {
+  return new Promise((resolve, reject) => {
+    const upload = cloudinary.uploader.upload_stream(options, (error, result) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve(result);
+    });
+
+    upload.end(buffer);
+  });
+}
+
+async function uploadWithRetry(buffer) {
+  let lastError;
+
+  for (const [attempt, delay] of RETRY_DELAYS_MS.entries()) {
+    if (delay) await sleep(delay);
+
+    try {
+      return await uploadToCloudinary(buffer, {
+        folder: "portfolio",
+        resource_type: "image",
+        timeout: UPLOAD_TIMEOUT_MS,
+      });
+    } catch (error) {
+      lastError = error;
+      console.warn(`Cloudinary upload attempt ${attempt + 1} failed`, {
+        message: error.message,
+        http_code: error.http_code,
+        name: error.name,
+      });
+    }
+  }
+
+  throw lastError;
+}
+
+function getUploadErrorMessage(error) {
+  const message = error?.message || "";
+
+  if (
+    message.toLowerCase().includes("timeout") ||
+    error?.code === "UND_ERR_CONNECT_TIMEOUT" ||
+    error?.name === "TimeoutError"
+  ) {
+    return "Cloudinary upload timed out. Check your internet/VPN/firewall and try again.";
+  }
+
+  if (error?.http_code === 401) {
+    return "Cloudinary rejected the upload credentials.";
+  }
+
+  if (error?.http_code === 400) {
+    return error.message || "Cloudinary rejected this image.";
+  }
+
+  return "Upload failed";
+}
 
 export async function POST(request) {
   if (!isAdminAuthorized(request)) {
@@ -15,49 +87,31 @@ export async function POST(request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
-    
-    if (!cloudName || !apiKey || !apiSecret) {
+    if (!file.type?.startsWith("image/")) {
+      return NextResponse.json({ error: "Only image uploads are allowed" }, { status: 400 });
+    }
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      return NextResponse.json({ error: "Image must be smaller than 8 MB" }, { status: 400 });
+    }
+
+    if (!isCloudinaryConfigured) {
       console.error("Cloudinary credentials missing");
       return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
     }
 
-    const timestamp = Math.round(new Date().getTime() / 1000);
-    const folder = "portfolio";
-
-    // Generate SHA-1 signature
-    const signatureString = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
-    const signature = crypto.createHash("sha1").update(signatureString).digest("hex");
-
-    const uploadFormData = new FormData();
-    uploadFormData.append("file", file);
-    uploadFormData.append("api_key", apiKey);
-    uploadFormData.append("timestamp", timestamp);
-    uploadFormData.append("signature", signature);
-    uploadFormData.append("folder", folder);
-
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-
-    const response = await fetch(cloudinaryUrl, {
-      method: "POST",
-      body: uploadFormData,
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Cloudinary REST API error:", data);
-      return NextResponse.json({ error: data.error?.message || "Upload failed" }, { status: 500 });
-    }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const data = await uploadWithRetry(buffer);
 
     return NextResponse.json({ 
       url: data.secure_url,
-      public_id: data.public_id 
+      secure_url: data.secure_url,
+      public_id: data.public_id,
+      width: data.width,
+      height: data.height,
     });
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    return NextResponse.json({ error: getUploadErrorMessage(error) }, { status: 500 });
   }
 }

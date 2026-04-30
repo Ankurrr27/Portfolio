@@ -143,10 +143,11 @@ const ScrollStack = ({
 
       if (hasChanged) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
-        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
+        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : 'none';
 
         card.style.transform = transform;
         card.style.filter = filter;
+        card.style.webkitFilter = filter;
 
         lastTransformsRef.current.set(i, newTransform);
       }
@@ -259,13 +260,13 @@ const ScrollStack = ({
       if (i < cards.length - 1) {
         card.style.marginBottom = `${itemDistance}px`;
       }
-      card.style.willChange = 'transform, filter';
+      card.style.willChange = 'transform';
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
+      card.style.webkitBackfaceVisibility = 'hidden';
       card.style.transform = 'translateZ(0)';
       card.style.webkitTransform = 'translateZ(0)';
-      card.style.perspective = '1000px';
-      card.style.webkitPerspective = '1000px';
+      card.style.contain = 'layout paint';
     });
 
     setupLenis();

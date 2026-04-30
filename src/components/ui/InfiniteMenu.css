@@ -27,14 +27,7 @@
 }
 
 .face-title {
-  user-select: none;
-  position: absolute;
-  font-weight: 900;
-  font-size: 3rem;
-  left: 1.6em;
-  top: 50%;
-  color: #fff;
-  text-shadow: 0 0 20px rgba(0,0,0,0.5);
+  display: none;
 }
 
 .action-button-icon {
@@ -65,14 +58,7 @@
 }
 
 .face-description {
-  user-select: none;
-  position: absolute;
-  max-width: 20ch;
-  top: 50%;
-  font-size: 1.2rem;
-  right: 5%;
-  transform: translate(0, -50%);
-  color: #ccc;
+  display: none;
 }
 
 .face-description.active {
@@ -90,8 +76,7 @@
 }
 
 .action-button {
-  position: absolute;
-  left: 50%;
+  display: none;
 }
 
 .action-button.active {

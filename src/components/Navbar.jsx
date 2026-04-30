@@ -4,33 +4,17 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 
 import GlassSurface from "./ui/GlassSurface";
-import Lanyard from "./ui/Lanyard";
 
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Education", "Gallery"];
-const fallbackProfileImage = "/images/Ankur_Alora_1.0_Cropped.jpg";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [active, setActive] = useState("Home");
-  const [profile, setProfile] = useState(null);
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await fetch("/api/profile");
-        const data = await res.json();
-        if (data.profile) setProfile(data.profile);
-      } catch (err) {
-        console.error("Navbar: Error fetching profile", err);
-      }
-    };
-    fetchProfile();
-
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
       setIsScrolled(currentScrollY > 20);
       
       for (const link of [...navLinks].reverse()) {
@@ -44,26 +28,6 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const lanyardOpacity = Math.max(0, 1 - scrollY / 300);
-
-  const lanyardData = {
-    name: profile?.fullName || "ANKUR",
-    role: profile?.headline || "Full Stack Engineer",
-    college: profile?.college || "Indian Institute of Information Technology",
-    qualification: profile?.qualification || "B.Tech CSE",
-    bio: profile?.bio || "",
-    social: profile?.linkedinUrl ? "@" + profile.linkedinUrl.split('/').pop() : "@ankurrr27",
-    color: profile?.lanyardColor || "#2563eb",
-    imageUrl: profile?.lanyardImageUrl || profile?.profileImageUrl || fallbackProfileImage,
-    links: {
-      github: profile?.githubUrl,
-      linkedin: profile?.linkedinUrl,
-      twitter: profile?.twitterUrl || "#", 
-    }
-  };
-
-  const showLanyard = profile?.showLanyard !== false; // Default true
 
   return (
     <nav
@@ -121,25 +85,6 @@ const Navbar = () => {
           </div>
         </div>
       </GlassSurface>
-
-      {/* Lanyard hanging outside the glass container to avoid clipping */}
-      {showLanyard && (
-        <div className="hidden lg:block absolute top-0 right-0 w-full h-screen pointer-events-none z-[60]">
-          <div className="absolute top-4 right-[6%] h-14 flex items-center">
-            <div className="relative w-0 h-0">
-               <div className="absolute top-[-10px] left-[-30px]">
-                  <Lanyard 
-                    position={[0, 0, 20]} 
-                    gravity={[0, -30, 0]} 
-                    fov={25}
-                    userData={lanyardData}
-                    opacity={lanyardOpacity}
-                  />
-               </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Mobile menu */}
       <AnimatePresence>

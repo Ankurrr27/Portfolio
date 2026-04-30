@@ -9,7 +9,7 @@
   scroll-behavior: smooth;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  will-change: scroll-position;
+  isolation: isolate;
 }
 
 /* Hide scrollbar for the scroller */
@@ -32,9 +32,8 @@
 
 .scroll-stack-card {
   transform-origin: top center;
-  will-change: transform, filter;
+  will-change: transform;
   backface-visibility: hidden;
-  transform-style: preserve-3d;
   width: 100%;
   margin: 20px 0;
   box-sizing: border-box;
@@ -42,6 +41,7 @@
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   position: relative;
+  contain: layout paint;
 }
 
 .scroll-stack-end {
