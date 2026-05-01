@@ -160,11 +160,9 @@ const Projects = () => {
            <span>Portfolio Projects</span>
         </div>
         <h2 className="section-title mb-6">
-          Selected engineering <span className="accent-text">work.</span>
+          Development <span className="accent-text">Projects</span>
         </h2>
-        <p className="section-copy max-w-2xl">
-           Practical systems, product surfaces, and implementations built with clear constraints and maintainable architecture.
-        </p>
+        
       </div>
 
       <div className="section-container py-8">
