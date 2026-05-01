@@ -30,8 +30,12 @@ const categoryColors = [
 import { fallbackAchievements } from "../data/achievements";
 
 const Achievements = () => {
-  const [achievements] = useState(fallbackAchievements);
-  const [codingStats] = useState([]);
+  const [achievements] = useState([]);
+  const [codingStats] = useState([
+    { label: "Repositories", count: "35+", detail: "Open Source Projects", icon: "github" },
+    { label: "Problems Solved", count: "400+", detail: "Data Structures & Algorithms", icon: "leetcode" },
+    { label: "Coding Score", count: "1200+", detail: "Platform Rank", icon: "gfg" }
+  ]);
   const [isLoading, setIsLoading] = useState(false);
   const sectionRef = useRef(null);
   
