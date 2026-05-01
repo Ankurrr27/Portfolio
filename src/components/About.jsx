@@ -21,7 +21,6 @@ const fallbackProfile = {
 
 const About = ({ totalViews = 0 }) => {
   const [profile, setProfile] = useState(null);
-  const [galleryItems, setGalleryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isBioExpanded, setIsBioExpanded] = useState(false);
@@ -31,14 +30,9 @@ const About = ({ totalViews = 0 }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileRes, galleryRes] = await Promise.all([
-          fetch("/api/profile"),
-          fetch("/api/gallery")
-        ]);
+        const profileRes = await fetch("/api/profile");
         const profileData = await profileRes.json();
-        const galleryData = await galleryRes.json();
         if (profileData.profile) setProfile(profileData.profile);
-        if (galleryData.items) setGalleryItems(galleryData.items);
       } catch (err) {
         console.error("About: Error fetching data", err);
       } finally {
@@ -69,17 +63,12 @@ const About = ({ totalViews = 0 }) => {
   ];
 
   const images = React.useMemo(() => {
-    let urls = [];
-    if (galleryItems && galleryItems.length > 0) {
-      urls = galleryItems.map(item => item.url);
-    } else {
-      urls = [
-        p.aboutImageUrl || fallbackProfile.aboutImageUrl,
-        "/images/Ankur_Alora_1.0_Cropped.jpg",
-      ];
-    }
+    const urls = [
+      p.aboutImageUrl || fallbackProfile.aboutImageUrl,
+      "/images/Ankur_Alora_1.0_Cropped.jpg",
+    ];
     return urls.filter((image, index, allImages) => image && allImages.indexOf(image) === index);
-  }, [galleryItems, p.aboutImageUrl]);
+  }, [p.aboutImageUrl]);
 
   useEffect(() => {
     if (images.length <= 1 || isCarouselPaused) return undefined;

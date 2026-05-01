@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { ExternalLink, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
+import { FaInstagram, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
 import EditSectionButton from "./admin/EditSectionButton";
 
-const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl }) => {
+const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl, socials }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const displayRoles = isExpanded ? roles : [roles[0]];
   const hasMore = roles.length > 1;
@@ -18,29 +19,47 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
     >
       <div className="flex flex-col w-full">
         {/* Card Header ("Navbar" style) */}
-        <div className="flex flex-row items-center gap-4 border-b border-zinc-800/50 bg-zinc-950/50 p-5 md:px-8 md:py-6">
-          <div className="shrink-0">
-            {logoUrl ? (
-              <img src={logoUrl} alt={organization} className="w-12 h-12 md:w-14 md:h-14 object-contain opacity-90" />
-            ) : (
-              <div className="icon-box flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-lg bg-zinc-900 border border-zinc-800">
-                <ShieldCheck size={20} className="text-zinc-400" />
-              </div>
-            )}
-          </div>
-          <div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <h3 className="text-lg md:text-2xl font-bold tracking-tight leading-tight text-white break-words">
-                {organization}
-              </h3>
-              {organizationUrl && (
-                <a href={organizationUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-orange-500 transition-colors">
-                  <ExternalLink size={18} />
-                </a>
+        <div className="flex flex-row items-center justify-between gap-4 border-b border-zinc-800/50 bg-zinc-950/50 p-5 md:px-8 md:py-6">
+          <div className="flex items-center gap-4">
+            <div className="shrink-0">
+              {logoUrl ? (
+                <img src={logoUrl} alt={organization} className="w-12 h-12 md:w-14 md:h-14 object-contain opacity-90" />
+              ) : (
+                <div className="icon-box flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-lg bg-zinc-900 border border-zinc-800">
+                  <ShieldCheck size={20} className="text-zinc-400" />
+                </div>
               )}
             </div>
-            <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-500">{period}</p>
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h3 className="text-lg md:text-2xl font-bold tracking-tight leading-tight text-white break-words">
+                  {organization}
+                </h3>
+              </div>
+              <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-500">{period}</p>
+            </div>
           </div>
+
+          {/* Social Handles */}
+          {socials && socials.length > 0 && (
+            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+              {socials.map((social, idx) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={idx}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-1.5 md:p-2 rounded-full bg-zinc-900 border border-zinc-800 transition-all hover:scale-110 hover:bg-zinc-800 ${social.color || 'text-zinc-400'}`}
+                    aria-label={social.name}
+                  >
+                    <Icon size={16} className="md:w-5 md:h-5" />
+                  </a>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Roles / Posts Section */}
@@ -98,6 +117,11 @@ const Responsibilities = () => {
       id: "iiitians",
       organization: "IIITians Network",
       period: "Dec 2024 - Present • 1 yr 5 mos",
+      socials: [
+        { name: "Website", icon: FaGlobe, url: "https://iiitiansnetwork.com", color: "text-emerald-400" },
+        { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/company/iiitians-network/", color: "text-[#0A66C2]" },
+        { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/iiitians.network/", color: "text-[#E4405F]" },
+      ],
       roles: [
         {
           title: "Vice President",
@@ -134,6 +158,11 @@ const Responsibilities = () => {
       id: "techknow",
       organization: "TechKnow | Technical Council, IIIT Kota",
       period: "Aug 2024 - Present • 1 yr 9 mos",
+      socials: [
+        { name: "Website", icon: FaGlobe, url: "#", color: "text-emerald-400" },
+        { name: "LinkedIn", icon: FaLinkedin, url: "https://linkedin.com/company/techknow", color: "text-[#0A66C2]" },
+        { name: "Instagram", icon: FaInstagram, url: "https://instagram.com/techknow", color: "text-[#E4405F]" },
+      ],
       roles: [
         {
           title: "Senior General Secretary Executive",
@@ -160,6 +189,11 @@ const Responsibilities = () => {
       id: "neon",
       organization: "Neon Cinematics",
       period: "Aug 2025 - Present",
+      socials: [
+        { name: "Website", icon: FaGlobe, url: "#", color: "text-emerald-400" },
+        { name: "LinkedIn", icon: FaLinkedin, url: "#", color: "text-[#0A66C2]" },
+        { name: "Instagram", icon: FaInstagram, url: "#", color: "text-[#E4405F]" },
+      ],
       roles: [
         {
           title: "Co-Lead",
@@ -171,12 +205,17 @@ const Responsibilities = () => {
           ],
         },
       ],
-      logoUrl: null,
+      logoUrl: "/images/neon.jpg",
     },
     {
       id: "udbhav",
       organization: "UDBHAV - Inter IIIT Hackathon",
       period: "Jul 2025 - Feb 2026",
+      socials: [
+        { name: "Website", icon: FaGlobe, url: "#", color: "text-emerald-400" },
+        { name: "LinkedIn", icon: FaLinkedin, url: "#", color: "text-[#0A66C2]" },
+        { name: "Instagram", icon: FaInstagram, url: "#", color: "text-[#E4405F]" },
+      ],
       roles: [
         {
           title: "Design Lead",
@@ -233,6 +272,7 @@ const Responsibilities = () => {
               roles={item.roles}
               logoUrl={item.logoUrl}
               organizationUrl={item.organizationUrl}
+              socials={item.socials}
               isVisible={isVisible}
             />
           ))}
