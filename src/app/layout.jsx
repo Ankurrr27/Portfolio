@@ -8,7 +8,7 @@ import JsonLd from "@/components/JsonLd";
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata = {
-  metadataBase: new URL('https://ankurrr27-portfolio.vercel.app'), // Replace with your production domain
+  metadataBase: new URL('https://ankurdev.vercel.app'), // Replace with your production domain
   title: {
     default: "Ankur Singh | Web Developer & IIIT Kota Student",
     template: "%s | Ankur dev"
@@ -27,12 +27,12 @@ export const metadata = {
     "React",
     "Next.js"
   ],
-  authors: [{ name: "Ankur Singh", url: "https://ankurrr27-portfolio.vercel.app" }],
+  authors: [{ name: "Ankur Singh", url: "https://ankurdev.vercel.app" }],
   creator: "Ankur Singh",
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://ankurrr27-portfolio.vercel.app",
+    url: "https://ankurdev.vercel.app",
     title: "Ankur Singh | Web Developer & IIIT Kota Student",
     description: "Portfolio of Ankur Singh, a frontend developer and student at IIIT Kota.",
     siteName: "Ankur dev",
@@ -51,7 +51,7 @@ export const metadata = {
     images: ["/images/Ankur_Sem1_1.jpg"],
   },
   alternates: {
-    canonical: "https://ankurrr27-portfolio.vercel.app",
+    canonical: "https://ankurdev.vercel.app",
   },
   verification: {
     google: "AXBGOdjkqT8jkXYEzNfCfZunxVAyDPfM5tBsY3Q4gc8",

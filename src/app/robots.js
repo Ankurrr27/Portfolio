@@ -1,6 +1,6 @@
 export default function robots() {
   // Replace with your actual deployed domain
-  const baseUrl = 'https://ankurrr27-portfolio.vercel.app';
+  const baseUrl = 'https://ankurdev.vercel.app';
 
   return {
     rules: {

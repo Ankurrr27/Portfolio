@@ -4,10 +4,10 @@ export default function JsonLd() {
     "@graph": [
       {
         "@type": "Person",
-        "@id": "https://ankursingh.dev/#person",
+        "@id": "https://ankurdev.vercel.app/#person",
         "name": "Ankur Singh",
-        "url": "https://ankursingh.dev",
-        "image": "https://ankursingh.dev/images/Ankur_Sem1_1.jpg",
+        "url": "https://ankurdev.vercel.app",
+        "image": "https://ankurdev.vercel.app/images/Ankur_Sem1_1.jpg",
         "sameAs": [
           "https://github.com/Ankurrr27",
           "https://linkedin.com/in/ankur-personal",
@@ -26,15 +26,15 @@ export default function JsonLd() {
         },
         "description": "B.Tech CSE student at IIIT Kota and full-stack web developer."
       },
-      {
-        "@type": "WebSite",
-        "@id": "https://ankursingh.dev/#website",
-        "url": "https://ankursingh.dev",
-        "name": "Ankur dev",
-        "publisher": {
-          "@id": "https://ankursingh.dev/#person"
-        }
+    {
+      "@type": "WebSite",
+      "@id": "https://ankurdev.vercel.app/#website",
+      "url": "https://ankurdev.vercel.app",
+      "name": "Ankur dev",
+      "publisher": {
+        "@id": "https://ankurdev.vercel.app/#person"
       }
+    }
     ]
   };
 
