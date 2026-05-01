@@ -32,8 +32,8 @@ const Gallery = () => {
   }));
   
   if (parallaxProducts.length > 0) {
-    while (parallaxProducts.length < 10) {
-      parallaxProducts = [...parallaxProducts, ...parallaxProducts].slice(0, 10);
+    while (parallaxProducts.length < 15) {
+      parallaxProducts = [...parallaxProducts, ...parallaxProducts].slice(0, 15);
     }
   }
 

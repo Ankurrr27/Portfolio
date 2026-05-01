@@ -132,23 +132,17 @@ const About = ({ totalViews = 0 }) => {
               {isBioExpanded ? "View less" : "View more"}
             </button>
 
-            <div className="grid grid-cols-2 gap-3 pt-4 sm:flex sm:flex-wrap">
-              {socials.map(({ icon: Icon, url, label, isCustom, color }) => (
+            <div className="grid grid-cols-3 gap-2 pt-4 lg:grid-cols-6">
+              {socials.map(({ icon: Icon, url, label, color }) => (
                 <a
                   key={label}
                   href={url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="panel-subtle group flex min-h-12 items-center justify-center gap-2 px-3 py-3 transition-all hover:border-orange-500/50 hover:bg-orange-500/5 sm:justify-start sm:gap-3 sm:px-5"
+                  className="group flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.055] px-2 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all hover:border-orange-500/40 hover:bg-orange-500/10"
                 >
-                  {isCustom ? (
-                    <svg viewBox="0 0 24 24" width={18} height={18} fill="currentColor" className={`${color} transition-transform group-hover:scale-110`}>
-                      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-13v2H9v2h2v6h2v-6h2v-2h-2V7h-2z"/>
-                    </svg>
-                  ) : (
-                    <Icon size={18} className={`${color} transition-transform group-hover:scale-110`} />
-                  )}
-                  <span className="min-w-0 text-center text-xs font-semibold text-zinc-400 transition-colors group-hover:text-white sm:text-left sm:text-sm">{label}</span>
+                  <Icon size={17} className={`${color} shrink-0 transition-transform group-hover:scale-110`} />
+                  <span className="min-w-0 truncate text-center text-[11px] font-semibold text-zinc-300 transition-colors group-hover:text-white lg:text-xs">{label}</span>
                 </a>
               ))}
             </div>
@@ -186,13 +180,13 @@ const About = ({ totalViews = 0 }) => {
             <button
               type="button"
               onClick={prev}
-              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400 transition-colors hover:border-orange-500/50 hover:text-orange-500"
+              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-colors hover:border-orange-500/50 hover:text-orange-500"
               aria-label="Previous image"
             >
               <ChevronRight size={16} className="rotate-180" />
             </button>
 
-            <div className="flex min-h-10 items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-4">
+            <div className="flex min-h-10 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.06] px-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
               {images.map((_, i) => (
                 <button
                   type="button"
@@ -210,7 +204,7 @@ const About = ({ totalViews = 0 }) => {
             <button
               type="button"
               onClick={next}
-              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-400 transition-colors hover:border-orange-500/50 hover:text-orange-500"
+              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-colors hover:border-orange-500/50 hover:text-orange-500"
               aria-label="Next image"
             >
               <ChevronRight size={16} />

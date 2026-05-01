@@ -52,7 +52,7 @@ const Footer = ({ totalViews = 0 }) => {
 
   if (isLoading) {
     return (
-      <footer className="section-shell py-12">
+      <footer className="section-shell bg-black py-12 text-white dark:bg-[#030303]">
         <div className="section-container flex flex-col items-start gap-4 animate-pulse">
           <div className="w-24 h-4 bg-zinc-900 rounded-full" />
           <div className="w-48 h-10 bg-zinc-900 rounded-lg" />
@@ -64,19 +64,19 @@ const Footer = ({ totalViews = 0 }) => {
   const p = profile || {};
 
   return (
-    <footer className="section-shell py-12 text-white">
+    <footer className="section-shell bg-black py-12 text-white dark:bg-[#030303]">
       <div className="section-container">
-        <div className="panel mb-10 md:mb-12 p-5 md:p-10">
+        <div className="mb-10 rounded-xl border border-zinc-800 bg-zinc-950 p-5 shadow-2xl md:mb-12 md:p-10">
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 md:gap-8">
             <div className="space-y-4 max-w-2xl">
-              <div className="section-kicker">
+              <div className="inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
                 Available for collaboration
               </div>
-              <h2 className="section-title">
+              <h2 className="text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl">
                 Let&apos;s build something <span className="accent-text">clear and useful.</span>
               </h2>
-              <p className="section-copy">
+              <p className="max-w-2xl text-sm leading-7 text-zinc-400 md:text-base">
                 I care about reliable systems, clean interfaces, and engineering decisions that hold up beyond the first demo.
               </p>
             </div>
@@ -123,7 +123,7 @@ const Footer = ({ totalViews = 0 }) => {
               <span className="text-xl font-bold tracking-tight text-white">{p.fullName || "Engineer"}</span>
               <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
             </div>
-            <p className="section-copy max-w-sm">
+            <p className="max-w-sm text-sm leading-7 text-zinc-500">
               Engineering resilient digital infrastructure and high-performance user experiences. Based in {(p.location || "Earth").split("•")[0]}.
             </p>
           </div>

@@ -93,11 +93,11 @@ const Navbar = () => {
               <a
                 key={link}
                 href={`#${link.toLowerCase()}`}
-                className={`px-3 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all rounded-md ${
+                className={`relative px-3 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all rounded-md after:absolute after:bottom-1 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-orange-500 after:transition-opacity ${
                   active === link 
-                    ? "bg-orange-500 text-white" 
+                    ? "text-orange-500 after:opacity-100" 
                     : "text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-900"
-                }`}
+                } ${active === link ? "" : "after:opacity-0"}`}
               >
                 {link}
               </a>
@@ -158,11 +158,11 @@ const Navbar = () => {
                   >
                     <a
                       href={`#${link.toLowerCase()}`}
-                      className={`flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors ${
+                      className={`relative flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors after:absolute after:bottom-2 after:left-4 after:h-0.5 after:w-10 after:rounded-full after:bg-orange-500 after:transition-opacity ${
                         active === link 
-                          ? "bg-orange-500 text-white" 
+                          ? "text-orange-500 after:opacity-100" 
                           : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white"
-                      }`}
+                      } ${active === link ? "" : "after:opacity-0"}`}
                     >
                       {link}
                     </a>

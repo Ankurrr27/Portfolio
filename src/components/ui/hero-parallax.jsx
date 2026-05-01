@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 export const HeroParallax = ({ products }) => {
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
+  const thirdRow = products.slice(10, 15);
   const ref = React.useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -23,7 +24,7 @@ export const HeroParallax = ({ products }) => {
   return (
     <div
       ref={ref}
-      className="min-h-[900px] md:h-[180vh] pt-20 md:pt-10 pb-20 md:pb-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="min-h-[1180px] md:h-[220vh] pt-20 md:pt-10 pb-20 md:pb-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -40,9 +41,14 @@ export const HeroParallax = ({ products }) => {
             <ProductCard product={product} translate={translateX} key={`${product.title}-${idx}`} />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row mb-8 md:mb-10 space-x-4 md:space-x-10">
+        <motion.div className="flex flex-row mb-4 md:mb-10 space-x-4 md:space-x-10">
           {secondRow.map((product, idx) => (
             <ProductCard product={product} translate={translateXReverse} key={`${product.title}-${idx}-second`} />
+          ))}
+        </motion.div>
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-4 md:space-x-10 mb-8 md:mb-10">
+          {thirdRow.map((product, idx) => (
+            <ProductCard product={product} translate={translateX} key={`${product.title}-${idx}-third`} />
           ))}
         </motion.div>
       </motion.div>
