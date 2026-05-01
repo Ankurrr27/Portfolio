@@ -134,6 +134,7 @@ const Home = ({ totalViews = 0 }) => {
           friction={0.99}
           wallBounce={0.8}
           followCursor={true}
+          enableTouchInteractions={false}
           minSize={0.3}
           maxSize={0.65}
           colors={[0xff6600, 0x333333, 0x111111]}
@@ -185,14 +186,15 @@ const Home = ({ totalViews = 0 }) => {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.25 }}
-              className="flex w-full flex-row justify-start sm:justify-center gap-2 sm:gap-4 pt-12 sm:w-auto"
+              className="order-3 flex w-full flex-row justify-start gap-2 pt-6 sm:order-none sm:w-auto sm:justify-center sm:gap-4 sm:pt-12"
             >
               <MagneticButton>
                 <a
                   href="#projects"
-                  className="inline-flex h-11 sm:h-12 items-center justify-center rounded-lg bg-orange-500 px-4 sm:px-10 text-[11px] sm:text-sm font-bold text-white transition-all hover:bg-orange-600 active:scale-95 whitespace-nowrap"
+                  className="inline-flex h-11 sm:h-12 w-full items-center justify-center rounded-lg bg-orange-500 px-3 sm:px-10 text-xs sm:text-sm font-bold text-white transition-all hover:bg-orange-600 active:scale-95 whitespace-nowrap"
                 >
-                  See the work
+                  <span className="sm:hidden">See work</span>
+                  <span className="hidden sm:inline">See the work</span>
                   <ChevronRight size={14} className="ml-1.5 transition-transform group-hover:translate-x-1" />
                 </a>
               </MagneticButton>
@@ -202,24 +204,25 @@ const Home = ({ totalViews = 0 }) => {
                   href={p.linkedinUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 sm:h-12 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-4 sm:px-10 text-[11px] sm:text-sm font-bold text-zinc-300 transition-all hover:border-zinc-700 active:scale-95 whitespace-nowrap"
+                  className="inline-flex h-11 sm:h-12 w-full items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-3 sm:px-10 text-xs sm:text-sm font-bold text-zinc-300 transition-all hover:border-zinc-700 active:scale-95 whitespace-nowrap"
                 >
-                  Start a conversation
+                  <span className="sm:hidden">Contact</span>
+                  <span className="hidden sm:inline">Start a conversation</span>
                   <ArrowUpRight size={14} className="ml-1.5" />
                 </a>
               </MagneticButton>
             </motion.div>
 
-            <div className="grid grid-cols-4 items-start justify-between gap-1 sm:flex sm:flex-row sm:justify-center sm:gap-x-12 sm:gap-y-6 pt-10 border-t border-white/5 w-full max-w-5xl">
+            <div className="order-2 grid w-full max-w-5xl grid-cols-4 items-start justify-between gap-1 border-t border-white/5 pt-8 sm:order-none sm:flex sm:flex-row sm:justify-center sm:gap-x-12 sm:gap-y-6 sm:pt-10">
               {[
                 { label: "Projects Worked", value: "10+" },
                 { label: "GitHub Repos", value: "25+" },
                 { label: "Total Contributions", value: "500+" },
                 { label: "Problems Solved", value: "600+" },
               ].map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center sm:items-start group px-1 sm:px-0">
-                  <span className="text-lg sm:text-3xl font-black text-white tracking-tighter group-hover:text-orange-500 transition-colors">{stat.value}</span>
-                  <span className="text-[7px] sm:text-[10px] leading-tight sm:leading-normal font-bold uppercase tracking-widest sm:tracking-[0.2em] text-zinc-500 group-hover:text-zinc-300 transition-colors text-center sm:text-left mt-1">{stat.label}</span>
+                <div key={stat.label} className="group flex min-w-0 flex-col items-center justify-start px-1 sm:items-start sm:px-0">
+                  <span className="text-xl font-black tracking-tighter text-white transition-colors group-hover:text-orange-500 sm:text-3xl">{stat.value}</span>
+                  <span className="mt-1 max-w-full text-center text-[8px] font-bold uppercase leading-tight tracking-[0.06em] text-zinc-500 transition-colors group-hover:text-zinc-300 sm:text-left sm:text-[10px] sm:tracking-[0.2em]">{stat.label}</span>
                 </div>
               ))}
             </div>

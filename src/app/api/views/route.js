@@ -35,17 +35,28 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    // Ensure the database URL is configured
     if (!process.env.DATABASE_URL) {
-      return NextResponse.json(
-        { error: "DATABASE_URL is missing." },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "DATABASE_URL is missing." }, { status: 500 });
     }
 
-    const body = await request.json().catch(() => ({}));
+    // Verify Prisma can connect – if not, fallback gracefully
+    try {
+      await prisma.$connect();
+    } catch (connErr) {
+      console.warn('Prisma connection failed, skipping view recording:', connErr);
+      const totalViews = await prisma.siteView.count().catch(() => 0);
+      return NextResponse.json({ totalViews, source: 'fallback' });
+    }
+
+    let body = {};
+    try {
+      body = await request.json();
+    } catch {
+      // ignore JSON parse errors
+    }
     const path = typeof body?.path === "string" && body.path ? body.path : "/";
-    const sessionId =
-      typeof body?.sessionId === "string" && body.sessionId ? body.sessionId : null;
+    const sessionId = typeof body?.sessionId === "string" && body.sessionId ? body.sessionId : null;
     const userAgent = request.headers.get("user-agent");
     const referrer = request.headers.get("referer");
     const forwardedFor = request.headers.get("x-forwarded-for");
@@ -62,16 +73,9 @@ export async function POST(request) {
     });
 
     const totalViews = await prisma.siteView.count();
-
-    return NextResponse.json({
-      totalViews,
-      source: "database",
-    });
+    return NextResponse.json({ totalViews, source: "database" });
   } catch (error) {
     console.error("Unable to record view:", error);
-    return NextResponse.json(
-      { error: "Unable to record view." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Unable to record view." }, { status: 500 });
   }
 }

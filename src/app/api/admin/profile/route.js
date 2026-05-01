@@ -58,7 +58,10 @@ export async function PUT(request) {
       cgpa: p.cgpa,
       leetcodeSolved: p.leetcodeSolved,
       gfgSolved: p.gfgSolved,
-      socialLinks: p.socialLinks || [],
+      // socialLinks is in the schema (Json?) but requires `npx prisma generate`
+      // (stop dev server first) before the client recognises it.
+      // Uncomment the line below after regenerating:
+      // socialLinks: p.socialLinks || [],
     };
 
     const writeProfile = (data) => {

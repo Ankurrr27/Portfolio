@@ -258,6 +258,7 @@ function S(e) {
     nPosition: new r(),
     hover: false,
     touching: false,
+    enableTouchInteractions: true,
     onEnter() {},
     onMove() {},
     onClick() {},
@@ -274,8 +275,8 @@ function S(e) {
 
         document.body.addEventListener('touchstart', TouchStart, { passive: false });
         document.body.addEventListener('touchmove', TouchMove, { passive: false });
-        document.body.addEventListener('touchend', TouchEnd, { passive: false });
-        document.body.addEventListener('touchcancel', TouchEnd, { passive: false });
+        document.body.addEventListener('touchend', TouchEnd);
+        document.body.addEventListener('touchcancel', TouchEnd);
 
         R = true;
       }
@@ -344,13 +345,15 @@ function L() {
 
 function TouchStart(e) {
   if (e.touches.length > 0) {
-    e.preventDefault();
     A.x = e.touches[0].clientX;
     A.y = e.touches[0].clientY;
+    let handledTouch = false;
 
     for (const [elem, t] of b) {
+      if (!t.enableTouchInteractions) continue;
       const rect = elem.getBoundingClientRect();
       if (D(rect)) {
+        handledTouch = true;
         t.touching = true;
         P(t, rect);
         if (!t.hover) {
@@ -360,20 +363,24 @@ function TouchStart(e) {
         t.onMove(t);
       }
     }
+
+    if (handledTouch) e.preventDefault();
   }
 }
 
 function TouchMove(e) {
   if (e.touches.length > 0) {
-    e.preventDefault();
     A.x = e.touches[0].clientX;
     A.y = e.touches[0].clientY;
+    let handledTouch = false;
 
     for (const [elem, t] of b) {
+      if (!t.enableTouchInteractions) continue;
       const rect = elem.getBoundingClientRect();
       P(t, rect);
 
       if (D(rect)) {
+        handledTouch = true;
         if (!t.hover) {
           t.hover = true;
           t.touching = true;
@@ -384,6 +391,8 @@ function TouchMove(e) {
         t.onMove(t);
       }
     }
+
+    if (handledTouch) e.preventDefault();
   }
 }
 
@@ -645,6 +654,7 @@ class Z extends d {
 }
 
 function createBallpit(e, t = {}) {
+  const enableTouchInteractions = t.enableTouchInteractions ?? true;
   const i = new x({
     canvas: e,
     size: 'parent',
@@ -662,12 +672,13 @@ function createBallpit(e, t = {}) {
   const r = new a();
   let c = false;
 
-  e.style.touchAction = 'none';
+  e.style.touchAction = enableTouchInteractions ? 'none' : 'pan-y';
   e.style.userSelect = 'none';
   e.style.webkitUserSelect = 'none';
 
   const h = S({
     domElement: e,
+    enableTouchInteractions,
     onMove() {
       n.setFromCamera(h.nPosition, i.camera);
       i.camera.getWorldDirection(o.normal);
@@ -712,7 +723,7 @@ function createBallpit(e, t = {}) {
   };
 }
 
-const Ballpit = ({ className = '', followCursor = true, ...props }) => {
+const Ballpit = ({ className = '', followCursor = true, enableTouchInteractions = true, ...props }) => {
   const canvasRef = useRef(null);
   const spheresInstanceRef = useRef(null);
 
@@ -720,7 +731,7 @@ const Ballpit = ({ className = '', followCursor = true, ...props }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    spheresInstanceRef.current = createBallpit(canvas, { followCursor, ...props });
+    spheresInstanceRef.current = createBallpit(canvas, { followCursor, enableTouchInteractions, ...props });
 
     return () => {
       if (spheresInstanceRef.current) {
