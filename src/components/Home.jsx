@@ -167,7 +167,7 @@ const Home = ({ totalViews = 0 }) => {
               <span className="sm:hidden"> and</span> I'm a
               <br />
               <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
-                <span className="text-white">{roleText || "\u00A0"}</span>
+                <span className="text-orange-500">{roleText || "\u00A0"}</span>
                 <span className="inline-block h-[1em] w-[2px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] bg-orange-500" />
               </span>
             </motion.h1>

@@ -16,34 +16,35 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
       }`}
       style={{ transitionDelay: `${index * 80}ms` }}
     >
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-28 shrink-0 border-b md:border-b-0 md:border-r border-zinc-800 bg-zinc-950 p-5 md:p-6 flex items-start md:justify-center">
-          {logoUrl ? (
-            <img src={logoUrl} alt={organization} className="w-14 h-14 object-contain opacity-90" />
-          ) : (
-            <div className="icon-box">
-              <ShieldCheck size={22} />
+      <div className="flex flex-col w-full">
+        {/* Card Header ("Navbar" style) */}
+        <div className="flex flex-row items-center gap-4 border-b border-zinc-800/50 bg-zinc-950/50 p-5 md:px-8 md:py-6">
+          <div className="shrink-0">
+            {logoUrl ? (
+              <img src={logoUrl} alt={organization} className="w-12 h-12 md:w-14 md:h-14 object-contain opacity-90" />
+            ) : (
+              <div className="icon-box flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-lg bg-zinc-900 border border-zinc-800">
+                <ShieldCheck size={20} className="text-zinc-400" />
+              </div>
+            )}
+          </div>
+          <div>
+            <div className="flex items-center gap-3 flex-wrap">
+              <h3 className="text-lg md:text-2xl font-bold tracking-tight leading-tight text-white break-words">
+                {organization}
+              </h3>
+              {organizationUrl && (
+                <a href={organizationUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-orange-500 transition-colors">
+                  <ExternalLink size={18} />
+                </a>
+              )}
             </div>
-          )}
+            <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-500">{period}</p>
+          </div>
         </div>
 
-        <div className="flex-1 p-5 md:p-8">
-          <div className="mb-6 md:mb-8 flex flex-col md:flex-row md:items-start justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="text-lg md:text-2xl font-semibold tracking-tight leading-tight text-white break-words">
-                  {organization}
-                </h3>
-                {organizationUrl && (
-                  <a href={organizationUrl} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-orange-500 transition-colors">
-                    <ExternalLink size={18} />
-                  </a>
-                )}
-              </div>
-              <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">{period}</p>
-            </div>
-          </div>
-
+        {/* Roles / Posts Section */}
+        <div className="p-5 md:p-8">
           <div className="relative space-y-6 md:space-y-8 pl-5 md:pl-6">
             {roles.length > 1 && <div className="absolute left-[7px] top-2 bottom-2 w-px bg-zinc-800" />}
 
@@ -127,7 +128,7 @@ const Responsibilities = () => {
           ],
         },
       ],
-      logoUrl: "/images/iiitians.jpg",
+      logoUrl: "/images/iiitians_white.png",
     },
     {
       id: "techknow",

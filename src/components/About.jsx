@@ -21,6 +21,7 @@ const fallbackProfile = {
 
 const About = ({ totalViews = 0 }) => {
   const [profile, setProfile] = useState(null);
+  const [galleryItems, setGalleryItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isBioExpanded, setIsBioExpanded] = useState(false);
@@ -28,18 +29,23 @@ const About = ({ totalViews = 0 }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/profile");
-        const data = await res.json();
-        if (data.profile) setProfile(data.profile);
+        const [profileRes, galleryRes] = await Promise.all([
+          fetch("/api/profile"),
+          fetch("/api/gallery")
+        ]);
+        const profileData = await profileRes.json();
+        const galleryData = await galleryRes.json();
+        if (profileData.profile) setProfile(profileData.profile);
+        if (galleryData.items) setGalleryItems(galleryData.items);
       } catch (err) {
-        console.error("About: Error fetching profile", err);
+        console.error("About: Error fetching data", err);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchProfile();
+    fetchData();
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -62,10 +68,18 @@ const About = ({ totalViews = 0 }) => {
     { icon: FaInstagram, url: p.instagramUrl || fallbackProfile.instagramUrl, label: "Instagram", color: "text-[#E4405F]" },
   ];
 
-  const images = [
-    p.aboutImageUrl || fallbackProfile.aboutImageUrl,
-    "/images/Ankur_Alora_1.0_Cropped.jpg",
-  ].filter((image, index, allImages) => image && allImages.indexOf(image) === index);
+  const images = React.useMemo(() => {
+    let urls = [];
+    if (galleryItems && galleryItems.length > 0) {
+      urls = galleryItems.map(item => item.url);
+    } else {
+      urls = [
+        p.aboutImageUrl || fallbackProfile.aboutImageUrl,
+        "/images/Ankur_Alora_1.0_Cropped.jpg",
+      ];
+    }
+    return urls.filter((image, index, allImages) => image && allImages.indexOf(image) === index);
+  }, [galleryItems, p.aboutImageUrl]);
 
   useEffect(() => {
     if (images.length <= 1 || isCarouselPaused) return undefined;
@@ -159,8 +173,8 @@ const About = ({ totalViews = 0 }) => {
           onBlur={() => setIsCarouselPaused(false)}
         >
           <ProfileCard
-            avatarUrl={images[carouselIndex]}
-            miniAvatarUrl={images[carouselIndex]}
+            avatarUrl={images[carouselIndex] || fallbackProfile.aboutImageUrl}
+            miniAvatarUrl={p.profileImageUrl || p.aboutImageUrl || fallbackProfile.aboutImageUrl}
             name={p.fullName || "Ankur"}
             title="IIIT Kota - CSE - B.Tech"
             handle="ankurrr27"
