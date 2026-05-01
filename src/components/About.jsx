@@ -9,7 +9,7 @@ import EditSectionButton from "./admin/EditSectionButton";
 import ProfileCard from "./ui/ProfileCard";
 
 const fallbackProfile = {
-  bio: "B.Tech CSE @ IIIT Kota. Full-stack developer focused on scalable architecture and production-grade software. Specialized in building high-performance web systems and complex algorithm engineering.",
+  bio: "I am Ankur Singh, a frontend developer and UI/UX designer currently studying B.Tech CSE at IIIT Kota. As a core developer at the IIITians Network, I specialize in building high-performance web applications and scalable software systems.",
   aboutImageUrl: "/images/Ankur_Sem1_1.jpg",
   githubUrl: "https://github.com/Ankurrr27",
   linkedinUrl: "https://linkedin.com/in/ankur-personal",
@@ -115,7 +115,7 @@ const About = ({ totalViews = 0 }) => {
             </div>
 
             <h2 className="section-title">
-              What Ankur do ?
+              Ankur Singh - Web Developer & IIIT Kota Student
             </h2>
 
             <p
