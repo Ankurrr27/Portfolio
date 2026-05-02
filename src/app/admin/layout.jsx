@@ -51,7 +51,6 @@ function AdminLayoutContent({ children }) {
     { name: "Responsibilities", href: "/admin/responsibilities", icon: Briefcase },
     { name: "Education", href: "/admin/education", icon: GraduationCap },
     { name: "Skills", href: "/admin/skills", icon: Code2 },
-    { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
     { name: "Profile", href: "/admin/profile", icon: UserCircle },
   ];
 
@@ -68,7 +67,7 @@ function AdminLayoutContent({ children }) {
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-[100] w-64 h-screen bg-white border-r border-slate-200 
+        fixed inset-y-0 left-0 z-[100] w-64 h-screen bg-white dark:bg-zinc-950 border-r border-slate-200 dark:border-zinc-800
         transition-transform duration-300 ease-in-out lg:translate-x-0 lg:sticky lg:top-0
         flex flex-col
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -76,7 +75,7 @@ function AdminLayoutContent({ children }) {
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex items-center gap-3 mb-10 pl-2">
              <div className="w-8 h-8 rounded-md bg-orange-500 flex items-center justify-center text-white font-bold shadow-sm">A</div>
-             <h2 className="text-lg font-bold text-slate-900 tracking-tight">Admin Console</h2>
+             <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Admin Console</h2>
           </div>
 
           <nav className="flex flex-col gap-2 w-full">
@@ -91,7 +90,7 @@ function AdminLayoutContent({ children }) {
                     group flex items-center justify-between w-full px-4 py-2.5 rounded-md transition-all duration-200 font-medium text-sm
                     ${isActive 
                       ? "bg-orange-500/10 text-orange-600 dark:text-orange-400" 
-                      : "text-slate-600 hover:text-orange-600 hover:bg-slate-50 dark:hover:bg-zinc-900"}
+                      : "text-slate-600 dark:text-zinc-400 hover:text-orange-600 hover:bg-slate-50 dark:hover:bg-zinc-900"}
                   `}
                 >
                   <div className="flex items-center gap-3">
@@ -112,7 +111,7 @@ function AdminLayoutContent({ children }) {
           </div>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-md hover:bg-slate-50 border border-slate-200 text-slate-600 transition-all duration-200 text-sm font-medium"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-md hover:bg-slate-50 dark:hover:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 transition-all duration-200 text-sm font-medium"
           >
             <LogOut size={16} />
             <span>Sign Out</span>
@@ -126,7 +125,7 @@ function AdminLayoutContent({ children }) {
         <header className="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
            <div className="flex items-center gap-3">
              <div className="w-8 h-8 rounded-md bg-orange-500 flex items-center justify-center text-white font-bold">A</div>
-             <h2 className="text-lg font-bold text-slate-900 tracking-tight">Admin</h2>
+             <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Admin</h2>
            </div>
            <div className="flex items-center gap-2">
              <ThemeToggle />

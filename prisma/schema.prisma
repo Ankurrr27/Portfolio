@@ -93,7 +93,7 @@ model Achievement {
   description  String?
   achievementUrl String?
   badgeImageUrl String?
-  category     String?
+  category     String[]
   dateLabel    String?
   featured     Boolean  @default(true)
   displayOrder Int      @default(0)

@@ -9,7 +9,7 @@ function normalizeAchievements(items = []) {
     description: item.description || null,
     achievementUrl: item.achievementUrl || null,
     badgeImageUrl: item.badgeImageUrl || null,
-    category: item.category || null,
+    category: Array.isArray(item.category) ? item.category : (item.category ? [item.category] : ["Hackathons"]),
     dateLabel: item.dateLabel || null,
     featured: item.featured ?? true,
     displayOrder: index,

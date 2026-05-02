@@ -19,30 +19,30 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
     >
       <div className="flex flex-col w-full">
         {/* Card Header ("Navbar" style) */}
-        <div className="flex flex-row items-center justify-between gap-4 border-b border-zinc-800/50 bg-zinc-950/50 p-5 md:px-8 md:py-6">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-row items-center justify-between gap-3 border-b border-zinc-800/50 bg-zinc-950/50 p-4 md:px-8 md:py-6">
+          <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
             <div className="shrink-0">
               {logoUrl ? (
-                <img src={logoUrl} alt={organization} className="w-12 h-12 md:w-14 md:h-14 object-contain opacity-90" />
+                <img src={logoUrl} alt={organization} className="w-10 h-10 md:w-14 md:h-14 object-contain opacity-90 rounded-lg" />
               ) : (
-                <div className="icon-box flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-lg bg-zinc-900 border border-zinc-800">
-                  <ShieldCheck size={20} className="text-zinc-400" />
+                <div className="icon-box flex items-center justify-center w-10 h-10 md:w-14 md:h-14 rounded-lg bg-zinc-900 border border-zinc-800">
+                  <ShieldCheck size={18} className="text-zinc-400" />
                 </div>
               )}
             </div>
-            <div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="text-lg md:text-2xl font-bold tracking-tight leading-tight text-white break-words">
-                  {organization}
-                </h3>
-              </div>
-              <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-500">{period}</p>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-base md:text-2xl font-bold tracking-tight leading-tight text-white truncate md:whitespace-normal">
+                {organization}
+              </h3>
+              <p className="mt-0.5 text-[9px] md:text-xs font-bold uppercase tracking-widest text-zinc-500 truncate md:whitespace-normal opacity-80">
+                {period}
+              </p>
             </div>
           </div>
 
           {/* Social Handles */}
           {socials && socials.length > 0 && (
-            <div className="flex items-center gap-2 md:gap-3 shrink-0">
+            <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
               {socials.map((social, idx) => {
                 const Icon = social.icon;
                 return (
@@ -51,10 +51,10 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-1.5 md:p-2 rounded-full bg-zinc-900 border border-zinc-800 transition-all hover:scale-110 hover:bg-zinc-800 ${social.color || 'text-zinc-400'}`}
+                    className={`p-1.5 md:p-2 rounded-full bg-zinc-900/80 border border-zinc-800 transition-all hover:scale-110 hover:bg-zinc-800 hover:border-zinc-700 ${social.color || 'text-zinc-400'}`}
                     aria-label={social.name}
                   >
-                    <Icon size={16} className="md:w-5 md:h-5" />
+                    <Icon size={14} className="md:w-5 md:h-5" />
                   </a>
                 );
               })}
@@ -73,7 +73,7 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
 
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-wrap items-center gap-3">
-                    <h4 className="text-base md:text-lg font-semibold text-zinc-100">{role.title}</h4>
+                    <h4 className="text-[15px] md:text-lg font-semibold text-zinc-100">{role.title}</h4>
                     <span className="chip">{role.period}</span>
                   </div>
 

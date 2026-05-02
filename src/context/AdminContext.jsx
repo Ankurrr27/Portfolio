@@ -9,7 +9,12 @@ export function AdminProvider({ children }) {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const authInitialized = React.useRef(false);
+
   useEffect(() => {
+    if (authInitialized.current) return;
+    authInitialized.current = true;
+
     const savedKey = window.localStorage.getItem("portfolio_admin_key");
     if (savedKey) {
       setAdminKey(savedKey);
@@ -18,6 +23,7 @@ export function AdminProvider({ children }) {
       setIsLoading(false);
     }
   }, []);
+
 
   const checkAuth = async (key) => {
     try {

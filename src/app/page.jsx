@@ -10,7 +10,7 @@ import Education from '../components/Education';
 import Responsibilities from '../components/Responsibilities';
 import Footer from '../components/Footer';
 import Achievements from '../components/Achievements';
-import Gallery from '../components/Gallery';
+
 
 function getSessionId() {
   if (typeof window === 'undefined') return null;
@@ -70,7 +70,7 @@ const App = () => {
       <Skills />
       <Projects />
       <Achievements />
-      <Gallery />
+
       <Responsibilities />
       <Education />
       <Footer totalViews={totalViews} />

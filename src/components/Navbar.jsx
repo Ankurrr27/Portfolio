@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import GlassSurface from "./ui/GlassSurface";
 
-const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Gallery", "Responsibilities", "Education"];
+const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Responsibilities", "Education"];
 
 const WhatsNewButton = () => {
   const { resolvedTheme } = useTheme();

@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { Trophy, ArrowUpRight } from "lucide-react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Trophy, ArrowUpRight, ChevronLeft, ChevronRight, Filter } from "lucide-react";
 import { SiLeetcode, SiGeeksforgeeks, SiGithub } from "react-icons/si";
+import { motion, AnimatePresence } from "framer-motion";
 import EditSectionButton from "./admin/EditSectionButton";
+import { fallbackAchievements } from "../data/achievements";
 
 
 const icons = {
@@ -12,144 +14,386 @@ const icons = {
   gfg: <SiGeeksforgeeks />,
 };
 
-// Brand colors per platform (Zinc Themed)
 const platformColors = {
   github:   { bg: "bg-zinc-900",  text: "text-white",        icon: "text-zinc-100", border: "border-zinc-800" },
   leetcode: { bg: "bg-orange-600", text: "text-white",        icon: "text-white",    border: "border-orange-500" },
   gfg:      { bg: "bg-emerald-700",  text: "text-white",        icon: "text-white",    border: "border-emerald-600" },
 };
 
-// Zinc-aligned palette
-const categoryColors = [
-  { border: "border-zinc-800", bg: "bg-zinc-900", icon: "bg-zinc-800", text: "text-zinc-100", desc: "text-zinc-400", tag: "text-zinc-400 bg-zinc-800/50" },
-  { border: "border-zinc-800", bg: "bg-zinc-900", icon: "bg-zinc-800", text: "text-zinc-100", desc: "text-zinc-400", tag: "text-zinc-400 bg-zinc-800/50" },
+const categories = [
+  "All",
+  "Hackathons",
+  "Certificates",
+  "Events",
+  "Position of Responsibilities",
+  "Work"
 ];
 
-
-
-import { fallbackAchievements } from "../data/achievements";
-
 const Achievements = () => {
-  const [achievements] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedMilestone, setSelectedMilestone] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const sectionRef = useRef(null);
+
   const [codingStats] = useState([
     { label: "Repositories", count: "35+", detail: "Open Source Projects", icon: "github" },
     { label: "Problems Solved", count: "400+", detail: "Data Structures & Algorithms", icon: "leetcode" },
     { label: "Coding Score", count: "1200+", detail: "Platform Rank", icon: "gfg" }
   ]);
-  const [isLoading, setIsLoading] = useState(false);
-  const sectionRef = useRef(null);
-  
-  // Static implementation - no dynamic fetching as requested
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/achievements");
+        const data = await res.json();
+        const items = data.achievements || [];
+        
+        // If empty, use fallbacks but mapped to the carousel structure
+        const finalItems = items.length > 0 ? items : [
+            { id: "1", title: "Smart India Hackathon Finalist", category: "Hackathons", description: "Developed an AI-driven waste management solution.", url: "/images/hero_bg.png" },
+            { id: "2", title: "AWS Certified Developer", category: "Certificates", description: "Validated expertise in developing and maintaining AWS-based applications.", url: "/images/savara_bg.png" },
+            { id: "3", title: "Vice President - IIITians Network", category: "Position of Responsibilities", description: "Leading a community of 30,000+ students across India.", url: "/images/iiitians_white.png" }
+        ];
+
+        setAchievements(finalItems);
+        setFilteredItems(finalItems);
+      } catch (err) {
+        console.error("Achievements: Error fetching", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategory === "All") {
+      setFilteredItems(achievements);
+    } else {
+      setFilteredItems(achievements.filter(a => {
+        const cats = Array.isArray(a.category) ? a.category : [a.category];
+        return cats.includes(selectedCategory);
+      }));
+    }
+    setCurrentIndex(0);
+  }, [selectedCategory, achievements]);
+
+  const nextSlide = useCallback(() => {
+    if (filteredItems.length === 0) return;
+    setCurrentIndex((prev) => (prev + 1) % filteredItems.length);
+  }, [filteredItems.length]);
+
+  const prevSlide = useCallback(() => {
+    if (filteredItems.length === 0) return;
+    setCurrentIndex((prev) => (prev - 1 + filteredItems.length) % filteredItems.length);
+  }, [filteredItems.length]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="section-shell overflow-hidden"
-      id="achievements"
-    >
+    <section ref={sectionRef} className="section-shell overflow-hidden" id="achievements">
       <EditSectionButton href="/admin/achievements" label="Edit Achievements" />
       
       <div className="section-container relative z-10">
-
-        {/* Engineering Header */}
+        {/* Statistics Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 md:gap-6 mb-10 md:mb-12">
            <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
                  <Trophy size={16} className="text-orange-500" />
-                 <span className="text-xs font-semibold text-zinc-300 uppercase tracking-wide">Verification System</span>
+                 <span className="text-xs font-semibold text-zinc-300 uppercase tracking-wide">Milestone Tracker</span>
               </div>
-              <h2 className="section-title">
+              <h2 className="section-title text-white">
                 Major <br />
-                <span className="text-orange-500">
-                  Milestones.
-                </span>
+                Milestones.
               </h2>
            </div>
-           <p className="section-copy max-w-sm md:text-right">
-              Validated technical recognition records and competitive programming milestones.
+           <p className="section-copy max-w-sm md:text-right text-zinc-400">
+              Validated technical recognition records, competitive programming milestones, and leadership roles.
            </p>
         </div>
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="p-5 md:p-8 rounded-lg md:rounded-xl border border-zinc-800 bg-zinc-900/50 flex flex-col justify-between shadow-sm relative overflow-hidden h-32 animate-pulse">
-                <div className="w-20 h-3 bg-zinc-800 rounded mb-4" />
-                <div className="w-16 h-10 bg-zinc-800 rounded mb-2" />
-                <div className="w-24 h-3 bg-zinc-800 rounded" />
-              </div>
-            ))}
-          </div>
-        ) : codingStats.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {codingStats.map((stat, i) => {
-              const pc = platformColors[stat.icon] || { bg: "bg-zinc-800", text: "text-white", icon: "text-white", border: "border-zinc-700" };
-              return (
-                <div key={i} className={`p-5 md:p-8 rounded-lg md:rounded-xl border ${pc.border} ${pc.bg} flex items-center justify-between group shadow-sm hover:shadow-xl transition-all duration-300`}>
-                   <div className="space-y-1">
-                      <p className={`text-xs font-semibold uppercase tracking-wider ${pc.text} opacity-70`}>{stat.label}</p>
-                      <h4 className={`text-4xl font-bold tracking-tight ${pc.text}`}>{stat.count}</h4>
-                      <p className={`text-sm font-medium ${pc.text} opacity-80`}>{stat.detail}</p>
-                   </div>
-                   <div className={`text-5xl ${pc.icon} opacity-30 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500`}>
-                      {icons[stat.icon] || <Trophy />}
-                   </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="p-5 md:p-8 rounded-lg md:rounded-xl bg-zinc-900 border border-zinc-800 flex flex-col h-full shadow-lg relative overflow-hidden min-h-[260px] md:min-h-[300px] animate-pulse">
-                 <div className="flex justify-between items-start mb-6">
-                    <div className="w-10 h-10 bg-zinc-800 rounded-xl" />
-                    <div className="w-16 h-6 bg-zinc-800 rounded-lg" />
+        {/* Coding Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {codingStats.map((stat, i) => {
+            const pc = platformColors[stat.icon] || { bg: "bg-zinc-800", text: "text-white", icon: "text-white", border: "border-zinc-700" };
+            return (
+              <div key={i} className={`p-6 md:p-8 rounded-2xl border ${pc.border} ${pc.bg} flex items-center justify-between group transition-all duration-500`}>
+                 <div className="space-y-1">
+                    <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${pc.text} opacity-60`}>{stat.label}</p>
+                    <h4 className={`text-4xl font-black tracking-tighter ${pc.text}`}>{stat.count}</h4>
+                    <p className={`text-xs font-medium ${pc.text} opacity-80`}>{stat.detail}</p>
                  </div>
-                 <div className="w-16 h-3 bg-zinc-800 rounded mb-4" />
-                 <div className="w-3/4 h-6 bg-zinc-800 rounded mb-4" />
-                 <div className="w-full h-3 bg-zinc-800 rounded mb-2" />
-                 <div className="w-5/6 h-3 bg-zinc-800 rounded mb-8" />
-                 <div className="w-32 h-4 bg-zinc-800 rounded mt-auto" />
+                 <div className={`text-5xl ${pc.icon} opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700`}>
+                    {icons[stat.icon] || <Trophy />}
+                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {achievements.map((a, i) => {
-              const palette = categoryColors[i % categoryColors.length] || categoryColors[0];
-              return (
-                <div key={a.id || i} className="group p-5 md:p-8 rounded-lg md:rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 transition-all duration-300 flex flex-col h-full shadow-lg">
-                   <div className="flex justify-between items-start gap-4 mb-5 md:mb-6">
-                      <div className="p-3 rounded-lg md:rounded-xl bg-zinc-800 text-orange-500 group-hover:scale-105 transition-transform duration-300 border border-zinc-700 shrink-0">
-                         <Trophy size={20} />
-                      </div>
-                      <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wide bg-zinc-800 border border-zinc-700 px-2.5 py-1 rounded-md text-right">
-                         {a.dateLabel || "Archive"}
-                      </span>
-                   </div>
-                   
-                   <p className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-2 text-zinc-500`}>{a.category || "Merit"}</p>
-                   <h4 className="text-lg md:text-xl font-bold text-white mb-3 leading-tight">
-                      {a.title}
-                   </h4>
-                   
-                   <p className="text-zinc-400 text-sm leading-relaxed flex-1 mb-6 md:mb-8">
-                      {a.description}
-                   </p>
-                   
-                   {a.achievementUrl && (
-                     <a href={a.achievementUrl} target="_blank" rel="noopener" className="flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-orange-500 group/link transition-colors mt-auto">
-                        View Verification <ArrowUpRight size={16} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                     </a>
-                   )}
-                </div>
-              );
-            })}
-          </div>
-        )}
+            );
+          })}
+        </div>
+
+        {/* Categories Selection - High Contrast Pill Design */}
+        <div className="mb-12">
+            <div className="flex flex-wrap items-center gap-3">
+                {categories.map((cat) => {
+                    const isActive = selectedCategory === cat;
+                    return (
+                        <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
+                                isActive 
+                                ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20" 
+                                : "bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
+                            }`}
+                        >
+                            {cat}
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
+
+        {/* Achievement Carousel (Former Gallery) */}
+        <div className="relative w-full max-w-5xl mx-auto h-[440px] md:h-[580px] flex items-center justify-center [perspective:1000px]">
+          {filteredItems.length > 0 ? (
+            <AnimatePresence initial={false}>
+                {filteredItems.map((item, idx) => {
+                let diff = idx - currentIndex;
+                const halfLen = filteredItems.length / 2;
+                if (diff > halfLen) diff -= filteredItems.length;
+                else if (diff < -halfLen) diff += filteredItems.length;
+
+                if (Math.abs(diff) > 2) return null;
+
+                const isCenter = diff === 0;
+                const isLeft = diff === -1;
+                const isRight = diff === 1;
+
+                let xOffset = 0;
+                let yOffset = 0;
+                let scale = 0.6;
+                let zIndex = 0;
+                let opacity = 0;
+                let rotateY = 0;
+
+                if (isMobile) {
+                    if (isCenter) { xOffset = 0; yOffset = -25; scale = 1; zIndex = 30; opacity = 1; rotateY = 0; }
+                    else if (isLeft) { xOffset = -35; yOffset = 30; scale = 0.65; zIndex = 20; opacity = 0.6; rotateY = 15; }
+                    else if (isRight) { xOffset = 35; yOffset = 30; scale = 0.65; zIndex = 20; opacity = 0.6; rotateY = -15; }
+                } else {
+                    if (isCenter) { xOffset = 0; yOffset = 0; scale = 1; zIndex = 30; opacity = 1; rotateY = 0; }
+                    else if (isLeft) { xOffset = -45; yOffset = 0; scale = 0.75; zIndex = 20; opacity = 0.4; rotateY = 8; }
+                    else if (isRight) { xOffset = 45; yOffset = 0; scale = 0.75; zIndex = 20; opacity = 0.4; rotateY = -8; }
+                }
+
+                return (
+                    <motion.div
+                    key={item.id || idx}
+                    className="absolute flex flex-col w-[320px] sm:w-[440px] md:w-[620px] lg:w-[720px] h-[360px] sm:h-[420px] md:h-[480px] lg:h-[540px] rounded-[24px] md:rounded-[32px] overflow-hidden cursor-pointer border border-zinc-800/50 bg-zinc-950 group"
+                    initial={false}
+                    animate={{
+                        x: `${xOffset}%`,
+                        y: `${yOffset}%`,
+                        scale: scale,
+                        zIndex: zIndex,
+                        opacity: opacity,
+                        rotateY: rotateY
+                    }}
+                    whileHover={isCenter ? { 
+                        y: isMobile ? yOffset - 4 : yOffset - 12,
+                        scale: 1.03,
+                        z: 50
+                    } : {}}
+                    transition={{ 
+                        type: "spring", 
+                        stiffness: 120, 
+                        damping: 20,
+                        mass: 1
+                    }}
+                    onClick={() => {
+                        if (isLeft) prevSlide();
+                        if (isRight) nextSlide();
+                    }}
+                    style={{ 
+                        transformOrigin: "center center",
+                        transformStyle: "preserve-3d"
+                    }}
+                    >
+                    {/* Image Area */}
+                    <div className="relative w-full flex-1 bg-zinc-900 overflow-hidden">
+                        <motion.img
+                            src={item.url || item.badgeImageUrl || "/images/hero_bg.png"}
+                            alt={item.title}
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+                            className="w-full h-full object-cover object-center"
+                        />
+                        
+                        <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-1.5 max-w-[80%]">
+                            {(Array.isArray(item.category) ? item.category : [item.category]).map((cat, i) => (
+                                <span key={i} className="px-2 py-1 rounded-md bg-black/40 backdrop-blur-md text-[8px] font-black uppercase tracking-[0.15em] text-white border border-white/10 whitespace-nowrap">
+                                    {cat}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* Title Overlay - ONLY the heading here */}
+                        <div className={`absolute inset-x-0 bottom-0 p-5 md:p-8 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-500 flex flex-col justify-end ${isCenter ? 'opacity-100' : 'opacity-0'}`}>
+                            <h3 className="text-white font-black text-lg md:text-2xl leading-tight tracking-tighter drop-shadow-md">
+                                {item.title}
+                            </h3>
+                        </div>
+                    </div>
+
+                    {/* Details Area - Below Image */}
+                    <div className={`shrink-0 min-h-[100px] md:min-h-[120px] p-5 md:p-8 bg-zinc-950 border-t border-zinc-800/80 transition-opacity duration-500 flex flex-col justify-start ${isCenter ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="flex items-center gap-2 mb-3">
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-400">{item.issuer}</span>
+                            <span className="w-1 h-1 rounded-full bg-zinc-800"></span>
+                            <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-500">{item.dateLabel}</span>
+                        </div>
+                        
+                        <div className="space-y-4">
+                            <p className="text-[11px] md:text-sm font-medium leading-relaxed text-zinc-400/70 line-clamp-2 md:line-clamp-1 max-w-2xl">
+                                {item.description}
+                            </p>
+                            
+                            <div className="flex items-center gap-6">
+                                {item.achievementUrl && (
+                                    <a href={item.achievementUrl} target="_blank" rel="noopener" className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">
+                                        Verify <ArrowUpRight size={12} />
+                                    </a>
+                                )}
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedMilestone(item);
+                                    }}
+                                    className="text-[9px] font-bold uppercase tracking-widest text-orange-500/90 hover:text-orange-400 transition-colors"
+                                >
+                                    Read Story
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    </motion.div>
+                );
+                })}
+            </AnimatePresence>
+          ) : (
+            <div className="text-zinc-500 font-bold uppercase tracking-widest text-sm">No milestones found in this category</div>
+          )}
+
+          {/* Milestone Detail Modal */}
+          <AnimatePresence>
+              {selectedMilestone && (
+                  <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[5000] flex items-center justify-center p-4 md:p-8 bg-zinc-950/95 backdrop-blur-sm"
+                      onClick={() => setSelectedMilestone(null)}
+                  >
+                      <motion.div 
+                          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                          animate={{ scale: 1, opacity: 1, y: 0 }}
+                          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="w-full max-w-4xl max-h-[90vh] bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden flex flex-col md:flex-row relative"
+                      >
+                          {/* Image Side */}
+                          <div className="w-full md:w-1/2 h-64 md:h-auto bg-zinc-900 border-b md:border-b-0 md:border-r border-zinc-800">
+                              <img 
+                                  src={selectedMilestone.url || selectedMilestone.badgeImageUrl || "/images/hero_bg.png"} 
+                                  alt={selectedMilestone.title}
+                                  className="w-full h-full object-cover"
+                              />
+                          </div>
+
+                          {/* Content Side */}
+                          <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center overflow-y-auto">
+                              <div className="mb-6 flex flex-wrap gap-2">
+                                  {(Array.isArray(selectedMilestone.category) ? selectedMilestone.category : [selectedMilestone.category]).map((cat, i) => (
+                                      <span key={i} className="px-3 py-1.5 rounded-lg bg-orange-500/10 text-orange-500 text-[9px] font-black uppercase tracking-[0.2em] border border-orange-500/20">
+                                          {cat}
+                                      </span>
+                                  ))}
+                              </div>
+
+                              <h3 className="text-white font-black text-2xl md:text-4xl leading-tight tracking-tighter mb-4">
+                                  {selectedMilestone.title}
+                              </h3>
+
+                              <div className="flex items-center gap-3 mb-8">
+                                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">{selectedMilestone.issuer}</span>
+                                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-800"></span>
+                                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">{selectedMilestone.dateLabel}</span>
+                              </div>
+
+                              <p className="text-sm md:text-base text-zinc-400 leading-relaxed mb-10 whitespace-pre-wrap">
+                                  {selectedMilestone.description}
+                              </p>
+
+                              <div className="flex items-center gap-4">
+                                  {selectedMilestone.achievementUrl && (
+                                      <a 
+                                          href={selectedMilestone.achievementUrl} 
+                                          target="_blank" 
+                                          rel="noopener"
+                                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all shadow-lg shadow-white/5"
+                                      >
+                                          Verify Milestone <ArrowUpRight size={14} />
+                                      </a>
+                                  )}
+                                  <button 
+                                      onClick={() => setSelectedMilestone(null)}
+                                      className="px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-black uppercase tracking-widest hover:text-white transition-all"
+                                  >
+                                      Close
+                                  </button>
+                              </div>
+                          </div>
+
+                          {/* Close Button X */}
+                          <button 
+                              onClick={() => setSelectedMilestone(null)}
+                              className="absolute top-4 right-4 p-2 rounded-full bg-black/40 text-white/60 hover:text-white backdrop-blur-md transition-colors"
+                          >
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                          </button>
+                      </motion.div>
+                  </motion.div>
+              )}
+          </AnimatePresence>
+
+          {/* Navigation */}
+          {filteredItems.length > 1 && (
+              <>
+                <button
+                    onClick={prevSlide}
+                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 left-2 md:-left-8 lg:-left-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-orange-500 transition-all group"
+                >
+                    <ChevronLeft size={20} className="group-hover:scale-110 transition-transform" />
+                </button>
+                <button
+                    onClick={nextSlide}
+                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 right-2 md:-right-8 lg:-right-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-orange-500 transition-all group"
+                >
+                    <ChevronRight size={20} className="group-hover:scale-110 transition-transform" />
+                </button>
+              </>
+          )}
+        </div>
       </div>
     </section>
   );

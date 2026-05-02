@@ -167,19 +167,19 @@ const Projects = () => {
 
       <div className="section-container py-8">
          <div className="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10">
-            {uniqueLanguages.map(lang => (
-               <button
-                 key={lang}
-                 onClick={() => setActiveFilter(lang)}
-                 className={`min-h-11 px-4 py-2 rounded-md text-xs font-semibold uppercase tracking-wide transition-all duration-200 border ${
-                   activeFilter === lang 
-                     ? "bg-orange-500 text-white border-orange-500" 
-                     : "bg-zinc-900/50 text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300"
-                 }`}
-               >
-                 {lang}
-               </button>
-            ))}
+             {uniqueLanguages.map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setActiveFilter(lang)}
+                  className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
+                    activeFilter === lang 
+                      ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20" 
+                      : "bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
+                  }`}
+                >
+                  {lang}
+                </button>
+             ))}
          </div>
          
         {isLoading ? (
