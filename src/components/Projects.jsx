@@ -104,7 +104,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
       <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
          <button 
            onClick={() => onOpen(project)}
-           className="min-h-11 text-sm font-bold text-indigo-500 flex items-center gap-2 group/btn hover:text-indigo-400 transition-colors uppercase tracking-wide"
+           className="min-h-11 text-sm font-bold text-amber-500 flex items-center gap-2 group/btn hover:text-amber-400 transition-colors uppercase tracking-wide"
          >
            View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
          </button>
@@ -167,21 +167,35 @@ const Projects = () => {
       </div>
 
       <div className="section-container py-8">
-         <div className="flex flex-wrap gap-2 md:gap-3 mb-8 md:mb-10">
-             {uniqueLanguages.map(lang => (
-                <button
-                  key={lang}
-                  onClick={() => setActiveFilter(lang)}
-                  className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
-                    activeFilter === lang 
-                      ? "bg-amber-500 border-amber-500 text-white shadow-lg shadow-amber-500/20" 
-                      : "bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
-                  }`}
-                >
-                  {lang}
-                </button>
-             ))}
-         </div>
+         {/* Categories Selection - Tab Design */}
+         <div className="mb-12 border-b border-white/10 overflow-x-auto">
+            <div className="flex min-w-max gap-8">
+                {["ALL", ...new Set(projects.map(p => p.language).filter(Boolean))].map((lang) => {
+                    const count = lang === "ALL" 
+                        ? projects.length 
+                        : projects.filter(p => p.language === lang).length;
+                    
+                    const isActive = activeFilter === lang;
+                    return (
+                        <button
+                            key={lang}
+                            type="button"
+                            onClick={() => setActiveFilter(lang)}
+                            className={`flex items-center gap-2 border-b-2 px-1 pb-4 text-sm font-bold transition-colors ${
+                                isActive
+                                    ? "border-amber-400 text-white"
+                                    : "border-transparent text-zinc-400 hover:text-white"
+                            }`}
+                        >
+                            <span className="uppercase tracking-widest">{lang === "ALL" ? "All" : lang}</span>
+                            <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-300">
+                                {count}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
          
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
@@ -266,7 +280,7 @@ const Projects = () => {
                       setSelectedProject(null);
                       setActiveImage(null);
                     }}
-                    className="group min-w-11 w-11 h-11 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-indigo-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-indigo-400 transition-all duration-200 active:scale-95 shrink-0"
+                    className="group min-w-11 w-11 h-11 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-amber-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-amber-400 transition-all duration-200 active:scale-95 shrink-0"
                   >
                     <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
@@ -396,7 +410,7 @@ const Projects = () => {
                                   rel="noopener"
                                   className="group flex min-h-11 items-center justify-between p-4 rounded-lg bg-zinc-800/50 border border-zinc-700 text-white font-bold text-xs uppercase tracking-wide hover:bg-zinc-700 transition-all duration-200 shadow-xl active:scale-[0.98]"
                                 >
-                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-indigo-500" /> Launch Project</span>
+                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-amber-500" /> Launch Project</span>
                                   <Maximize2 size={16} className="text-zinc-500 group-hover:text-white transition-colors" />
                                 </a>
                               )}

@@ -47,6 +47,7 @@ export async function PUT(request) {
       leetcodeUrl: p.leetcodeUrl,
       geeksforgeeksUrl: p.geeksforgeeksUrl,
       codechefUrl: p.codechefUrl,
+      codeforcesUrl: p.codeforcesUrl,
       lanyardColor: p.lanyardColor,
       lanyardImageUrl: p.lanyardImageUrl,
       showLanyard: p.showLanyard === true,
@@ -58,10 +59,7 @@ export async function PUT(request) {
       cgpa: p.cgpa,
       leetcodeSolved: p.leetcodeSolved,
       gfgSolved: p.gfgSolved,
-      // socialLinks is in the schema (Json?) but requires `npx prisma generate`
-      // (stop dev server first) before the client recognises it.
-      // Uncomment the line below after regenerating:
-      // socialLinks: p.socialLinks || [],
+      socialLinks: p.socialLinks || [],
     };
 
     const writeProfile = (data) => {

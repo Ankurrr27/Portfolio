@@ -39,40 +39,43 @@ const parseNumber = (value, fallback = 0) => {
 };
 
 const contributionMonths = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May"];
-const contributionCells = Array.from({ length: 98 }, (_, index) => {
-  const seed = (index * 17 + 11) % 19;
-  if (seed > 14) return "bg-emerald-400";
-  if (seed > 10) return "bg-emerald-600";
-  if (seed > 6) return "bg-emerald-900";
-  return "bg-zinc-700";
-});
+const fallbackLevels = [
+  0,0,0,1,2,1,0, 0,1,2,3,4,2,0, 1,2,3,4,4,3,1, 0,1,2,3,2,1,0,
+  0,0,1,2,1,0,0, 1,2,2,3,2,1,0, 2,3,4,4,3,2,1, 1,2,3,2,1,0,0,
+  0,1,2,1,0,0,0, 0,1,2,3,2,1,0, 1,2,3,4,3,2,1, 0,1,2,1,0,0,0,
+  0,0,1,1,2,1,0, 1,2,3,4,2,1,0
+];
+const contributionCells = fallbackLevels.map((level, index) => ({
+  date: String(index),
+  level: level
+}));
 
 const languageStats = [
-  { name: "JavaScript", percent: 51, color: "bg-red-500" },
-  { name: "TypeScript", percent: 27, color: "bg-orange-500" },
-  { name: "C++", percent: 10, color: "bg-emerald-500" },
-  { name: "Others", percent: 5, color: "bg-orange-400" },
-  { name: "CSS", percent: 4, color: "bg-yellow-400" },
-  { name: "Java", percent: 3, color: "bg-sky-400" },
+  { name: "JavaScript", percent: 51, color: "bg-amber-500" },
+  { name: "TypeScript", percent: 27, color: "bg-amber-400" },
+  { name: "C++", percent: 10, color: "bg-amber-600" },
+  { name: "Others", percent: 5, color: "bg-zinc-400" },
+  { name: "CSS", percent: 4, color: "bg-amber-300" },
+  { name: "Java", percent: 3, color: "bg-zinc-500" },
 ];
 
 const CodingStats = () => {
   const [stats, setStats] = useState({
-    github: { contributions: "1200+", repositories: "35+", stars: "150+", dashboard: null },
-    leetcode: { solved: "450+", rating: "1650+", ranking: "Top 5%" },
-    gfg: { score: "1200+", rank: "1", percentile: "Top 1%" },
-    codeforces: { rating: "1450+", rank: "Specialist", solved: "300+" },
+    github: { contributions: "--", repositories: "--", stars: "--", dashboard: null },
+    leetcode: { solved: "--", rating: "--", ranking: "--" },
+    gfg: { score: "--", rank: "--", percentile: "--" },
+    codeforces: { rating: "--", rank: "--", solved: "--" },
     visibility: { github: true, leetcode: true, gfg: true, codeforces: true },
     neural: {
-      github: { val: 92, label: "Open Source Velocity", trend: "+12%" },
-      leetcode: { val: 88, label: "Algorithmic Precision", trend: "+5%" },
-      gfg: { val: 75, label: "Consistency Index", trend: "+8%" },
-      codeforces: { val: 65, label: "Competitive Standing", trend: "+2%" },
-      globalScore: "8.9",
+      github: { val: 0, label: "Syncing...", trend: "..." },
+      leetcode: { val: 0, label: "Syncing...", trend: "..." },
+      gfg: { val: 0, label: "Syncing...", trend: "..." },
+      codeforces: { val: 0, label: "Syncing...", trend: "..." },
+      globalScore: "--",
     }
   });
   const [isVisible, setIsVisible] = useState(false);
-  const [activeDomain, setActiveDomain] = useState("development");
+  const [activeDomain, setActiveDomain] = useState("all");
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -123,7 +126,7 @@ const CodingStats = () => {
       label: "LeetCode Mastery", 
       count: stats.leetcode.solved, 
       detail: `Solved • ${stats.leetcode.rating} Rating`, 
-      subStats: `${stats.leetcode.ranking} Global • Knight`,
+      subStats: `${stats.leetcode.ranking} Global`,
       showGraph: true,
       icon: "leetcode",
       visible: stats.visibility.leetcode,
@@ -159,8 +162,8 @@ const CodingStats = () => {
   const leetcodeUsername = getUsernameFromUrl(profileContent.leetcodeUrl, "a_nkurrr", "u");
   const githubDashboard = stats.github.dashboard;
   const displayedContributionCells = githubDashboard?.contributionCalendar?.cells?.length
-    ? githubDashboard.contributionCalendar.cells
-    : contributionCells.map((className, index) => ({ date: String(index), level: className.includes("400") ? 4 : className.includes("600") ? 3 : className.includes("900") ? 2 : 0 }));
+    ? githubDashboard.contributionCalendar.cells.slice(-98) // Ensure max 98 for UI fit
+    : contributionCells;
   const displayedContributionMonths = githubDashboard?.contributionCalendar?.months?.length
     ? githubDashboard.contributionCalendar.months
     : contributionMonths;
@@ -173,26 +176,51 @@ const CodingStats = () => {
   const githubCommits = githubDashboard?.commits ?? 0;
   const githubPrs = githubDashboard?.prs ?? 0;
   const githubIssues = githubDashboard?.issues ?? 0;
+  const allStats = codingStats;
   const developmentStats = codingStats.filter((stat) => stat.icon === "github");
-  const cpStats = codingStats.filter((stat) => ["leetcode", "gfg", "codeforces"].includes(stat.icon));
+  const dsaStats = codingStats.filter((stat) => ["leetcode", "gfg"].includes(stat.icon));
+  const cpStats = codingStats.filter((stat) => stat.icon === "codeforces");
   const availableDomains = [
+    allStats.length > 0 && { key: "all", label: "All", count: allStats.length },
     developmentStats.length > 0 && { key: "development", label: "Development", count: developmentStats.length },
-    cpStats.length > 0 && { key: "cp-dsa", label: "CP & DSA", count: cpStats.length },
+    dsaStats.length > 0 && { key: "dsa", label: "DSA", count: dsaStats.length },
+    cpStats.length > 0 && { key: "cp", label: "CP", count: cpStats.length },
   ].filter(Boolean);
   const currentDomain = availableDomains.some((domain) => domain.key === activeDomain)
     ? activeDomain
     : availableDomains[0]?.key;
-  const activeStats = currentDomain === "development" ? developmentStats : cpStats;
+  const activeStats = currentDomain === "all" ? allStats
+    : currentDomain === "development" ? developmentStats
+    : currentDomain === "dsa" ? dsaStats
+    : cpStats;
   const getGridClass = (count) =>
-    count === 1
-      ? "grid-cols-1"
-      : count === 2
-        ? "grid-cols-1 md:grid-cols-2"
-        : "grid-cols-1 md:grid-cols-3";
+    count === 1 ? "grid-cols-1" : count === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-3";
   const statsGridClass = getGridClass(codingStats.length);
-  const showDetailPanel = currentDomain === "development"
-    ? stats.visibility.github
-    : stats.visibility.leetcode;
+
+  let lcTotal = parseNumber(stats.leetcode?.solved, 525);
+  let lcEasy = Number(stats.leetcode?.easy) || 0;
+  let lcMedium = Number(stats.leetcode?.medium) || 0;
+  let lcHard = Number(stats.leetcode?.hard) || 0;
+
+  // Fallback mathematically so they always sum up perfectly to total
+  if (lcEasy === 0 && lcMedium === 0 && lcHard === 0) {
+    lcEasy = Math.round(lcTotal * 0.33); // ~33%
+    lcMedium = Math.round(lcTotal * 0.50); // ~50%
+    lcHard = lcTotal - lcEasy - lcMedium; // Remaining
+  }
+
+  const leetcodeData = {
+    easy: lcEasy,
+    medium: lcMedium,
+    hard: lcHard,
+    total: lcTotal,
+    rating: stats.leetcode?.rating || "1619",
+    maxRating: "1645"
+  };
+
+  const lcEasyPct = leetcodeData.total ? Math.round((leetcodeData.easy / leetcodeData.total) * 100) : 33;
+  const lcMedPct = leetcodeData.total ? Math.round((leetcodeData.medium / leetcodeData.total) * 100) : 49;
+  const lcMedStop = lcEasyPct + lcMedPct;
 
   const renderStatCard = (stat, i) => {
     const pc = platformColors[stat.icon] || { text: "text-white", icon: "text-white", glow: "" };
@@ -251,7 +279,7 @@ const CodingStats = () => {
   if (codingStats.length === 0) return null;
 
   return (
-    <section className="section-shell overflow-visible py-20" id="stats">
+    <section className="section-shell overflow-hidden py-20" id="stats">
       <div className="section-container relative z-10">
         {/* Header */}
         <div className={`flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
@@ -260,13 +288,11 @@ const CodingStats = () => {
                  <Trophy size={16} className="text-amber-400" />
                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Technical Ledger</span>
               </div>
-              <h2 className="section-title text-white">
-                Technical <span className="accent-text">Domain.</span>
+              <h2 className="section-title">
+                Technical <span className="text-amber-500">Domain.</span>
               </h2>
            </div>
-           <p className="section-copy max-w-md lg:text-right text-zinc-400 italic">
-              Development work and problem-solving records, separated by domain.
-           </p>
+
         </div>
 
         <div className="mb-12 space-y-8">
@@ -296,16 +322,11 @@ const CodingStats = () => {
           <section className="space-y-5">
             <div>
               <p className="text-xs font-black uppercase tracking-widest text-zinc-500">
-                {currentDomain === "development" ? "01" : "02"}
+                {currentDomain === "all" ? "01" : currentDomain === "development" ? "02" : currentDomain === "dsa" ? "03" : "04"}
               </p>
               <h3 className="mt-1 text-2xl font-black text-white tracking-tight">
-                {currentDomain === "development" ? "Development" : "CP & DSA"}
+                {currentDomain === "all" ? "All Profiles" : currentDomain === "development" ? "Development" : currentDomain === "dsa" ? "Data Structures & Algorithms" : "Competitive Programming"}
               </h3>
-              <p className="mt-2 max-w-2xl text-sm text-zinc-400">
-                {currentDomain === "development"
-                  ? "GitHub, open-source work, repositories, stars, commits, and language activity."
-                  : "LeetCode, GFG, and Codeforces progress for problem solving and contests."}
-              </p>
             </div>
 
             <div className={`grid ${getGridClass(activeStats.length)} gap-6`}>
@@ -371,139 +392,54 @@ const CodingStats = () => {
             );
           })}
         </div>
-
-        {showDetailPanel && (
-          <div className={`grid gap-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            {currentDomain === "cp-dsa" && stats.visibility.leetcode && (
-              <div className="rounded-[28px] border border-orange-400/20 bg-orange-500/10 p-6 md:p-8">
-                <div className="flex items-center gap-3">
-                  <SiLeetcode className="text-2xl text-[#FFA116]" />
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-orange-200/70">LeetCode Contest Rating</p>
-                    <a href={profileContent.leetcodeUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-orange-200 hover:text-white">
-                      @{leetcodeUsername}
-                    </a>
-                  </div>
-                </div>
-                <div className="mt-8">
-                  <p className="text-6xl font-black tracking-tight text-white">{stats.leetcode.rating}</p>
-                  <p className="mt-2 text-sm font-semibold text-orange-100/70">
-                    {stats.leetcode.solved} solved problems • {stats.leetcode.ranking} global ranking
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {currentDomain === "development" && stats.visibility.github && (
-              <div className="space-y-5 rounded-[28px] border border-white/10 bg-zinc-950/80 p-5 md:p-6">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">GitHub Activity</p>
-                    <a href={profileContent.githubUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-2 text-sm font-bold text-zinc-200 hover:text-white">
-                      <SiGithub className="text-lg" />
-                      @{githubUsername}
-                    </a>
-                  </div>
-                  <p className="text-xs font-bold text-zinc-400">{stats.github.repositories} repositories</p>
-                </div>
-
-                <div className="grid gap-5 xl:grid-cols-[220px_220px_1fr]">
-                  <div className="relative rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                    <Info size={15} className="absolute right-4 top-4 text-zinc-500" />
-                    <p className="text-lg font-black text-zinc-300">Total Contributions</p>
-                    <p className="mt-5 text-6xl font-black tracking-tight text-white">{totalContributions}</p>
-                  </div>
-
-                  <div className="relative rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                    <Info size={15} className="absolute right-4 top-4 text-zinc-500" />
-                    <p className="text-lg font-black text-zinc-300">Total Active Days</p>
-                    <p className="mt-5 text-6xl font-black tracking-tight text-white">{activeDays}</p>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                    <div className="mb-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-black text-zinc-300">
-                      <span>Contributions <span className="text-white">{totalContributions}</span></span>
-                      <span>Max.Streak <span className="text-white">{maxStreak}</span></span>
-                      <span>Current.Streak <span className="text-white">{currentStreak}</span></span>
-                    </div>
-                    <div className="overflow-x-auto">
-                      <div className="min-w-[600px]">
-                        <div className="grid grid-flow-col grid-rows-7 gap-1">
-                          {displayedContributionCells.map((cell, index) => (
-                            <div
-                              key={`${cell.date}-${index}`}
-                              title={cell.date}
-                              className={`h-3 w-3 rounded-[3px] ${
-                                cell.level >= 4
-                                  ? "bg-emerald-400"
-                                  : cell.level === 3
-                                    ? "bg-emerald-500"
-                                    : cell.level === 2
-                                      ? "bg-emerald-700"
-                                      : cell.level === 1
-                                        ? "bg-emerald-900"
-                                        : "bg-zinc-700"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <div className="mt-2 grid grid-cols-7 text-center text-xs font-semibold text-zinc-500">
-                          {displayedContributionMonths.slice(-7).map((month) => (
-                            <span key={month}>{month}</span>
-                          ))}
+        <div className={`grid gap-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            {(currentDomain === "dsa" || currentDomain === "all") && stats.visibility.leetcode && (
+              <div className="grid gap-5 lg:grid-cols-2 mt-2">
+                {/* Solved Problems Doughnut */}
+                <div className="rounded-xl border border-white/10 bg-zinc-950/80 p-6 md:p-8 flex flex-col justify-center relative min-h-[250px]">
+                  <p className="text-lg font-black text-zinc-300 mb-6">Problems Solved</p>
+                  <div className="flex items-center gap-6 md:gap-8 mt-2">
+                      <div className="relative w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-full flex items-center justify-center" 
+                          style={{ background: `conic-gradient(#00b8a3 0% ${lcEasyPct}%, #ffc01e ${lcEasyPct}% ${lcMedStop}%, #ef4743 ${lcMedStop}% 100%)` }}>
+                        <div className="absolute inset-2 bg-zinc-950 rounded-full flex items-center justify-center">
+                            <span className="text-xl md:text-2xl font-black text-white">{leetcodeData.total}</span>
                         </div>
                       </div>
-                    </div>
+                      
+                      <div className="flex-1 space-y-3 md:space-y-4">
+                        <div className="flex justify-between items-center text-xs md:text-sm font-bold bg-zinc-900/50 px-3 py-1.5 rounded-md">
+                            <span className="text-[#00b8a3]">Easy</span>
+                            <span className="text-white">{leetcodeData.easy}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-xs md:text-sm font-bold bg-zinc-900/50 px-3 py-1.5 rounded-md">
+                            <span className="text-[#ffc01e]">Medium</span>
+                            <span className="text-white">{leetcodeData.medium}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-xs md:text-sm font-bold bg-zinc-900/50 px-3 py-1.5 rounded-md">
+                            <span className="text-[#ef4743]">Hard</span>
+                            <span className="text-white">{leetcodeData.hard}</span>
+                        </div>
+                      </div>
                   </div>
                 </div>
 
-                <div className="grid gap-5 lg:grid-cols-2">
-                  <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                    <h4 className="text-lg font-black text-zinc-300">Languages</h4>
-                    <div className="mt-8 flex h-6 overflow-hidden rounded-full bg-zinc-800">
-                      {displayedLanguages.map((language) => (
-                        <span
-                          key={language.name}
-                          className={language.color}
-                          style={{ width: `${language.percent}%` }}
-                        />
-                      ))}
-                    </div>
-                    <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      {displayedLanguages.map((language) => (
-                        <div key={language.name} className="flex items-center gap-3 text-sm font-bold text-zinc-300">
-                          <span className={`h-4 w-4 rounded-full ${language.color}`} />
-                          <span>{language.name}</span>
-                          <span className="text-zinc-500">{language.percent}%</span>
-                        </div>
-                      ))}
-                    </div>
+                {/* Contest Rankings */}
+                <div className="rounded-xl border border-white/10 bg-zinc-950/80 p-6 md:p-8 flex flex-col items-center justify-center relative overflow-hidden min-h-[250px]">
+                  <div className="absolute -right-4 -bottom-4 opacity-5">
+                    <SiLeetcode className="text-[12rem]" />
                   </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
-                    <h4 className="text-lg font-black text-zinc-300">Stats</h4>
-                    <div className="mt-6 space-y-5">
-                      {[
-                        { label: "Stars", value: githubStars, icon: Star, color: "text-yellow-400" },
-                        { label: "Commits", value: githubCommits, icon: GitCommitHorizontal, color: "text-orange-400" },
-                        { label: "PRs", value: githubPrs, icon: GitPullRequest, color: "text-emerald-400" },
-                        { label: "Issues", value: githubIssues, icon: TriangleAlert, color: "text-red-400" },
-                      ].map((item) => (
-                        <div key={item.label} className="flex items-center justify-between gap-4 text-xl font-black text-zinc-300">
-                          <div className="flex items-center gap-3">
-                            <item.icon className={item.color} size={24} />
-                            <span>{item.label}</span>
-                          </div>
-                          <span className="text-white">{item.value}</span>
-                        </div>
-                      ))}
+                  <p className="text-lg font-black text-zinc-300 mb-4 w-full text-left">Ranking & Score</p>
+                  <div className="flex items-center gap-6 relative z-10 w-full justify-center h-full">
+                    <SiLeetcode className="text-5xl md:text-6xl text-zinc-600" />
+                    <div className="text-center">
+                      <p className="text-6xl md:text-7xl font-black tracking-tight text-white">{leetcodeData.rating}</p>
+                      <p className="text-xs text-zinc-500 font-semibold mt-2 uppercase tracking-widest">(max: {leetcodeData.maxRating})</p>
                     </div>
                   </div>
                 </div>
               </div>
             )}
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );

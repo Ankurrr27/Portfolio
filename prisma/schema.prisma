@@ -49,6 +49,7 @@ model Profile {
   leetcodeUrl      String?
   geeksforgeeksUrl String?
   codechefUrl      String?
+  codeforcesUrl    String?
   lanyardColor     String?  @default("#f97316")
   lanyardImageUrl  String?
   showLanyard      Boolean  @default(true)
@@ -180,24 +181,24 @@ model CodingStats {
   showCodeforcesStats Boolean @default(true)
   
   // GitHub
-  githubContributions String?  @default("1200+")
-  githubRepos        String?  @default("35+")
-  githubStars        String?  @default("150+")
+  githubContributions String?  
+  githubRepos        String?  
+  githubStars        String?  
   
   // LeetCode
-  leetcodeSolved     String?  @default("450+")
-  leetcodeRating     String?  @default("1650+")
-  leetcodeRanking    String?  @default("Top 5%")
+  leetcodeSolved     String?  
+  leetcodeRating     String?  
+  leetcodeRanking    String?  
   
   // GFG
-  gfgScore           String?  @default("1200+")
-  gfgRank            String?  @default("1")
-  gfgPercentile      String?  @default("Top 1%")
+  gfgScore           String?  
+  gfgRank            String?  
+  gfgPercentile      String?  
   
   // Codeforces
-  cfRating           String?  @default("1450+")
-  cfRank             String?  @default("Specialist")
-  cfSolved           String?  @default("300+")
+  cfRating           String?  
+  cfRank             String?  
+  cfSolved           String?  
 
   // Neural Activity Matrix
   naGithubVal        Int?     @default(92)

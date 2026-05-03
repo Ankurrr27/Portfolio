@@ -64,7 +64,7 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
 
          {/* Bottom Row: Skill Tags */}
          {skillList.length > 0 && (
-            <div className="flex flex-wrap gap-2.5 mt-auto">
+            <div className="flex flex-wrap gap-2.5 mt-6">
                {skillList.map((skill, idx) => (
                  <span 
                    key={skill} 
@@ -135,29 +135,23 @@ const Education = () => {
   return (
     <section
       ref={containerRef}
-      className="section-shell overflow-visible"
+      className="section-shell overflow-hidden"
       id="education"
     >
       <EditSectionButton href="/admin/education" label="Edit Education" />
       <div className="section-container relative z-10">
         
         {/* Engineering Header */}
-        <div className={`flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12 md:mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className={`flex flex-col mb-12 md:mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
            <div className="space-y-4">
-              <div className="section-kicker bg-amber-500/10 border-amber-500/20">
+              <div className="flex items-center gap-2 mb-2">
                  <GraduationCap size={16} className="text-amber-400" />
-                 <span className="text-amber-300">Curriculum Vitae</span>
+                 <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Curriculum Vitae</span>
               </div>
-              <h2 className="section-title">
-                Academic <span className="relative inline-block">
-                  <span className="relative z-10 accent-text">foundation.</span>
-                  <span className={`absolute -bottom-2 left-0 w-full h-1 bg-amber-500/30 blur-sm transition-all duration-1000 ${isVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"}`} style={{ transformOrigin: 'left' }} />
-                </span>
+              <h2 className="section-title text-white">
+                Academic <span className="accent-text">Foundation.</span>
               </h2>
            </div>
-           <p className="section-copy max-w-sm lg:text-right">
-              Formal academic training and verified educational background.
-           </p>
         </div>
 
         <div className="relative space-y-6">

@@ -11,7 +11,7 @@
   --background-y: 50%;
   --grain: none;
   --icon: none;
-  --behind-glow-color: rgba(99, 102, 241, 0.62);
+  --behind-glow-color: rgba(245, 158, 11, 0.62);
   --behind-glow-size: 48%;
   --inner-gradient: none;
   --sunpillar-1: hsl(2, 100%, 73%);
@@ -364,16 +364,16 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border: 1px solid rgba(99, 102, 241, 0.44);
+  border: 1px solid rgba(245, 158, 11, 0.44);
   border-radius: 8px;
-  background: rgba(99, 102, 241, 0.18);
+  background: rgba(245, 158, 11, 0.18);
   backdrop-filter: blur(10px);
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
 .pc-contact-btn:hover {
-  border-color: rgba(99, 102, 241, 0.82);
-  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(245, 158, 11, 0.82);
+  background: rgba(245, 158, 11, 0.28);
   transform: translateY(-1px);
 }
 
@@ -407,7 +407,7 @@
   font-weight: 800;
   line-height: 0.96;
   letter-spacing: 0;
-  background-image: linear-gradient(to bottom, #ffffff, #b9c8ff);
+  background-image: linear-gradient(to bottom, #ffffff, #fcd34d);
   background-size: 1em 1.5em;
   background-clip: text;
   -webkit-background-clip: text;
@@ -424,7 +424,7 @@
   font-weight: 700;
   line-height: 1.3;
   white-space: nowrap;
-  background-image: linear-gradient(to bottom, #ffffff, #7e8dff);
+  background-image: linear-gradient(to bottom, #ffffff, #fbbf24);
   background-size: 1em 1.5em;
   background-clip: text;
   -webkit-background-clip: text;

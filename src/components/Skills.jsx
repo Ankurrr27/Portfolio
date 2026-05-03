@@ -132,15 +132,7 @@ const Skills = () => {
 
           <aside className="panel-subtle p-4 md:p-6 flex flex-col justify-between min-h-[260px] md:min-h-[320px]">
             <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="icon-box">
-                  <Zap size={20} />
-                </div>
-                <div>
-                  <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">Selected Skill</h4>
-                  <p className="text-sm text-zinc-400">Tap or hover the map to inspect a tool.</p>
-                </div>
-              </div>
+
 
               {selectedSkill ? (
                 <div className="space-y-5 md:space-y-6 animate-in fade-in slide-in-from-right-4 duration-200">

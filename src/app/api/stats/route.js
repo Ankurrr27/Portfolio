@@ -71,11 +71,19 @@ const parseGithubContributionCalendar = async (username) => {
   const html = await fetchGithubText(`https://github.com/users/${username}/contributions`);
   const totalMatch = html.match(/<h2[^>]*>\s*([\d,]+)\s*contributions/i);
   const total = totalMatch ? Number(totalMatch[1].replace(/,/g, "")) : 0;
-  const dayMatches = [...html.matchAll(/<td[^>]*data-date="([^"]+)"[^>]*data-level="([^"]+)"[^>]*ContributionCalendar-day[^>]*>/g)];
-  const cells = dayMatches.map((match) => ({
-    date: match[1],
-    level: Number(match[2]) || 0,
-  }));
+  const cells = [];
+  const tdRegex = /<td[^>]*data-date="([^"]+)"[^>]*>/g;
+  let match;
+  while ((match = tdRegex.exec(html)) !== null) {
+    const tdTag = match[0];
+    const levelMatch = tdTag.match(/data-level="([^"]+)"/);
+    if (levelMatch) {
+      cells.push({
+        date: match[1],
+        level: Number(levelMatch[1]) || 0
+      });
+    }
+  }
   const activeDays = cells.filter((cell) => cell.level > 0).length;
   const monthFormatter = new Intl.DateTimeFormat("en", { month: "short" });
   const months = [];
@@ -177,26 +185,26 @@ export async function GET() {
     };
     const neural = {
       github: {
-        val: toNumber(dbStats?.naGithubVal, 92),
-        trend: toText(dbStats?.naGithubTrend, "+12%"),
-        label: toText(dbStats?.naGithubLabel, "Open Source Velocity"),
+        val: toNumber(dbStats?.naGithubVal, 0),
+        trend: toText(dbStats?.naGithubTrend, "..."),
+        label: toText(dbStats?.naGithubLabel, "Syncing..."),
       },
       leetcode: {
-        val: toNumber(dbStats?.naLeetcodeVal, 88),
-        trend: toText(dbStats?.naLeetcodeTrend, "+5%"),
-        label: toText(dbStats?.naLeetcodeLabel, "Algorithmic Precision"),
+        val: toNumber(dbStats?.naLeetcodeVal, 0),
+        trend: toText(dbStats?.naLeetcodeTrend, "..."),
+        label: toText(dbStats?.naLeetcodeLabel, "Syncing..."),
       },
       gfg: {
-        val: toNumber(dbStats?.naGfgVal, 75),
-        trend: toText(dbStats?.naGfgTrend, "+8%"),
-        label: toText(dbStats?.naGfgLabel, "Consistency Index"),
+        val: toNumber(dbStats?.naGfgVal, 0),
+        trend: toText(dbStats?.naGfgTrend, "..."),
+        label: toText(dbStats?.naGfgLabel, "Syncing..."),
       },
       codeforces: {
-        val: toNumber(dbStats?.naCfVal, 65),
-        trend: toText(dbStats?.naCfTrend, "+2%"),
-        label: toText(dbStats?.naCfLabel, "Competitive Standing"),
+        val: toNumber(dbStats?.naCfVal, 0),
+        trend: toText(dbStats?.naCfTrend, "..."),
+        label: toText(dbStats?.naCfLabel, "Syncing..."),
       },
-      globalScore: toText(dbStats?.globalScore, "8.9"),
+      globalScore: toText(dbStats?.globalScore, "--"),
     };
 
     const githubUser = process.env.GITHUB_USERNAME || "Ankurrr27";
@@ -216,25 +224,25 @@ export async function GET() {
         visibility,
         neural,
         github: {
-          contributions: githubLive?.contributions ? `${githubLive.contributions}+` : toText(dbStats.githubContributions, "1200+"),
-          repositories: githubLive?.repositories ? `${githubLive.repositories}+` : toText(dbStats.githubRepos, "35+"),
-          stars: githubLive ? `${githubLive.stars}+` : toText(dbStats.githubStars, "150+"),
+          contributions: githubLive?.contributions ? `${githubLive.contributions}+` : toText(dbStats.githubContributions, "--"),
+          repositories: githubLive?.repositories ? `${githubLive.repositories}+` : toText(dbStats.githubRepos, "--"),
+          stars: githubLive ? `${githubLive.stars}+` : toText(dbStats.githubStars, "--"),
           dashboard: githubLive,
         },
         leetcode: {
-          solved: toText(dbStats.leetcodeSolved, "450+"),
-          rating: toText(dbStats.leetcodeRating, "1650+"),
-          ranking: toText(dbStats.leetcodeRanking, "Top 5%"),
+          solved: toText(dbStats.leetcodeSolved, "--"),
+          rating: toText(dbStats.leetcodeRating, "--"),
+          ranking: toText(dbStats.leetcodeRanking, "--"),
         },
         gfg: {
-          score: toText(dbStats.gfgScore, "1200+"),
-          rank: toText(dbStats.gfgRank, "1"),
-          percentile: toText(dbStats.gfgPercentile, "Top 1%"),
+          score: toText(dbStats.gfgScore, "--"),
+          rank: toText(dbStats.gfgRank, "--"),
+          percentile: toText(dbStats.gfgPercentile, "--"),
         },
         codeforces: {
-          rating: toText(dbStats.cfRating, "1450+"),
-          rank: toText(dbStats.cfRank, "Specialist"),
-          solved: toText(dbStats.cfSolved, "300+"),
+          rating: toText(dbStats.cfRating, "--"),
+          rank: toText(dbStats.cfRank, "--"),
+          solved: toText(dbStats.cfSolved, "--"),
         }
       });
     }
@@ -245,25 +253,28 @@ export async function GET() {
     // Default live data structure (with DB fallbacks if available)
     const stats = {
       github: {
-        contributions: toText(dbStats?.githubContributions, "1400+"),
-        repositories: toText(dbStats?.githubRepos, "35+"),
-        stars: toText(dbStats?.githubStars, "150+"),
+        contributions: toText(dbStats?.githubContributions, "--"),
+        repositories: toText(dbStats?.githubRepos, "--"),
+        stars: toText(dbStats?.githubStars, "--"),
         dashboard: null,
       },
       leetcode: {
-        solved: toText(dbStats?.leetcodeSolved, "480+"),
-        rating: toText(dbStats?.leetcodeRating, "1650+"),
-        ranking: toText(dbStats?.leetcodeRanking, "Top 5%"),
+        solved: toText(dbStats?.leetcodeSolved, "--"),
+        easy: 0,
+        medium: 0,
+        hard: 0,
+        rating: toText(dbStats?.leetcodeRating, "--"),
+        ranking: toText(dbStats?.leetcodeRanking, "--"),
       },
       gfg: {
-        score: toText(dbStats?.gfgScore, "1250+"),
-        rank: toText(dbStats?.gfgRank, "1"),
-        percentile: toText(dbStats?.gfgPercentile, "Top 1%"),
+        score: toText(dbStats?.gfgScore, "--"),
+        rank: toText(dbStats?.gfgRank, "--"),
+        percentile: toText(dbStats?.gfgPercentile, "--"),
       },
       codeforces: {
-        rating: toText(dbStats?.cfRating, "1450+"),
-        rank: toText(dbStats?.cfRank, "Specialist"),
-        solved: toText(dbStats?.cfSolved, "300+"),
+        rating: toText(dbStats?.cfRating, "--"),
+        rank: toText(dbStats?.cfRank, "--"),
+        solved: toText(dbStats?.cfSolved, "--"),
       },
       visibility,
       neural,
@@ -280,7 +291,12 @@ export async function GET() {
       // Live LeetCode Data
       const lcRes = await fetch(`https://leetcode-stats-api.herokuapp.com/${leetcodeUser}`, { next: { revalidate: 3600 } });
       const lcData = await lcRes.json();
-      if (lcData.totalSolved) stats.leetcode.solved = `${lcData.totalSolved}+`;
+      if (lcData.totalSolved) {
+        stats.leetcode.solved = lcData.totalSolved;
+        stats.leetcode.easy = lcData.easySolved || stats.leetcode.easy;
+        stats.leetcode.medium = lcData.mediumSolved || stats.leetcode.medium;
+        stats.leetcode.hard = lcData.hardSolved || stats.leetcode.hard;
+      }
       if (lcData.ranking) stats.leetcode.ranking = `#${lcData.ranking}`;
 
     } catch (apiError) {

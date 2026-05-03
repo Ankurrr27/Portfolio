@@ -136,7 +136,7 @@ const Navbar = () => {
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[calc(100vw-2rem)] max-h-[75vh] z-[900]"
+            className="fixed md:hidden left-1/2 -translate-x-1/2 top-20 w-[calc(100%-2rem)] max-h-[75vh] z-[900]"
           >
             <GlassSurface
               width="100%"

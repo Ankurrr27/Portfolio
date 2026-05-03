@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useAdmin } from "../../../context/AdminContext";
-import { Save, AlertCircle, User, Mail, MapPin } from "lucide-react";
+import { Save, AlertCircle, User, Mail, MapPin, FileText } from "lucide-react";
 import { 
   FaGithub, 
   FaLinkedin, 
@@ -39,8 +39,7 @@ export default function AdminProfilePage() {
   const [status, setStatus] = useState("");
   const [profile, setProfile] = useState({ ...staticProfile, socialLinks: [] });
 
-  // ... (rest of the logic remains same until return)
-  // ... (keeping useEffects and handlers)
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -181,7 +180,7 @@ export default function AdminProfilePage() {
     <div className="space-y-8 pb-20">
       <header className="flex items-center justify-between gap-6 border-b border-slate-200 pb-8">
         <div>
-          <p className="text-indigo-600 font-bold mono text-[10px] uppercase tracking-[0.4em] mb-2 px-1">Identity</p>
+          <p className="text-amber-600 font-bold mono text-[10px] uppercase tracking-[0.4em] mb-2 px-1">Identity</p>
           <h1 className="text-3xl font-extrabold syne tracking-tighter uppercase text-slate-900">
             Profile
           </h1>
@@ -190,7 +189,7 @@ export default function AdminProfilePage() {
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold text-xs flex items-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-50"
+          className="px-6 py-3 rounded-xl bg-amber-600 text-white font-bold text-xs flex items-center gap-2 hover:bg-amber-700 transition-all shadow-lg shadow-amber-500/20 disabled:opacity-50"
         >
           <Save size={16} />
           {isLoading ? "Saving..." : "Save Profile"}
@@ -214,6 +213,7 @@ export default function AdminProfilePage() {
                 { label: "Email", key: "email", icon: Mail },
                 { label: "Location", key: "location", icon: MapPin },
                 { label: "CGPA (Optional)", key: "cgpa", icon: User },
+                { label: "Resume (Drive) URL", key: "resumeUrl", icon: FileText },
               ].map(field => (
                 <AdminField
                   key={field.key}
@@ -252,7 +252,7 @@ export default function AdminProfilePage() {
               <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Global Social Hub</h3>
               <button
                 onClick={addSocialLink}
-                className="text-[10px] font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 bg-indigo-50 px-2 py-1 rounded-md transition-all"
+                className="text-[10px] font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 bg-amber-50 px-2 py-1 rounded-md transition-all"
               >
                 <Plus size={12} /> Add Platform
               </button>
@@ -269,7 +269,7 @@ export default function AdminProfilePage() {
                       <select
                         value={link.platform}
                         onChange={(e) => updateSocialLink(index, "platform", e.target.value)}
-                        className="appearance-none bg-slate-50 border border-slate-100 rounded-xl pl-8 pr-6 py-2 text-[10px] font-bold uppercase tracking-widest focus:bg-white focus:border-indigo-500/50 outline-none transition-all text-slate-700"
+                        className="appearance-none bg-slate-50 border border-slate-100 rounded-xl pl-8 pr-6 py-2 text-[10px] font-bold uppercase tracking-widest focus:bg-white focus:border-amber-500/50 outline-none transition-all text-slate-700"
                       >
                         {PLATFORMS.map(p => (
                           <option key={p.id} value={p.id}>{p.name}</option>
@@ -285,7 +285,7 @@ export default function AdminProfilePage() {
                       placeholder="Platform URL..."
                       value={link.url}
                       onChange={(e) => updateSocialLink(index, "url", e.target.value)}
-                      className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                      className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-xs focus:bg-white focus:border-amber-500/50 outline-none transition-all"
                     />
 
                     <button
@@ -311,10 +311,11 @@ export default function AdminProfilePage() {
             <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Developer IDs</h3>
             <div className="space-y-4">
               {[
-                { label: "GitHub URL", key: "githubUrl" },
+                { label: "Development (GitHub) URL", key: "githubUrl" },
                 { label: "LinkedIn URL", key: "linkedinUrl" },
-                { label: "LeetCode URL", key: "leetcodeUrl" },
-                { label: "GFG URL", key: "geeksforgeeksUrl" },
+                { label: "DSA (LeetCode) URL", key: "leetcodeUrl" },
+                { label: "DSA (GFG) URL", key: "geeksforgeeksUrl" },
+                { label: "CP (Codeforces) URL", key: "codeforcesUrl" },
               ].map(field => (
                 <div key={field.key} className="space-y-2">
                   <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">
@@ -324,7 +325,7 @@ export default function AdminProfilePage() {
                     type="text"
                     value={profile[field.key] || ""}
                     onChange={(e) => updateField(field.key, e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-amber-500/50 outline-none transition-all"
                   />
                 </div>
               ))}
@@ -353,14 +354,14 @@ export default function AdminProfilePage() {
                   <div className="flex gap-3">
                     <input
                       type={field.type}
-                      value={profile[field.key] || (field.type === 'color' ? '#6366f1' : "")}
+                      value={profile[field.key] || (field.type === 'color' ? '#f59e0b' : "")}
                       onChange={(e) => updateField(field.key, field.type === "number" ? parseInt(e.target.value) || 0 : e.target.value)}
-                      className={`${field.type === 'color' ? 'w-12 h-10 p-1' : 'w-full'} bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all`}
+                      className={`${field.type === 'color' ? 'w-12 h-10 p-1' : 'w-full'} bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-amber-500/50 outline-none transition-all`}
                     />
                     {field.type === 'color' && (
                       <input 
                         type="text"
-                        value={profile[field.key] || "#6366f1"}
+                        value={profile[field.key] || "#f59e0b"}
                         onChange={(e) => updateField(field.key, e.target.value)}
                         className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs outline-none"
                       />
@@ -389,7 +390,7 @@ export default function AdminProfilePage() {
                     type="text"
                     value={profile[field.key] || ""}
                     onChange={(e) => updateField(field.key, e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
+                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-amber-500/50 outline-none transition-all"
                   />
                 </div>
               ))}

@@ -98,28 +98,41 @@ const Achievements = () => {
                 Major <span className="accent-text">Milestones.</span>
               </h2>
            </div>
-           <p className="section-copy max-w-md lg:text-right text-zinc-400 italic">
-              "Validated technical recognition records and leadership achievements."
-           </p>
+
         </div>
 
-        {/* Categories Selection - Dropdown Design */}
-        <div className="mb-12 flex justify-start">
-            <div className="relative group/dropdown">
-                <select 
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="appearance-none bg-zinc-900/50 border border-zinc-800 text-zinc-300 px-6 py-3 pr-12 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 hover:border-amber-500/50 focus:border-amber-500 focus:outline-none cursor-pointer"
-                >
-                    {categories.map((cat) => (
-                        <option key={cat} value={cat} className="bg-zinc-950 text-white">
-                            {cat}
-                        </option>
-                    ))}
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500 group-hover/dropdown:text-amber-500 transition-colors">
-                    <ChevronDown size={14} />
-                </div>
+        {/* Categories Selection - Tab Design */}
+        <div className="mb-12 border-b border-white/10 overflow-x-auto">
+            <div className="flex min-w-max gap-8">
+                {categories.map((cat) => {
+                    const count = cat === "All" 
+                        ? achievements.length 
+                        : achievements.filter(a => {
+                            const cats = Array.isArray(a.category) ? a.category : [a.category];
+                            return cats.includes(cat);
+                          }).length;
+                    
+                    if (cat !== "All" && count === 0) return null;
+                    
+                    const isActive = selectedCategory === cat;
+                    return (
+                        <button
+                            key={cat}
+                            type="button"
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`flex items-center gap-2 border-b-2 px-1 pb-4 text-sm font-bold transition-colors ${
+                                isActive
+                                    ? "border-amber-400 text-white"
+                                    : "border-transparent text-zinc-400 hover:text-white"
+                            }`}
+                        >
+                            <span>{cat}</span>
+                            <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-300">
+                                {count}
+                            </span>
+                        </button>
+                    );
+                })}
             </div>
         </div>
 
@@ -180,9 +193,21 @@ const Achievements = () => {
                         if (isLeft) prevSlide();
                         if (isRight) nextSlide();
                     }}
+                    drag={isCenter ? "x" : false}
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.6}
+                    onDragEnd={(e, { offset, velocity }) => {
+                        const swipeThreshold = 50;
+                        if (offset.x < -swipeThreshold || velocity.x < -400) {
+                            nextSlide();
+                        } else if (offset.x > swipeThreshold || velocity.x > 400) {
+                            prevSlide();
+                        }
+                    }}
                     style={{ 
                         transformOrigin: "center center",
-                        transformStyle: "preserve-3d"
+                        transformStyle: "preserve-3d",
+                        touchAction: isCenter ? "pan-y" : "auto"
                     }}
                     >
                     {/* Image Area */}
@@ -340,16 +365,32 @@ const Achievements = () => {
               <>
                 <button
                     onClick={prevSlide}
-                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 left-2 md:-left-8 lg:-left-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-amber-500 transition-all group"
+                    className="hidden md:flex absolute top-[30%] md:top-1/2 -translate-y-1/2 left-2 md:-left-8 lg:-left-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-amber-500 transition-all group items-center justify-center"
                 >
                     <ChevronLeft size={20} className="group-hover:scale-110 transition-transform" />
                 </button>
                 <button
                     onClick={nextSlide}
-                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 right-2 md:-right-8 lg:-right-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-amber-500 transition-all group"
+                    className="hidden md:flex absolute top-[30%] md:top-1/2 -translate-y-1/2 right-2 md:-right-8 lg:-right-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-amber-500 transition-all group items-center justify-center"
                 >
                     <ChevronRight size={20} className="group-hover:scale-110 transition-transform" />
                 </button>
+
+                {/* Pagination Slide Bar */}
+                <div className="absolute -bottom-4 md:-bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-40">
+                  {filteredItems.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentIndex(idx)}
+                      className={`h-1 rounded-full transition-all duration-300 ${
+                        currentIndex === idx 
+                          ? "w-5 bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" 
+                          : "w-1.5 bg-zinc-600/60 hover:bg-zinc-400"
+                      }`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
               </>
           )}
         </div>

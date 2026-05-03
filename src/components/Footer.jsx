@@ -89,29 +89,12 @@ const Footer = ({ totalViews = 0 }) => {
               </MagneticButton>
 
               <div className="flex items-center gap-2 flex-wrap">
-                {p.socialLinks && p.socialLinks.length > 0 ? (
-                  p.socialLinks.slice(0, 5).map((link, i) => (
-                    <a
-                      key={i}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-amber-500/50 transition-colors flex items-center justify-center"
-                      title={link.platform}
-                    >
-                      <SocialIcon platform={link.platform} />
-                    </a>
-                  ))
-                ) : (
-                  <>
-                    <a href={p.githubUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-amber-500/50 transition-colors flex items-center justify-center">
-                      <FaGithub size={18} />
-                    </a>
-                    <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-amber-500/50 transition-colors flex items-center justify-center">
-                      <FaLinkedin size={18} />
-                    </a>
-                  </>
-                )}
+                <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-[#0A66C2] hover:border-[#0A66C2]/50 transition-colors flex items-center justify-center" title="LinkedIn">
+                  <FaLinkedin size={18} />
+                </a>
+                <a href={p.instagramUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-[#E4405F] hover:border-[#E4405F]/50 transition-colors flex items-center justify-center" title="Instagram">
+                  <FaInstagram size={18} />
+                </a>
               </div>
             </div>
           </div>
@@ -121,7 +104,6 @@ const Footer = ({ totalViews = 0 }) => {
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold tracking-tight text-white">{p.fullName || "Engineer"}</span>
-              <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
             </div>
             <p className="max-w-sm text-sm leading-7 text-zinc-500">
               Engineering resilient digital infrastructure and high-performance user experiences. Based in {(p.location || "Earth").split("•")[0]}.
@@ -146,7 +128,7 @@ const Footer = ({ totalViews = 0 }) => {
               <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Connect</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href={p.resumeUrl || "#"} className="text-zinc-500 hover:text-amber-500 transition-colors text-sm font-medium flex items-center gap-1.5">
+                  <a href={p.resumeUrl || "#"} target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-amber-500 transition-colors text-sm font-medium flex items-center gap-1.5">
                     Resume <ExternalLink size={12} />
                   </a>
                 </li>

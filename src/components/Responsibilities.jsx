@@ -134,9 +134,9 @@ const Responsibilities = () => {
       organization: "IIITians Network",
       period: "Dec 2024 - Present • 1 yr 5 mos",
       socials: [
-        { name: "Website", icon: FaGlobe, url: "https://iiitiansnetwork.com", color: "text-emerald-400" },
+        { name: "Website", icon: FaGlobe, url: "https://www.iiitiansnetwork.in", color: "text-emerald-400" },
         { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/company/iiitians-network/", color: "text-[#0A66C2]" },
-        { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/iiitians.network/", color: "text-[#E4405F]" },
+        { name: "Instagram", icon: FaInstagram, url: "https://instagram.com/iiitiansnetwork", color: "text-[#E4405F]" },
       ],
       roles: [
         {
@@ -260,7 +260,7 @@ const Responsibilities = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="section-shell overflow-visible" id="responsibilities">
+    <section ref={containerRef} className="section-shell overflow-hidden" id="responsibilities">
       <EditSectionButton href="/admin/responsibilities" label="Edit Responsibilities" />
       <div className="section-container relative z-10">
         <div className={`flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12 md:mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>

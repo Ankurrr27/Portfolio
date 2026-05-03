@@ -144,24 +144,24 @@ export default function AdminStatsPage() {
   const set = (key, val) => setStats(prev => normalizeStats({ ...prev, [key]: getInputValue(val) }));
 
   const naItems = [
-    { key: "naGithub", label: "GitHub" },
-    { key: "naLeetcode", label: "LeetCode" },
-    { key: "naGfg", label: "GeeksForGeeks" },
-    { key: "naCf", label: "Codeforces" },
+    { key: "naGithub", label: "Development (GitHub)" },
+    { key: "naLeetcode", label: "DSA (LeetCode)" },
+    { key: "naGfg", label: "DSA (GeeksForGeeks)" },
+    { key: "naCf", label: "CP (Codeforces)" },
   ];
 
   const visibilityItems = [
-    { key: "showGithubStats", label: "GitHub" },
-    { key: "showLeetcodeStats", label: "LeetCode" },
-    { key: "showGfgStats", label: "GeeksForGeeks" },
-    { key: "showCodeforcesStats", label: "Codeforces" },
+    { key: "showGithubStats", label: "Development (GitHub)" },
+    { key: "showLeetcodeStats", label: "DSA (LeetCode)" },
+    { key: "showGfgStats", label: "DSA (GeeksForGeeks)" },
+    { key: "showCodeforcesStats", label: "CP (Codeforces)" },
   ];
 
   if (isLoading) return <div className="p-8 text-slate-500">Loading stats...</div>;
 
   return (
     <div className="max-w-4xl space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link href="/admin" className="p-2 rounded-lg hover:bg-slate-100 transition-colors">
             <ArrowLeft size={20} />
@@ -172,7 +172,7 @@ export default function AdminStatsPage() {
           </div>
         </div>
         <button onClick={handleSave} disabled={isSaving}
-          className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all disabled:opacity-50">
+          className="flex items-center justify-center sm:justify-start gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all disabled:opacity-50 w-full sm:w-auto">
           {isSaving ? <RefreshCw size={18} className="animate-spin" /> : <Save size={18} />}
           Save Changes
         </button>
@@ -217,7 +217,7 @@ export default function AdminStatsPage() {
           <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
               <FaGithub size={18} className="text-slate-700" />
-              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">GitHub Presence</h3>
+              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">Development (GitHub)</h3>
             </div>
             <AdminField label="Contributions" value={stats.githubContributions} onChange={v => set("githubContributions", v)} placeholder="e.g. 1200+" />
             <AdminField label="Repositories" value={stats.githubRepos} onChange={v => set("githubRepos", v)} placeholder="e.g. 35+" />
@@ -227,7 +227,7 @@ export default function AdminStatsPage() {
           <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
               <Code2 size={18} className="text-orange-500" />
-              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">LeetCode Mastery</h3>
+              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">DSA (LeetCode)</h3>
             </div>
             <AdminField label="Solved Problems" value={stats.leetcodeSolved} onChange={v => set("leetcodeSolved", v)} placeholder="e.g. 450+" />
             <AdminField label="Contest Rating" value={stats.leetcodeRating} onChange={v => set("leetcodeRating", v)} placeholder="e.g. 1650+" />
@@ -237,7 +237,7 @@ export default function AdminStatsPage() {
           <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
               <Trophy size={18} className="text-emerald-600" />
-              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">GFG Proficiency</h3>
+              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">DSA (GeeksForGeeks)</h3>
             </div>
             <AdminField label="Overall Score" value={stats.gfgScore} onChange={v => set("gfgScore", v)} placeholder="e.g. 1200+" />
             <AdminField label="Institute Rank" value={stats.gfgRank} onChange={v => set("gfgRank", v)} placeholder="e.g. 1" />
@@ -247,7 +247,7 @@ export default function AdminStatsPage() {
           <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
               <LayoutDashboard size={18} className="text-blue-500" />
-              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">Codeforces Standing</h3>
+              <h3 className="font-bold uppercase tracking-widest text-xs text-slate-900">CP (Codeforces)</h3>
             </div>
             <AdminField label="Max Rating" value={stats.cfRating} onChange={v => set("cfRating", v)} placeholder="e.g. 1450+" />
             <AdminField label="Rank Title" value={stats.cfRank} onChange={v => set("cfRank", v)} placeholder="e.g. Specialist" />
@@ -256,48 +256,10 @@ export default function AdminStatsPage() {
         </div>
       </div>
 
-      {/* Neural Activity Matrix */}
-      <div>
-        <h2 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-          <Activity size={14} /> Neural Activity Matrix
-        </h2>
-        <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-6">
-          {naItems.map(({ key, label }) => (
-            <div key={key} className="space-y-3 pb-6 border-b border-slate-100 last:border-0 last:pb-0">
-              <p className="text-xs font-black text-slate-600 uppercase tracking-widest">{label}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                <div className="sm:col-span-1 space-y-1">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Activity % ({stats[`${key}Val`] ?? 0}%)</label>
-                  <input
-                    type="range" min={0} max={100}
-                    value={stats[`${key}Val`] ?? 0}
-                    onChange={e => set(`${key}Val`, Number(e.target.value))}
-                    className="w-full accent-amber-500"
-                  />
-                </div>
-                <AdminField
-                  label="Trend Label"
-                  value={stats[`${key}Trend`] ?? ""}
-                  onChange={v => set(`${key}Trend`, v)}
-                  placeholder="e.g. +12%"
-                />
-                <AdminField
-                  label="Descriptor"
-                  value={stats[`${key}Label`] ?? ""}
-                  onChange={v => set(`${key}Label`, v)}
-                  placeholder="e.g. Open Source Velocity"
-                />
-              </div>
-            </div>
-          ))}
-          <div className="pt-2">
-            <AdminField label="Global Score (e.g. 8.9)" value={stats.globalScore ?? "8.9"} onChange={v => set("globalScore", v)} placeholder="e.g. 8.9" />
-          </div>
-        </div>
-      </div>
+
 
       {/* Auto Fetch Toggle */}
-      <div className="p-6 bg-amber-50 rounded-2xl border border-amber-100 flex items-center justify-between">
+      <div className="p-6 bg-amber-50 rounded-2xl border border-amber-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-sm font-bold text-amber-900 uppercase tracking-wider">Automated Fetching</h3>
           <p className="text-xs text-amber-700 mt-1">When enabled, real-time data is fetched from external APIs instead of using values above.</p>

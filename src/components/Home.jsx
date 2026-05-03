@@ -26,11 +26,10 @@ const proofPoints = [
 ];
 
 const ROLES = [
-  "Full Stack Developer",
+  "Web Developer",
   "App Developer",
   "UI/UX Designer",
   "DSA Enthusiast",
-  "Engineering Lead",
 ];
 
 const TYPING_SPEED = 68;
@@ -123,7 +122,7 @@ const Home = ({ totalViews = 0 }) => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-[92dvh] overflow-hidden bg-zinc-950 px-4 pb-16 pt-24 sm:px-5 md:px-12 md:pt-32 lg:px-24"
+      className="relative w-full min-h-[92dvh] lg:min-h-[100dvh] flex flex-col overflow-hidden bg-zinc-950 px-4 pb-4 pt-24 sm:px-5 sm:pb-6 md:px-12 md:pt-32 lg:px-24"
       id="home"
     >
       {/* Dynamic Background */}
@@ -151,20 +150,19 @@ const Home = ({ totalViews = 0 }) => {
 
       <motion.div
         style={{ y, opacity }}
-        className="relative z-10 flex flex-col items-start sm:items-center justify-start sm:justify-center text-left sm:text-center pt-10"
+        className="relative z-10 flex flex-col items-start sm:items-center text-left sm:text-center pt-4 sm:pt-10 flex-1 w-full"
       >
-        <div className="flex flex-col items-start sm:items-center max-w-4xl space-y-10 w-full px-1">
-          <div className="space-y-6 w-full">
+        {/* Main Content Cluster */}
+        <div className="flex flex-col items-start sm:items-center max-w-4xl w-full px-1 mt-8 sm:mt-auto mb-auto z-20">
+          <div className="space-y-4 sm:space-y-6 w-full mb-8 sm:mb-10">
             <motion.h1
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="max-w-5xl text-left sm:text-center text-[clamp(2.2rem,8vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-white"
+              className="max-w-5xl text-left sm:text-center text-[clamp(2.5rem,8vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-white"
             >
-              Hello, I'm <span className="text-amber-500">{p.fullName || "Ankur"}</span>
-              <br className="block sm:hidden" />
-              <span className="hidden sm:inline"> and</span>
-              <span className="sm:hidden"> and</span> I'm a <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
+              I'm <span className="text-amber-500">{p.fullName || "Ankur"}</span>, a<br />
+              <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
                 <span className="text-amber-500">{roleText || "\u00A0"}</span>
                 <span className="inline-block h-[1em] w-[2px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] bg-amber-500" />
               </span>
@@ -174,48 +172,50 @@ const Home = ({ totalViews = 0 }) => {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.18 }}
-              className="section-copy mx-0 sm:mx-auto max-w-2xl text-left sm:text-center text-base md:text-lg"
+              className="section-copy mx-0 sm:mx-auto max-w-2xl text-left sm:text-center text-sm sm:text-base md:text-lg"
             >
               Clean code. Scalable systems. Shipped products.
             </motion.p>
           </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.25 }}
-              className="order-3 flex w-full flex-row justify-start gap-2 pt-6 sm:order-none sm:w-auto sm:justify-center sm:gap-4 sm:pt-12"
-            >
-              <MagneticButton>
-                <a
-                  href="#projects"
-                  className="inline-flex h-11 sm:h-12 w-full items-center justify-center rounded-lg bg-amber-500 px-3 sm:px-10 text-xs sm:text-sm font-bold text-white transition-all hover:bg-amber-600 active:scale-95 whitespace-nowrap"
-                >
-                  <span className="sm:hidden">See work</span>
-                  <span className="hidden sm:inline">See the work</span>
-                  <ChevronRight size={14} className="ml-1.5 transition-transform group-hover:translate-x-1" />
-                </a>
-              </MagneticButton>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="flex w-full flex-row justify-start sm:justify-center gap-3 sm:gap-4"
+          >
+            <MagneticButton>
+              <a
+                href="#projects"
+                className="inline-flex h-10 sm:h-12 w-auto items-center justify-center rounded-lg bg-amber-500 px-5 sm:px-10 text-[12px] sm:text-sm font-bold text-white transition-all hover:bg-amber-600 active:scale-95 whitespace-nowrap"
+              >
+                <span className="sm:hidden">See work</span>
+                <span className="hidden sm:inline">See the work</span>
+                <ChevronRight size={14} className="ml-1.5 transition-transform group-hover:translate-x-1" />
+              </a>
+            </MagneticButton>
 
-              <MagneticButton>
-                <a
-                  href={p.linkedinUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-11 sm:h-12 w-full items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-3 sm:px-10 text-xs sm:text-sm font-bold text-zinc-300 transition-all hover:border-zinc-700 active:scale-95 whitespace-nowrap"
-                >
-                  <span className="sm:hidden">Contact</span>
-                  <span className="hidden sm:inline">Start a conversation</span>
-                  <ArrowUpRight size={14} className="ml-1.5" />
-                </a>
-              </MagneticButton>
-            </motion.div>
+            <MagneticButton>
+              <a
+                href={p.linkedinUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 sm:h-12 w-auto items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-5 sm:px-10 text-[12px] sm:text-sm font-bold text-zinc-300 transition-all hover:border-zinc-700 active:scale-95 whitespace-nowrap"
+              >
+                <span className="sm:hidden">Contact</span>
+                <span className="hidden sm:inline">Start a conversation</span>
+                <ArrowUpRight size={14} className="ml-1.5" />
+              </a>
+            </MagneticButton>
+          </motion.div>
+        </div>
 
-            <div className="order-2 grid w-full max-w-5xl grid-cols-4 items-start justify-between gap-1 border-t border-white/5 pt-8 sm:order-none sm:flex sm:flex-row sm:justify-center sm:gap-x-12 sm:gap-y-6 sm:pt-10">
+        {/* Bottom Stats Cluster */}
+        <div className="mt-auto grid w-full max-w-5xl grid-cols-4 items-start justify-between gap-1 border-t border-white/5 pt-6 pb-2 sm:pb-0 sm:flex sm:flex-row sm:justify-center sm:gap-x-12 sm:gap-y-6 sm:pt-10 relative z-20">
               {[
                 { label: "Projects Worked", value: "10+" },
                 { label: "GitHub Repos", value: "25+" },
-                { label: "Total Contributions", value: "500+" },
+                { label: "Total Contributions", value: "700+" },
                 { label: "Problems Solved", value: "600+" },
               ].map((stat) => (
                 <div key={stat.label} className="group flex min-w-0 flex-col items-center justify-start px-1 sm:items-start sm:px-0">
@@ -224,7 +224,6 @@ const Home = ({ totalViews = 0 }) => {
                 </div>
               ))}
             </div>
-          </div>
       </motion.div>
 
       <style>{`
