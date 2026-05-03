@@ -10,6 +10,7 @@ import Education from '../components/Education';
 import Responsibilities from '../components/Responsibilities';
 import Footer from '../components/Footer';
 import Achievements from '../components/Achievements';
+import CodingStats from '../components/CodingStats';
 
 
 function getSessionId() {
@@ -69,6 +70,7 @@ const App = () => {
       <About totalViews={totalViews} />
       <Skills />
       <Projects />
+      <CodingStats />
       <Achievements />
 
       <Responsibilities />
