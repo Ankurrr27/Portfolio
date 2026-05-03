@@ -127,7 +127,7 @@ export async function PATCH(request) {
 
   try {
     const body = await request.json();
-    const { slug, imageUrl, galleryUrls, socialLinks } = body;
+    const { slug, imageUrl, galleryUrls, socialLinks, description } = body;
 
     if (!slug) {
       return NextResponse.json({ error: "slug is required" }, { status: 400 });
@@ -139,6 +139,7 @@ export async function PATCH(request) {
         ...(imageUrl !== undefined && { imageUrl }),
         ...(galleryUrls !== undefined && { galleryUrls }),
         ...(socialLinks !== undefined && { socialLinks }),
+        ...(description !== undefined && { description }),
       },
     });
 

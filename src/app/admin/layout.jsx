@@ -50,7 +50,6 @@ function AdminLayoutContent({ children }) {
     { name: "Achievements", href: "/admin/achievements", icon: Trophy },
     { name: "Responsibilities", href: "/admin/responsibilities", icon: Briefcase },
     { name: "Education", href: "/admin/education", icon: GraduationCap },
-    { name: "Skills", href: "/admin/skills", icon: Code2 },
     { name: "Profile", href: "/admin/profile", icon: UserCircle },
   ];
 

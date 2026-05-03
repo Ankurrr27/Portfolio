@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import { Upload, X, Image as ImageIcon, Check, Loader2, Plus, Trash2 } from "lucide-react";
 import { useAdmin } from "../../context/AdminContext";
 import ManualCropModal from "./ManualCropModal";
+import AdminField from "./AdminField";
 
 
 // ─── Main Component ─────────────────────────────────────────────────────────
@@ -12,6 +13,7 @@ export default function ProjectImageEditor({ project, onSaved }) {
   const { adminKey } = useAdmin();
   const [imageUrl, setImageUrl] = useState(project.imageUrl || "");
   const [galleryUrls, setGalleryUrls] = useState(project.galleryUrls || []);
+  const [description, setDescription] = useState(project.description || "");
   const [cropModal, setCropModal] = useState(null); // { src, fileName, aspect, target: "cover"|"gallery" }
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -88,11 +90,11 @@ export default function ProjectImageEditor({ project, onSaved }) {
       const res = await fetch("/api/admin/projects", {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
-        body: JSON.stringify({ slug: project.slug, imageUrl, galleryUrls }),
+        body: JSON.stringify({ slug: project.slug, imageUrl, galleryUrls, description }),
       });
       if (!res.ok) throw new Error("Save failed");
       setStatus("Saved!");
-      onSaved?.({ ...project, imageUrl, galleryUrls });
+      onSaved?.({ ...project, imageUrl, galleryUrls, description });
     } catch {
       setStatus("Save failed.");
     } finally {
@@ -142,6 +144,18 @@ export default function ProjectImageEditor({ project, onSaved }) {
           )}
         </div>
         <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverSelect} />
+      </div>
+
+      {/* Description */}
+      <div>
+        <AdminField
+          label="Custom Project Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          textarea
+          placeholder="Detailed project summary with rich formatting..."
+        />
+        <p className="mt-2 text-[10px] text-slate-400">If left empty, the description from GitHub will be used.</p>
       </div>
 
       {/* Gallery */}

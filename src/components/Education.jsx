@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { GraduationCap } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
+import { formatText } from "../utils/formatText";
 
 const EducationItem = ({ institution, period, detail, degree, isVisible, index, imageUrl, skills, description }) => {
   const skillList = skills ? skills.split(",").map(s => s.trim()) : [];
@@ -52,9 +53,9 @@ const EducationItem = ({ institution, period, detail, degree, isVisible, index, 
 
          {/* Description */}
          {(description || detail) && (
-            <p className="text-sm md:text-base leading-relaxed text-zinc-400 font-medium mb-6">
-              {description || detail}
-            </p>
+            <div className="text-sm md:text-base leading-relaxed text-zinc-400 font-medium mb-6">
+              {formatText(description || detail)}
+            </div>
          )}
 
          {/* Bottom Row: Skill Tags */}

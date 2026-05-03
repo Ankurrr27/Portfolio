@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa6";
 import { profileContent as staticProfile } from "../../../data/profile";
 import { Plus, Trash2, Globe, Share2 } from "lucide-react";
+import AdminField from "../../../components/admin/AdminField";
 
 const PLATFORMS = [
   { id: "instagram", name: "Instagram", icon: FaInstagram },
@@ -214,17 +215,12 @@ export default function AdminProfilePage() {
                 { label: "Location", key: "location", icon: MapPin },
                 { label: "CGPA (Optional)", key: "cgpa", icon: User },
               ].map(field => (
-                <div key={field.key} className="space-y-2">
-                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2 px-1">
-                    <field.icon size={10} /> {field.label}
-                  </label>
-                  <input
-                    type="text"
-                    value={profile[field.key] || ""}
-                    onChange={(e) => updateField(field.key, e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
-                  />
-                </div>
+                <AdminField
+                  key={field.key}
+                  label={field.label}
+                  value={profile[field.key] || ""}
+                  onChange={(e) => updateField(field.key, e.target.value)}
+                />
               ))}
             </div>
           </div>
@@ -234,24 +230,20 @@ export default function AdminProfilePage() {
           <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
             <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Narrative</h3>
             <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Headline</label>
-                <textarea
-                  value={profile.headline || ""}
-                  onChange={(e) => updateField("headline", e.target.value)}
-                  rows={2}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all resize-none"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Bio</label>
-                <textarea
-                  value={profile.bio || ""}
-                  onChange={(e) => updateField("bio", e.target.value)}
-                  rows={4}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all resize-none"
-                />
-              </div>
+              <AdminField
+                label="Headline"
+                value={profile.headline || ""}
+                onChange={(e) => updateField("headline", e.target.value)}
+                textarea
+                placeholder="High-performance web architecture meets complex algorithm engineering."
+              />
+              <AdminField
+                label="Bio"
+                value={profile.bio || ""}
+                onChange={(e) => updateField("bio", e.target.value)}
+                textarea
+                placeholder="Briefly describe your journey and expertise..."
+              />
             </div>
           </div>
 
@@ -381,105 +373,6 @@ export default function AdminProfilePage() {
         </div>
 
         <div className="space-y-6">
-          <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
-            <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Lanyard Settings</h3>
-            <p className="text-xs text-slate-500 mb-4">Configure your 3D Interactive Identity Card.</p>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <span className="text-xs font-bold text-slate-700">Show Lanyard</span>
-                <button
-                  onClick={() => updateField("showLanyard", !profile.showLanyard)}
-                  className={`w-12 h-6 rounded-full transition-all relative ${profile.showLanyard ? 'bg-indigo-600' : 'bg-slate-300'}`}
-                >
-                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${profile.showLanyard ? 'right-1' : 'left-1'}`} />
-                </button>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Lanyard Accent Color</label>
-                <div className="flex gap-3">
-                  <input
-                    type="color"
-                    value={profile.lanyardColor || "#f97316"}
-                    onChange={(e) => updateField("lanyardColor", e.target.value)}
-                    className="w-12 h-10 p-1 bg-slate-50 border border-slate-100 rounded-xl outline-none"
-                  />
-                  <input 
-                    type="text"
-                    value={profile.lanyardColor || "#f97316"}
-                    onChange={(e) => updateField("lanyardColor", e.target.value)}
-                    className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">College Name</label>
-                <input
-                  type="text"
-                  value={profile.college || ""}
-                  onChange={(e) => updateField("college", e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Qualification / Degree</label>
-                <input
-                  type="text"
-                  value={profile.qualification || ""}
-                  onChange={(e) => updateField("qualification", e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Lanyard Photo</label>
-                <div className="flex flex-col gap-4">
-                  {lanyardPreviewUrl || profile.lanyardImageUrl || profile.profileImageUrl ? (
-                    <div className="relative w-full aspect-square max-w-[200px] mx-auto rounded-2xl overflow-hidden border border-slate-100 group">
-                      <img 
-                        src={lanyardPreviewUrl || profile.lanyardImageUrl || profile.profileImageUrl} 
-                        alt="Lanyard" 
-                        className="w-full h-full object-cover"
-                        onError={(event) => {
-                          if (event.currentTarget.src !== window.location.origin + staticProfile.profileImageUrl) {
-                            event.currentTarget.src = staticProfile.profileImageUrl;
-                          } else {
-                            event.currentTarget.style.display = "none";
-                          }
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                         <span className="text-[10px] text-white font-bold">
-                           {isUploadingLanyard ? "UPLOADING..." : "CURRENT PREVIEW"}
-                         </span>
-                      </div>
-                    </div>
-                  ) : null}
-                  
-                  <div className="relative">
-                    <input
-                      id="lanyard-upload"
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      disabled={isUploadingLanyard}
-                      onChange={handleLanyardUpload}
-                    />
-                    <label 
-                      htmlFor="lanyard-upload"
-                      className="flex items-center justify-center gap-2 w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-600 border border-indigo-200 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-widest cursor-pointer transition-all"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                      Click to Upload Photo
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div className="p-8 rounded-[2rem] border border-slate-200 bg-white shadow-sm space-y-6">
             <h3 className="text-sm font-bold syne tracking-tight uppercase text-slate-900">Cached Coding Stats</h3>
             <p className="text-xs text-slate-500 mb-4">Fallback values used if the LeetCode or GFG APIs fail to respond.</p>

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { FaInstagram, FaLinkedin, FaTwitter, FaGlobe } from "react-icons/fa";
 import EditSectionButton from "./admin/EditSectionButton";
+import { formatText } from "../utils/formatText";
 
 const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, roles, organizationUrl, socials }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -77,14 +78,16 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
                     <span className="chip">{role.period}</span>
                   </div>
 
-                  {role.description && <p className="text-sm md:text-base leading-relaxed font-medium max-w-3xl text-zinc-400">{role.description}</p>}
+                  {role.description && <div className="text-sm md:text-base leading-relaxed font-medium max-w-3xl text-zinc-400">{formatText(role.description)}</div>}
 
                   {role.points && role.points.length > 0 && (
                     <ul className="space-y-2">
                       {role.points.map((point, pIndex) => (
                         <li key={pIndex} className="flex gap-3 text-sm leading-relaxed text-zinc-400">
                           <span className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-500/60" />
-                          {point}
+                          <div className="flex-1">
+                            {formatText(point)}
+                          </div>
                         </li>
                       ))}
                     </ul>

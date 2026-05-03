@@ -7,6 +7,7 @@ import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 import { SiLeetcode, SiGeeksforgeeks } from "react-icons/si";
 import EditSectionButton from "./admin/EditSectionButton";
 import ProfileCard from "./ui/ProfileCard";
+import { formatText } from "../utils/formatText";
 
 const fallbackProfile = {
   bio: "I am Ankur Singh, a frontend developer and UI/UX designer currently studying B.Tech CSE at IIIT Kota. As a core developer at the IIITians Network, I specialize in building high-performance web applications and scalable software systems.",
@@ -114,17 +115,17 @@ const About = ({ totalViews = 0 }) => {
               About the builder
             </div>
 
-            <h2 className="section-title">
-              Ankur Singh - Web Developer & IIIT Kota Student
-            </h2>
+            <div className="section-title">
+              {formatText(p.headline || "Ankur Singh - Web Developer & IIIT Kota Student")}
+            </div>
 
-            <p
+            <div
               className={`section-copy text-base leading-relaxed md:text-lg ${
                 isBioExpanded ? "" : "max-h-60 overflow-hidden md:max-h-none"
               }`}
             >
-              {p.bio || fallbackProfile.bio}
-            </p>
+              {formatText(p.bio || fallbackProfile.bio)}
+            </div>
 
             <button
               type="button"

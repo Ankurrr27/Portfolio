@@ -5,6 +5,7 @@ import { FaGithub, FaInstagram, FaDiscord, FaFacebook, FaLinkedin, FaYoutube, Fa
 import { RxExternalLink } from "react-icons/rx";
 import { Terminal, X, Maximize2, Plus, ArrowRight, Share2 } from "lucide-react";
 import EditSectionButton from "./admin/EditSectionButton";
+import { formatText } from "../utils/formatText";
 
 const SocialIcon = ({ platform, url }) => {
   const icons = {
@@ -80,9 +81,9 @@ const ProjectCard = ({ project, index, onOpen }) => (
          </h3>
       </div>
 
-      <p className="text-zinc-400 text-sm leading-relaxed line-clamp-3 mb-6 flex-1 font-medium">
-        {project.description || "No description available."}
-      </p>
+      <div className="text-zinc-400 text-sm leading-relaxed line-clamp-3 mb-6 flex-1 font-medium">
+        {formatText(project.description || "No description available.")}
+      </div>
 
       {/* Metrics Row */}
       <div className="grid grid-cols-3 gap-2 md:gap-3 mb-6">
@@ -307,9 +308,9 @@ const Projects = () => {
                            <h4 className="text-xs font-semibold text-orange-500 uppercase tracking-wide px-3 bg-zinc-900/50 py-1 rounded-md border border-orange-500/20">Project Overview</h4>
                               <div className="h-px flex-1 bg-zinc-800/50" />
                            </div>
-                           <p className="text-zinc-300 text-base leading-relaxed font-medium">
-                             {selectedProject.description || "Project documentation is being finalized."}
-                           </p>
+                           <div className="text-zinc-300 text-base leading-relaxed font-medium">
+                             {formatText(selectedProject.description || "Project documentation is being finalized.")}
+                           </div>
                         </div>
                      </div>
  

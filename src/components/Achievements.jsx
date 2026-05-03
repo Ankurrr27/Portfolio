@@ -6,6 +6,7 @@ import { SiLeetcode, SiGeeksforgeeks, SiGithub } from "react-icons/si";
 import { motion, AnimatePresence } from "framer-motion";
 import EditSectionButton from "./admin/EditSectionButton";
 import { fallbackAchievements } from "../data/achievements";
+import { formatText } from "../utils/formatText";
 
 
 const icons = {
@@ -208,11 +209,7 @@ const Achievements = () => {
                         opacity: opacity,
                         rotateY: rotateY
                     }}
-                    whileHover={isCenter ? { 
-                        y: isMobile ? yOffset - 4 : yOffset - 12,
-                        scale: 1.03,
-                        z: 50
-                    } : {}}
+                    whileHover={isCenter ? "hover" : ""}
                     transition={{ 
                         type: "spring", 
                         stiffness: 120, 
@@ -233,7 +230,9 @@ const Achievements = () => {
                         <motion.img
                             src={item.url || item.badgeImageUrl || "/images/hero_bg.png"}
                             alt={item.title}
-                            whileHover={{ scale: 1.1 }}
+                            variants={{
+                                hover: { scale: 1.1 }
+                            }}
                             transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
                             className="w-full h-full object-cover object-center"
                         />
@@ -340,9 +339,9 @@ const Achievements = () => {
                                   <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">{selectedMilestone.dateLabel}</span>
                               </div>
 
-                              <p className="text-sm md:text-base text-zinc-400 leading-relaxed mb-10 whitespace-pre-wrap">
-                                  {selectedMilestone.description}
-                              </p>
+                              <div className="text-sm md:text-base text-zinc-400 leading-relaxed mb-10">
+                                  {formatText(selectedMilestone.description)}
+                              </div>
 
                               <div className="flex items-center gap-4">
                                   {selectedMilestone.achievementUrl && (
