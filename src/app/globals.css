@@ -6,7 +6,7 @@
 :root {
   --background: #f8fafc;
   --foreground: #111113;
-  --primary: #f97316;
+  --primary: #6366f1;
   --secondary: #60a5fa;
   --card-bg: #ffffff;
   --surface-subtle: #f1f5f9;
@@ -227,7 +227,7 @@ body {
 }
 
 ::selection {
-  background: #f97316;
+  background: #6366f1;
   color: #ffffff;
 }
 
@@ -309,19 +309,19 @@ html:not(.dark) .text-slate-800 {
   color: #111113 !important;
 }
 
-html:not(.dark) .bg-orange-500.text-white,
-html:not(.dark) .bg-orange-600.text-white,
-html:not(.dark) .bg-blue-600.text-white,
+html:not(.dark) .bg-indigo-500.text-white,
+html:not(.dark) .bg-indigo-600.text-white,
+html:not(.dark) .bg-indigo-600.text-white,
 html:not(.dark) .bg-indigo-600.text-white,
 html:not(.dark) .bg-red-600.text-white,
 html:not(.dark) .bg-rose-500.text-white,
 html:not(.dark) .bg-emerald-700.text-white,
 html:not(.dark) .primary-button,
 html:not(.dark) .primary-button *,
-html:not(.dark) .hover\:bg-orange-500:hover,
-html:not(.dark) .hover\:bg-orange-500:hover *,
-html:not(.dark) .hover\:bg-blue-700:hover,
-html:not(.dark) .hover\:bg-blue-700:hover *,
+html:not(.dark) .hover\:bg-indigo-500:hover,
+html:not(.dark) .hover\:bg-indigo-500:hover *,
+html:not(.dark) .hover\:bg-indigo-700:hover,
+html:not(.dark) .hover\:bg-indigo-700:hover *,
 html:not(.dark) .hover\:bg-indigo-700:hover,
 html:not(.dark) .hover\:bg-indigo-700:hover * {
   color: #ffffff !important;
@@ -374,7 +374,7 @@ html:not(.dark) .from-zinc-950\/80 {
 html.dark .bg-white,
 html.dark .bg-slate-50,
 html.dark .bg-slate-100,
-html.dark .bg-blue-50 {
+html.dark .bg-indigo-50 {
   background-color: #111113 !important;
 }
 
@@ -455,45 +455,5 @@ html.dark .shadow-lg {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28) !important;
 }
 
-.bg-blue-600,
-.bg-indigo-600,
-.hover\:bg-blue-700:hover,
-.hover\:bg-indigo-700:hover {
-  background-color: #f97316 !important;
-}
 
-.hover\:bg-blue-600:hover,
-.hover\:bg-indigo-600:hover {
-  background-color: #ea580c !important;
-}
-
-.text-blue-700,
-.text-blue-600,
-.text-indigo-700,
-.text-indigo-600,
-.hover\:text-blue-700:hover,
-.hover\:text-blue-600:hover,
-.hover\:text-indigo-700:hover,
-.hover\:text-indigo-600:hover {
-  color: #f97316 !important;
-}
-
-.border-blue-500,
-.border-blue-400,
-.border-indigo-500,
-.border-indigo-200,
-.focus\:border-blue-500:focus,
-.focus\:border-indigo-500\/50:focus {
-  border-color: #f97316 !important;
-}
-
-.ring-blue-500,
-.focus\:ring-blue-500:focus {
-  --tw-ring-color: #f97316 !important;
-}
-
-.shadow-blue-500\/20,
-.shadow-indigo-500\/20 {
-  box-shadow: 0 10px 28px rgba(249, 115, 22, 0.16) !important;
-}
 

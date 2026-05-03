@@ -55,7 +55,7 @@ const About = ({ totalViews = 0 }) => {
   const p = profile || fallbackProfile;
 
   const socials = [
-    { icon: Mail, url: `mailto:${p.email || fallbackProfile.email}`, label: "Email", color: "text-orange-500" },
+    { icon: Mail, url: `mailto:${p.email || fallbackProfile.email}`, label: "Email", color: "text-indigo-500" },
     { icon: FaLinkedin, url: p.linkedinUrl, label: "LinkedIn", color: "text-[#0A66C2]" },
     { icon: FaGithub, url: p.githubUrl, label: "GitHub", color: "text-white" },
     { icon: SiLeetcode, url: p.leetcodeUrl, label: "LeetCode", color: "text-[#FFA116]" },
@@ -111,7 +111,7 @@ const About = ({ totalViews = 0 }) => {
         <div className="order-2 space-y-8 lg:order-1 lg:col-span-7">
           <div className="space-y-6">
             <div className="section-kicker">
-              <Code2 size={16} className="text-orange-500" />
+              <Code2 size={16} className="text-indigo-500" />
               About the builder
             </div>
 
@@ -130,7 +130,7 @@ const About = ({ totalViews = 0 }) => {
             <button
               type="button"
               onClick={() => setIsBioExpanded((value) => !value)}
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-4 text-sm font-bold text-zinc-300 transition-colors hover:border-orange-500/50 hover:text-white md:hidden"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-4 text-sm font-bold text-zinc-300 transition-colors hover:border-indigo-500/50 hover:text-white md:hidden"
               aria-expanded={isBioExpanded}
             >
               {isBioExpanded ? "View less" : "View more"}
@@ -143,7 +143,7 @@ const About = ({ totalViews = 0 }) => {
                   href={url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.055] px-2 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all hover:border-orange-500/40 hover:bg-orange-500/10"
+                  className="group flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.055] px-2 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all hover:border-indigo-500/40 hover:bg-indigo-500/10"
                 >
                   <Icon size={17} className={`${color} shrink-0 transition-transform group-hover:scale-110`} />
                   <span className="min-w-0 truncate text-center text-[11px] font-semibold text-zinc-300 transition-colors group-hover:text-white lg:text-xs">{label}</span>
@@ -174,7 +174,7 @@ const About = ({ totalViews = 0 }) => {
             enableTilt
             enableMobileTilt={false}
             behindGlowEnabled
-            behindGlowColor="rgba(249, 115, 22, 0.66)"
+            behindGlowColor="rgba(99, 102, 241, 0.66)"
             behindGlowSize="52%"
             innerGradient="linear-gradient(145deg, rgba(249,115,22,0.36) 0%, rgba(56,189,248,0.22) 55%, rgba(9,9,11,0.9) 100%)"
             onContactClick={next}
@@ -184,7 +184,7 @@ const About = ({ totalViews = 0 }) => {
             <button
               type="button"
               onClick={prev}
-              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-colors hover:border-orange-500/50 hover:text-orange-500"
+              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-colors hover:border-indigo-500/50 hover:text-indigo-500"
               aria-label="Previous image"
             >
               <ChevronRight size={16} className="rotate-180" />
@@ -197,7 +197,7 @@ const About = ({ totalViews = 0 }) => {
                   key={i}
                   onClick={() => setCarouselIndex(i)}
                   className={`h-2 rounded-full transition-all duration-300 ${
-                    i === carouselIndex ? "w-7 bg-orange-500" : "w-2 bg-zinc-600 hover:bg-zinc-400"
+                    i === carouselIndex ? "w-7 bg-indigo-500" : "w-2 bg-zinc-600 hover:bg-zinc-400"
                   }`}
                   aria-label={`Show image ${i + 1}`}
                   aria-current={i === carouselIndex ? "true" : undefined}
@@ -208,7 +208,7 @@ const About = ({ totalViews = 0 }) => {
             <button
               type="button"
               onClick={next}
-              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-colors hover:border-orange-500/50 hover:text-orange-500"
+              className="flex min-h-10 min-w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-colors hover:border-indigo-500/50 hover:text-indigo-500"
               aria-label="Next image"
             >
               <ChevronRight size={16} />

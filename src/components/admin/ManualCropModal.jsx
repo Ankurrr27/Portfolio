@@ -67,7 +67,7 @@ export default function ManualCropModal({ image, onCropComplete, onClose, aspect
                  <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
                     <ZoomIn size={14} /> Zoom Control
                  </label>
-                 <span className="text-sm font-bold text-blue-600">{Math.round(zoom * 100)}%</span>
+                 <span className="text-sm font-bold text-indigo-600">{Math.round(zoom * 100)}%</span>
               </div>
               <input
                 type="range"
@@ -76,7 +76,7 @@ export default function ManualCropModal({ image, onCropComplete, onClose, aspect
                 max={3}
                 step={0.1}
                 onChange={(e) => setZoom(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600"
               />
            </div>
 
@@ -89,7 +89,7 @@ export default function ManualCropModal({ image, onCropComplete, onClose, aspect
               </button>
               <button
                 onClick={handleConfirm}
-                className="flex-[2] py-3 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+                className="flex-[2] py-3 rounded-xl bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2"
               >
                 <Check size={18} /> Confirm Selection
               </button>

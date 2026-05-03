@@ -61,7 +61,7 @@ export const Header = () => {
     <div className="max-w-7xl relative mx-auto py-0 md:py-20 px-4 md:px-6 w-full left-0 top-0">
       <h1 className="section-title">
         Gallery <br />
-        <span className="text-orange-500">Art.</span>
+        <span className="text-indigo-500">Art.</span>
       </h1>
       <p className="section-copy max-w-2xl mt-5 md:mt-8">
         A visual exploration of technical architecture and system designs.
@@ -89,7 +89,7 @@ export const ProductCard = ({ product, translate }) => {
         />
       </a>
       <div className="flex flex-col p-4 md:p-5 h-[35%] justify-center bg-zinc-900 border-t border-zinc-800 z-10 relative">
-        <span className="text-[10px] font-bold uppercase tracking-wide text-orange-500 mb-2">
+        <span className="text-[10px] font-bold uppercase tracking-wide text-indigo-500 mb-2">
           {product.category || "Gallery Art"}
         </span>
         <h2 className="text-white font-bold text-base md:text-xl leading-tight truncate">

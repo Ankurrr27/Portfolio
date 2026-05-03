@@ -116,7 +116,7 @@ export default function AdminProjectsPage() {
         <button
           onClick={handleSave}
           disabled={isLoading || selectedSlugs.length === 0}
-          className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-medium text-sm flex items-center gap-2 hover:bg-indigo-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save size={16} />
           {isLoading ? "Saving..." : "Save Selection"}

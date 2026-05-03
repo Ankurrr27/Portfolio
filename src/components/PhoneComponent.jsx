@@ -113,7 +113,7 @@ const PhoneComponent = () => {
           <div className="grid grid-cols-4 gap-x-2 gap-y-4 place-items-center mt-2">
             <div className="flex flex-col items-center gap-1 cursor-pointer">
               <div
-                className="w-9 h-9 rounded-xl bg-blue-400 shadow-md shadow-blue-500/20 flex items-center justify-center text-white"
+                className="w-9 h-9 rounded-xl bg-indigo-400 shadow-md shadow-indigo-500/20 flex items-center justify-center text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +200,7 @@ const PhoneComponent = () => {
               </svg>
             </div>
             <div
-              className="w-10 h-10 rounded-xl bg-blue-500 shadow-md shadow-blue-500/20 flex items-center justify-center text-white border border-blue-400"
+              className="w-10 h-10 rounded-xl bg-indigo-500 shadow-md shadow-indigo-500/20 flex items-center justify-center text-white border border-indigo-400"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

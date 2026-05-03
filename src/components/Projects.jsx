@@ -76,7 +76,7 @@ const ProjectCard = ({ project, index, onOpen }) => (
     {/* Content */}
     <div className="p-4 md:p-6 flex flex-col flex-1">
       <div className="flex items-center justify-between mb-3">
-         <h3 className="text-lg font-semibold text-white line-clamp-1 group-hover:text-orange-500 transition-colors tracking-tight">
+         <h3 className="text-lg font-semibold text-white line-clamp-1 group-hover:text-indigo-500 transition-colors tracking-tight">
            {project.name}
          </h3>
       </div>
@@ -93,18 +93,18 @@ const ProjectCard = ({ project, index, onOpen }) => (
          </div>
          <div className="panel-subtle p-2.5 md:p-3 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Status</p>
-            <p className="text-sm text-orange-500 font-bold">Live</p>
+            <p className="text-sm text-indigo-500 font-bold">Live</p>
          </div>
          <div className="panel-subtle p-2.5 md:p-3 text-center group-hover:border-zinc-700 transition-colors">
             <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Forks</p>
-            <p className="text-sm text-orange-500 font-bold">{project.forks || 0}</p>
+            <p className="text-sm text-indigo-500 font-bold">{project.forks || 0}</p>
          </div>
       </div>
 
       <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
          <button 
            onClick={() => onOpen(project)}
-           className="min-h-11 text-sm font-bold text-orange-500 flex items-center gap-2 group/btn hover:text-orange-400 transition-colors uppercase tracking-wide"
+           className="min-h-11 text-sm font-bold text-indigo-500 flex items-center gap-2 group/btn hover:text-indigo-400 transition-colors uppercase tracking-wide"
          >
            View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
          </button>
@@ -157,7 +157,7 @@ const Projects = () => {
       {/* Engineering Header */}
       <div className="section-container flex flex-col items-start text-left">
         <div className="section-kicker mb-6">
-           <Terminal size={16} className="text-orange-500" />
+           <Terminal size={16} className="text-indigo-500" />
            <span>Portfolio Projects</span>
         </div>
         <h2 className="section-title mb-6">
@@ -174,7 +174,7 @@ const Projects = () => {
                   onClick={() => setActiveFilter(lang)}
                   className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
                     activeFilter === lang 
-                      ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20" 
+                      ? "bg-indigo-500 border-indigo-500 text-white shadow-lg shadow-indigo-500/20" 
                       : "bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
                   }`}
                 >
@@ -244,7 +244,7 @@ const Projects = () => {
                {/* Modal Header - Slightly more compact */}
                <div className="shrink-0 flex items-start justify-between gap-3 p-4 md:p-6 border-b border-zinc-800/50 bg-zinc-900 relative z-10">
                   <div className="flex min-w-0 items-start gap-3 md:gap-4">
-                     <div className="w-10 h-10 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500 shrink-0">
+                     <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 shrink-0">
                         <Terminal size={20} />
                      </div>
                      <div className="min-w-0">
@@ -252,8 +252,8 @@ const Projects = () => {
                            {selectedProject.name.replace(/_/g, ' ')}
                         </h3>
                         <div className="flex items-center gap-2 mt-1.5">
-                           <span className="flex items-center gap-1.5 text-xs font-semibold text-orange-500 uppercase tracking-wide bg-orange-500/10 px-2 py-0.5 rounded-md border border-orange-500/20">
-                              <div className="w-1 h-1 rounded-full bg-orange-500" /> Live
+                           <span className="flex items-center gap-1.5 text-xs font-semibold text-indigo-500 uppercase tracking-wide bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">
+                              <div className="w-1 h-1 rounded-full bg-indigo-500" /> Live
                            </span>
                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">
                               {selectedProject.language || "Native Module"}
@@ -266,7 +266,7 @@ const Projects = () => {
                       setSelectedProject(null);
                       setActiveImage(null);
                     }}
-                    className="group min-w-11 w-11 h-11 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-orange-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-orange-400 transition-all duration-200 active:scale-95 shrink-0"
+                    className="group min-w-11 w-11 h-11 flex items-center justify-center rounded-md bg-zinc-800/50 hover:bg-indigo-500 text-zinc-400 hover:text-white border border-zinc-700/50 hover:border-indigo-400 transition-all duration-200 active:scale-95 shrink-0"
                   >
                     <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
@@ -295,7 +295,7 @@ const Projects = () => {
                                     <span className="text-[9px] font-bold text-white uppercase tracking-widest">{selectedProject.stars || 0}</span>
                                  </div>
                                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-900/90 border border-zinc-700/50 shadow-xl">
-                                    <Share2 size={12} className="text-orange-500" />
+                                    <Share2 size={12} className="text-indigo-500" />
                                     <span className="text-[9px] font-bold text-white uppercase tracking-widest">{selectedProject.socialLinks?.length || 0} Hub</span>
                                  </div>
                               </div>
@@ -305,7 +305,7 @@ const Projects = () => {
                         {/* Description Section */}
                         <div className="space-y-4">
                            <div className="flex items-center gap-3 min-w-0">
-                           <h4 className="text-xs font-semibold text-orange-500 uppercase tracking-wide px-3 bg-zinc-900/50 py-1 rounded-md border border-orange-500/20">Project Overview</h4>
+                           <h4 className="text-xs font-semibold text-indigo-500 uppercase tracking-wide px-3 bg-zinc-900/50 py-1 rounded-md border border-indigo-500/20">Project Overview</h4>
                               <div className="h-px flex-1 bg-zinc-800/50" />
                            </div>
                            <div className="text-zinc-300 text-base leading-relaxed font-medium">
@@ -321,7 +321,7 @@ const Projects = () => {
                         {selectedProject.socialLinks && selectedProject.socialLinks.length > 0 && (
                           <div className="panel-subtle p-5">
                              <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-4 flex items-center gap-2">
-                                <Share2 size={12} className="text-orange-500" /> Links
+                                <Share2 size={12} className="text-indigo-500" /> Links
                              </h4>
                              <div className="grid grid-cols-4 gap-2 md:gap-3">
                                 {selectedProject.socialLinks.map((link, i) => (
@@ -331,7 +331,7 @@ const Projects = () => {
                                     target="_blank"
                                     rel="noopener"
                                     whileHover={{ scale: 1.03, y: -1 }}
-                                    className="aspect-square rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-orange-500/50 transition-all"
+                                    className="aspect-square rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-indigo-500/50 transition-all"
                                   >
                                      <SocialIcon platform={link.platform} url={link.url} />
                                   </motion.a>
@@ -343,19 +343,19 @@ const Projects = () => {
                         {/* Project Gallery */}
                         {(selectedProject.galleryUrls && selectedProject.galleryUrls.length > 0) && (
                           <div className="space-y-4">
-                             <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-orange-500">Gallery</h4>
+                             <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-indigo-500">Gallery</h4>
                              <div className="grid grid-cols-2 gap-2 md:gap-3">
                                 {selectedProject.galleryUrls.map((url, i) => (
                                   <motion.div 
                                     key={i} 
                                     whileHover={{ scale: 1.02 }}
                                     className={`aspect-video rounded-lg overflow-hidden border-2 cursor-pointer group relative bg-zinc-950 shadow-xl transition-all duration-200 ${
-                                      (activeImage === url) ? "border-orange-500" : "border-zinc-800 hover:border-zinc-600"
+                                      (activeImage === url) ? "border-indigo-500" : "border-zinc-800 hover:border-zinc-600"
                                     }`}
                                     onClick={() => setActiveImage(url)}
                                   >
                                      <img src={url} className="w-full h-full object-cover transition-all duration-700 opacity-60 group-hover:opacity-100" />
-                                     <div className="absolute inset-0 bg-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                     <div className="absolute inset-0 bg-indigo-500/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <Maximize2 size={16} className="text-white drop-shadow-lg" />
                                      </div>
                                   </motion.div>
@@ -366,7 +366,7 @@ const Projects = () => {
   
                         {/* Tech Stack Chips */}
                         <div className="space-y-4">
-                           <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-orange-500">Tech Stack</h4>
+                           <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide pl-2 border-l border-indigo-500">Tech Stack</h4>
                             <div className="flex flex-wrap gap-2">
                               {(selectedProject.topics || []).map(topic => (
                                 <span key={topic} className="chip hover:text-white hover:border-zinc-600 transition-all cursor-default">
@@ -383,7 +383,7 @@ const Projects = () => {
                                 href={selectedProject.htmlUrl} 
                                 target="_blank" 
                                 rel="noopener"
-                                className="group flex items-center justify-between p-4 rounded-lg bg-white text-zinc-950 font-bold text-xs uppercase tracking-wide hover:bg-orange-500 hover:text-white transition-all duration-200 shadow-xl active:scale-[0.98]"
+                                className="group flex items-center justify-between p-4 rounded-lg bg-white text-zinc-950 font-bold text-xs uppercase tracking-wide hover:bg-indigo-500 hover:text-white transition-all duration-200 shadow-xl active:scale-[0.98]"
                               >
                                 <span className="flex items-center gap-3"><FaGithub size={18} /> Access Source</span>
                                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -396,7 +396,7 @@ const Projects = () => {
                                   rel="noopener"
                                   className="group flex min-h-11 items-center justify-between p-4 rounded-lg bg-zinc-800/50 border border-zinc-700 text-white font-bold text-xs uppercase tracking-wide hover:bg-zinc-700 transition-all duration-200 shadow-xl active:scale-[0.98]"
                                 >
-                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-orange-500" /> Launch Project</span>
+                                  <span className="flex items-center gap-3"><RxExternalLink size={18} className="text-indigo-500" /> Launch Project</span>
                                   <Maximize2 size={16} className="text-zinc-500 group-hover:text-white transition-colors" />
                                 </a>
                               )}

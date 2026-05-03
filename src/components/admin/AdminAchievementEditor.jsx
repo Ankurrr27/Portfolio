@@ -55,7 +55,7 @@ export default function AdminAchievementEditor({
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[var(--card-bg)] p-6 rounded-2xl border border-[var(--border-color)] shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-600">
+          <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
             <Trophy size={24} />
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function AdminAchievementEditor({
                 ...achievements,
               ]);
             }}
-            className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm flex items-center gap-2 hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20"
+            className="px-5 py-2.5 rounded-xl bg-indigo-500 text-white font-bold text-sm flex items-center gap-2 hover:bg-indigo-600 transition-all shadow-lg shadow-indigo-500/20"
           >
             <Plus size={18} />
             Add Milestone
@@ -119,7 +119,7 @@ export default function AdminAchievementEditor({
                     {/* Compact category badge on image */}
                     <div className="absolute top-1 left-1 flex gap-0.5">
                        {(Array.isArray(item.category) ? item.category : [item.category || "Hackathons"]).slice(0, 1).map((cat, i) => (
-                         <div key={i} className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></div>
+                         <div key={i} className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></div>
                        ))}
                     </div>
                   </div>
@@ -130,7 +130,7 @@ export default function AdminAchievementEditor({
                        </h3>
                        <div className="flex gap-1 flex-shrink-0">
                         {(Array.isArray(item.category) ? item.category : [item.category || "Hackathons"]).map((cat, i) => (
-                          <span key={i} className="px-1.5 py-0.5 rounded-md bg-orange-500/10 text-orange-600 dark:text-orange-500 text-[7px] font-black uppercase tracking-widest border border-orange-500/20">
+                          <span key={i} className="px-1.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-500 text-[7px] font-black uppercase tracking-widest border border-indigo-500/20">
                             {cat}
                           </span>
                         ))}
@@ -147,14 +147,14 @@ export default function AdminAchievementEditor({
                       <button 
                         onClick={(e) => { e.stopPropagation(); moveItem(index, 'up'); }}
                         disabled={index === 0}
-                        className="p-1.5 rounded-lg text-[var(--muted)] hover:text-orange-500 disabled:opacity-20"
+                        className="p-1.5 rounded-lg text-[var(--muted)] hover:text-indigo-500 disabled:opacity-20"
                       >
                         <ArrowUp size={14} />
                       </button>
                       <button 
                         onClick={(e) => { e.stopPropagation(); moveItem(index, 'down'); }}
                         disabled={index === achievements.length - 1}
-                        className="p-1.5 rounded-lg text-[var(--muted)] hover:text-orange-500 disabled:opacity-20"
+                        className="p-1.5 rounded-lg text-[var(--muted)] hover:text-indigo-500 disabled:opacity-20"
                       >
                         <ArrowDown size={14} />
                       </button>
@@ -212,8 +212,8 @@ export default function AdminAchievementEditor({
                                   }}
                                   className={`px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                                     isSelected 
-                                    ? "bg-orange-500 text-white shadow-lg shadow-orange-500/20" 
-                                    : "bg-[var(--card-bg)] text-[var(--muted)] border border-[var(--border-color)] hover:border-orange-500/30"
+                                    ? "bg-indigo-500 text-white shadow-lg shadow-indigo-500/20" 
+                                    : "bg-[var(--card-bg)] text-[var(--muted)] border border-[var(--border-color)] hover:border-indigo-500/30"
                                   }`}
                                 >
                                   {cat}

@@ -22,7 +22,7 @@ export default function IDCard({
     name: "ANKUR", 
     role: "Full Stack Engineer", 
     imageUrl: fallbackProfileImage,
-    color: "#f97316",
+    color: "#6366f1",
     college: "IIIT KOTA",
     qualification: "B.Tech CSE",
     instagram: "@ankurrr27",

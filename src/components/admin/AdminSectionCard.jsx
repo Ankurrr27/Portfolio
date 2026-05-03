@@ -10,7 +10,7 @@ export default function AdminSectionCard({
       <div className="p-6 md:p-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8 pb-6 border-b border-slate-100">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
               {icon}
             </div>
             <div>

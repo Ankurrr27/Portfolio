@@ -108,7 +108,7 @@ export default function ProjectImageEditor({ project, onSaved }) {
       <div>
         <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Cover Image (16:9)</p>
         <div
-          className="relative h-44 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 overflow-hidden group cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-all"
+          className="relative h-44 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 overflow-hidden group cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition-all"
           onClick={() => coverInputRef.current?.click()}
         >
           {imageUrl ? (
@@ -139,7 +139,7 @@ export default function ProjectImageEditor({ project, onSaved }) {
           )}
           {uploading && (
             <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
-              <Loader2 size={24} className="text-blue-600 animate-spin" />
+              <Loader2 size={24} className="text-indigo-600 animate-spin" />
             </div>
           )}
         </div>
@@ -164,7 +164,7 @@ export default function ProjectImageEditor({ project, onSaved }) {
           <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Gallery Photos</p>
           <button
             onClick={() => galleryInputRef.current?.click()}
-            className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
           >
             <Plus size={14} /> Add Photo
           </button>
@@ -184,7 +184,7 @@ export default function ProjectImageEditor({ project, onSaved }) {
           ))}
           <button
             onClick={() => galleryInputRef.current?.click()}
-            className="aspect-video rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:border-blue-400 hover:bg-blue-50/30 transition-all flex items-center justify-center text-slate-400 hover:text-blue-500"
+            className="aspect-video rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 hover:border-indigo-400 hover:bg-indigo-50/30 transition-all flex items-center justify-center text-slate-400 hover:text-indigo-500"
           >
             <Plus size={20} />
           </button>
@@ -203,7 +203,7 @@ export default function ProjectImageEditor({ project, onSaved }) {
           <button
             onClick={handleSave}
             disabled={saving || uploading}
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+            className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center gap-2"
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
             Save Images

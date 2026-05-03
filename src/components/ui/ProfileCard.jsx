@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import "./ProfileCard.css";
 
 const DEFAULT_INNER_GRADIENT =
-  "linear-gradient(145deg, rgba(249, 115, 22, 0.42) 0%, rgba(56, 189, 248, 0.2) 100%)";
+  "linear-gradient(145deg, rgba(99, 102, 241, 0.42) 0%, rgba(56, 189, 248, 0.2) 100%)";
 
 const ANIMATION_CONFIG = {
   INITIAL_DURATION: 1200,
@@ -288,7 +288,7 @@ const ProfileCardComponent = ({
       "--icon": iconUrl ? `url(${iconUrl})` : "none",
       "--grain": grainUrl ? `url(${grainUrl})` : "none",
       "--inner-gradient": innerGradient ?? DEFAULT_INNER_GRADIENT,
-      "--behind-glow-color": behindGlowColor ?? "rgba(249, 115, 22, 0.62)",
+      "--behind-glow-color": behindGlowColor ?? "rgba(99, 102, 241, 0.62)",
       "--behind-glow-size": behindGlowSize ?? "48%",
     }),
     [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize]

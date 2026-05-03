@@ -96,7 +96,7 @@ export default function AdminField({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] px-5 py-3.5 text-[var(--foreground)] text-sm outline-none focus:border-orange-500/50 focus:ring-4 focus:ring-orange-500/5 transition-all placeholder:text-[var(--muted)]/50 ${
+        className={`rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] px-5 py-3.5 text-[var(--foreground)] text-sm outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all placeholder:text-[var(--muted)]/50 ${
           textarea ? "min-h-[160px] resize-y leading-relaxed" : "h-14"
         }`}
       />

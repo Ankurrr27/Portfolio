@@ -122,7 +122,7 @@ export default function AdminResponsibilitiesPage() {
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-medium text-sm flex items-center gap-2 hover:bg-indigo-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save size={16} />
             {isLoading ? "Saving..." : "Save Changes"}
@@ -193,12 +193,12 @@ export default function AdminResponsibilitiesPage() {
               <div className="border-t border-slate-100 pt-6">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-sm font-bold text-slate-700 flex items-center gap-2">
-                    <Briefcase size={16} className="text-blue-500" />
+                    <Briefcase size={16} className="text-indigo-500" />
                     Roles Journey
                   </h4>
                   <button
                     onClick={() => addRole(index)}
-                    className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                    className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
                   >
                     <Plus size={14} /> Add Role
                   </button>

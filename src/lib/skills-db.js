@@ -74,7 +74,7 @@ export const SKILLS_DB = {
   "Postman": { icon: <SiPostman />, color: "#FF6C37", category: "tools", about: "API platform." },
 
   // DSA & CS Fundamentals
-  "Algorithms": { icon: <Cpu size={14} />, color: "#f97316", category: "dsa", about: "Systematic procedures for solving computational problems." },
+  "Algorithms": { icon: <Cpu size={14} />, color: "#6366f1", category: "dsa", about: "Systematic procedures for solving computational problems." },
   "Data Structures": { icon: <Database size={14} />, color: "#3b82f6", category: "dsa", about: "Specialized formats for organizing and storing data." },
   "Operating Systems": { icon: <Cpu size={14} />, color: "#10b981", category: "dsa", about: "Software that manages computer hardware and software resources." },
   "System Design": { icon: <Globe size={14} />, color: "#8b5cf6", category: "dsa", about: "Defining the architecture and components of complex systems." }

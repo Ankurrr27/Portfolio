@@ -353,14 +353,14 @@ export default function AdminProfilePage() {
                   <div className="flex gap-3">
                     <input
                       type={field.type}
-                      value={profile[field.key] || (field.type === 'color' ? '#f97316' : "")}
+                      value={profile[field.key] || (field.type === 'color' ? '#6366f1' : "")}
                       onChange={(e) => updateField(field.key, field.type === "number" ? parseInt(e.target.value) || 0 : e.target.value)}
                       className={`${field.type === 'color' ? 'w-12 h-10 p-1' : 'w-full'} bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs focus:bg-white focus:border-indigo-500/50 outline-none transition-all`}
                     />
                     {field.type === 'color' && (
                       <input 
                         type="text"
-                        value={profile[field.key] || "#f97316"}
+                        value={profile[field.key] || "#6366f1"}
                         onChange={(e) => updateField(field.key, e.target.value)}
                         className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs outline-none"
                       />

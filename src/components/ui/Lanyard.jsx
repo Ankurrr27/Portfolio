@@ -21,7 +21,7 @@ export default function Lanyard({
     name: "ANKUR", 
     role: "Full Stack Engineer", 
     imageUrl: "/assets/profile.jpg",
-    color: "#f97316",
+    color: "#6366f1",
     social: "@ankurrr27"
   },
   opacity = 1

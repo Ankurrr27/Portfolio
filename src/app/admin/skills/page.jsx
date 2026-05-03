@@ -138,7 +138,7 @@ export default function AdminSkillsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={setupDefaults}
-            className="px-4 py-2.5 rounded-lg bg-orange-50 border border-orange-200 text-orange-700 font-medium text-sm flex items-center gap-2 hover:bg-orange-100 transition-colors"
+            className="px-4 py-2.5 rounded-lg bg-indigo-50 border border-orange-200 text-orange-700 font-medium text-sm flex items-center gap-2 hover:bg-indigo-100 transition-colors"
           >
             <Layers size={16} /> Reset Defaults
           </button>
@@ -151,7 +151,7 @@ export default function AdminSkillsPage() {
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="px-5 py-2.5 rounded-lg bg-blue-600 text-white font-medium text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 rounded-lg bg-indigo-600 text-white font-medium text-sm flex items-center gap-2 hover:bg-indigo-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Save size={16} />
             {isLoading ? "Saving..." : "Save Changes"}
@@ -171,7 +171,7 @@ export default function AdminSkillsPage() {
             isFirst={dIndex === 0}
             isLast={dIndex === domains.length - 1}
             className={
-              domain.key === 'front' ? 'border-l-4 border-l-blue-500' :
+              domain.key === 'front' ? 'border-l-4 border-l-indigo-500' :
               domain.key === 'back' ? 'border-l-4 border-l-emerald-500' :
               domain.key === 'lang' ? 'border-l-4 border-l-amber-500' :
               domain.key === 'tools' ? 'border-l-4 border-l-purple-500' : ''
@@ -211,7 +211,7 @@ export default function AdminSkillsPage() {
                           e.target.value = "";
                         }
                       }}
-                      className="text-xs border border-slate-200 rounded px-2 py-1 bg-white outline-none focus:border-blue-500"
+                      className="text-xs border border-slate-200 rounded px-2 py-1 bg-white outline-none focus:border-indigo-500"
                     >
                       <option value="">+ From Library</option>
                       {SKILL_LIBRARY.map(s => (
@@ -220,7 +220,7 @@ export default function AdminSkillsPage() {
                     </select>
                     <button 
                       onClick={() => addSkill(dIndex)}
-                      className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                      className="text-sm font-medium text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
                     >
                       <Plus size={16} /> Add Skill
                     </button>
@@ -236,14 +236,14 @@ export default function AdminSkillsPage() {
                           value={skill.name}
                           onChange={(e) => updateSkill(dIndex, sIndex, "name", e.target.value)}
                           placeholder="Skill name"
-                          className="flex-1 bg-white px-3 py-1.5 rounded border border-slate-200 text-sm text-slate-900 focus:border-blue-500 outline-none"
+                          className="flex-1 bg-white px-3 py-1.5 rounded border border-slate-200 text-sm text-slate-900 focus:border-indigo-500 outline-none"
                         />
                         <input 
                           type="text" 
                           value={skill.level || ""}
                           onChange={(e) => updateSkill(dIndex, sIndex, "level", e.target.value)}
                           placeholder="Level"
-                          className="w-24 bg-white px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-500 font-medium text-right focus:border-blue-500 outline-none"
+                          className="w-24 bg-white px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-500 font-medium text-right focus:border-indigo-500 outline-none"
                         />
                         <button onClick={() => removeSkill(dIndex, sIndex)} className="text-red-500 hover:text-red-600 p-1">
                           <Trash2 size={18} />
@@ -253,14 +253,14 @@ export default function AdminSkillsPage() {
                         value={skill.description || ""}
                         onChange={(e) => updateSkill(dIndex, sIndex, "description", e.target.value)}
                         placeholder="Brief description or key tools..."
-                        className="w-full bg-white px-3 py-2 rounded border border-slate-200 text-xs text-slate-600 focus:border-blue-500 outline-none resize-none h-16"
+                        className="w-full bg-white px-3 py-2 rounded border border-slate-200 text-xs text-slate-600 focus:border-indigo-500 outline-none resize-none h-16"
                       />
                       <input 
                         type="text" 
                         value={skill.logoUrl || ""}
                         onChange={(e) => updateSkill(dIndex, sIndex, "logoUrl", e.target.value)}
                         placeholder="Logo URL (optional)"
-                        className="w-full bg-white px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-500 focus:border-blue-500 outline-none"
+                        className="w-full bg-white px-3 py-1.5 rounded border border-slate-200 text-xs text-slate-500 focus:border-indigo-500 outline-none"
                       />
                     </div>
                   ))}

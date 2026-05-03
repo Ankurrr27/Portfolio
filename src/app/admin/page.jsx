@@ -91,12 +91,12 @@ export default function AdminPage() {
           >
             <div>
               <div className="flex items-center gap-2 text-slate-500 mb-2">
-                <div className="text-blue-600">{item.icon}</div>
+                <div className="text-indigo-600">{item.icon}</div>
                 <span className="text-xs font-semibold uppercase tracking-wider">{item.label}</span>
               </div>
               <span className="text-3xl font-bold text-slate-900">{item.value}</span>
             </div>
-            <div className="h-10 w-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+            <div className="h-10 w-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
               <ArrowRight size={18} />
             </div>
           </Link>
@@ -106,7 +106,7 @@ export default function AdminPage() {
       <div className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h2 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-            <Sparkles size={18} className="text-blue-600" /> Quick Actions
+            <Sparkles size={18} className="text-indigo-600" /> Quick Actions
           </h2>
           <p className="text-sm text-slate-500 mt-1">Need to jump straight to editing?</p>
         </div>
@@ -119,7 +119,7 @@ export default function AdminPage() {
           </Link>
           <Link
             href="/admin/achievements"
-            className="rounded-lg bg-blue-600 px-5 py-2.5 text-white font-medium text-sm hover:bg-blue-700 transition-colors shadow-sm"
+            className="rounded-lg bg-indigo-600 px-5 py-2.5 text-white font-medium text-sm hover:bg-indigo-700 transition-colors shadow-sm"
           >
             Edit Achievements
           </Link>

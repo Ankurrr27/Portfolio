@@ -70,7 +70,7 @@ const Footer = ({ totalViews = 0 }) => {
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 md:gap-8">
             <div className="space-y-4 max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                 Available for collaboration
               </div>
               <h2 className="text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl">
@@ -96,7 +96,7 @@ const Footer = ({ totalViews = 0 }) => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center"
+                      className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-indigo-500/50 transition-colors flex items-center justify-center"
                       title={link.platform}
                     >
                       <SocialIcon platform={link.platform} />
@@ -104,10 +104,10 @@ const Footer = ({ totalViews = 0 }) => {
                   ))
                 ) : (
                   <>
-                    <a href={p.githubUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center">
+                    <a href={p.githubUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-indigo-500/50 transition-colors flex items-center justify-center">
                       <FaGithub size={18} />
                     </a>
-                    <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-orange-500/50 transition-colors flex items-center justify-center">
+                    <a href={p.linkedinUrl || "#"} target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-md border border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-white hover:border-indigo-500/50 transition-colors flex items-center justify-center">
                       <FaLinkedin size={18} />
                     </a>
                   </>
@@ -121,7 +121,7 @@ const Footer = ({ totalViews = 0 }) => {
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold tracking-tight text-white">{p.fullName || "Engineer"}</span>
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
             </div>
             <p className="max-w-sm text-sm leading-7 text-zinc-500">
               Engineering resilient digital infrastructure and high-performance user experiences. Based in {(p.location || "Earth").split("•")[0]}.
@@ -134,7 +134,7 @@ const Footer = ({ totalViews = 0 }) => {
               <ul className="space-y-2">
                 {["Home", "Projects", "Achievements", "Skills"].map((link) => (
                   <li key={link}>
-                    <a href={`#${link.toLowerCase()}`} className="text-zinc-500 hover:text-orange-500 transition-colors text-sm font-medium">
+                    <a href={`#${link.toLowerCase()}`} className="text-zinc-500 hover:text-indigo-500 transition-colors text-sm font-medium">
                       {link}
                     </a>
                   </li>
@@ -146,12 +146,12 @@ const Footer = ({ totalViews = 0 }) => {
               <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Connect</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href={p.resumeUrl || "#"} className="text-zinc-500 hover:text-orange-500 transition-colors text-sm font-medium flex items-center gap-1.5">
+                  <a href={p.resumeUrl || "#"} className="text-zinc-500 hover:text-indigo-500 transition-colors text-sm font-medium flex items-center gap-1.5">
                     Resume <ExternalLink size={12} />
                   </a>
                 </li>
                 <li>
-                  <a href="/admin" className="text-zinc-500 hover:text-orange-500 transition-colors text-sm font-medium">
+                  <a href="/admin" className="text-zinc-500 hover:text-indigo-500 transition-colors text-sm font-medium">
                     Admin Portal
                   </a>
                 </li>

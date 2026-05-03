@@ -73,12 +73,12 @@ export default function ProjectSocialEditor({ project, onSaved }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-bold text-slate-700 flex items-center gap-2">
-          <Share2 size={16} className="text-blue-500" />
+          <Share2 size={16} className="text-indigo-500" />
           Social Hub & Community Links
         </h4>
         <button
           onClick={addLink}
-          className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-md"
+          className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 bg-indigo-50 px-2 py-1 rounded-md"
         >
           <Plus size={14} /> Add Link
         </button>
@@ -94,7 +94,7 @@ export default function ProjectSocialEditor({ project, onSaved }) {
                   <select
                     value={link.platform}
                     onChange={(e) => updateLink(index, "platform", e.target.value)}
-                    className="appearance-none bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-8 py-2 text-sm focus:bg-white focus:border-blue-500 outline-none transition-colors font-medium text-slate-700"
+                    className="appearance-none bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-8 py-2 text-sm focus:bg-white focus:border-indigo-500 outline-none transition-colors font-medium text-slate-700"
                   >
                     {PLATFORMS.map(p => (
                       <option key={p.id} value={p.id}>{p.name}</option>
@@ -110,7 +110,7 @@ export default function ProjectSocialEditor({ project, onSaved }) {
                   placeholder="Paste platform URL here..."
                   value={link.url}
                   onChange={(e) => updateLink(index, "url", e.target.value)}
-                  className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:bg-white focus:border-blue-500 outline-none transition-colors"
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:bg-white focus:border-indigo-500 outline-none transition-colors"
                 />
 
                 <button

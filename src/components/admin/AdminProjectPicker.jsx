@@ -55,8 +55,8 @@ export default function AdminProjectPicker({
         key={project.slug}
         className={`rounded-xl border transition-all duration-200 overflow-hidden ${
           isSelected
-            ? "border-blue-200 bg-blue-50/50"
-            : "border-slate-200 bg-white"
+            ? "border-indigo-200 bg-indigo-50/50 dark:border-indigo-500/30 dark:bg-indigo-500/10"
+            : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/40"
         }`}
       >
         {/* Card Header */}
@@ -67,18 +67,18 @@ export default function AdminProjectPicker({
               <button
                 onClick={() => onMoveUp(index)}
                 disabled={index === 0}
-                className="p-1 rounded hover:bg-blue-100 text-blue-400 hover:text-blue-600 disabled:opacity-20 transition-colors"
+                className="p-1 rounded hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-600 disabled:opacity-20 transition-colors"
                 title="Move Up"
               >
                 <ArrowUp size={16} />
               </button>
-              <span className="text-[10px] font-bold text-blue-600 mono bg-blue-100/50 w-6 h-6 flex items-center justify-center rounded-full">
+              <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 mono bg-indigo-100/50 dark:bg-indigo-500/20 w-6 h-6 flex items-center justify-center rounded-full">
                 {index + 1}
               </span>
               <button
                 onClick={() => onMoveDown(index)}
                 disabled={index === selectedSlugs.length - 1}
-                className="p-1 rounded hover:bg-blue-100 text-blue-400 hover:text-blue-600 disabled:opacity-20 transition-colors"
+                className="p-1 rounded hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-600 disabled:opacity-20 transition-colors"
                 title="Move Down"
               >
                 <ArrowDown size={16} />
@@ -87,7 +87,7 @@ export default function AdminProjectPicker({
           )}
 
           {/* Thumbnail */}
-          <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 flex-shrink-0">
+          <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 flex-shrink-0">
             {cover ? (
               <img src={cover} alt={project.name} className="w-full h-full object-cover" />
             ) : (
@@ -100,13 +100,13 @@ export default function AdminProjectPicker({
           {/* Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="text-slate-900 font-semibold text-base leading-tight">{project.name}</h3>
-              <div className="flex items-center gap-1.5 text-slate-500 text-sm font-medium flex-shrink-0">
-                <Star size={14} className={isSelected ? "text-blue-600" : ""} />
+              <h3 className="text-slate-900 dark:text-white font-semibold text-base leading-tight">{project.name}</h3>
+              <div className="flex items-center gap-1.5 text-slate-500 dark:text-zinc-400 text-sm font-medium flex-shrink-0">
+                <Star size={14} className={isSelected ? "text-indigo-600 dark:text-indigo-400" : ""} />
                 {project.stargazers_count || 0}
               </div>
             </div>
-            <p className="mt-1 text-slate-600 text-sm line-clamp-2">
+            <p className="mt-1 text-slate-600 dark:text-zinc-400 text-sm line-clamp-2">
               {project.description || "No description available."}
             </p>
 
@@ -126,7 +126,7 @@ export default function AdminProjectPicker({
                   disabled={!canSelect}
                   className={`text-xs font-semibold px-3 py-1 rounded-lg transition-colors ${
                     isSelected
-                      ? "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                      ? "bg-indigo-100 text-indigo-700 hover:bg-blue-200"
                       : "bg-slate-100 text-slate-600 hover:bg-slate-200 disabled:opacity-40"
                   } disabled:cursor-not-allowed`}
                 >
@@ -148,7 +148,7 @@ export default function AdminProjectPicker({
                         }
                       }}
                       className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
-                        isExpanded && expandedType === "photos" ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        isExpanded && expandedType === "photos" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                       }`}
                     >
                       <ImageIcon size={12} />
@@ -163,7 +163,7 @@ export default function AdminProjectPicker({
                         }
                       }}
                       className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
-                        isExpanded && expandedType === "socials" ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        isExpanded && expandedType === "socials" ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                       }`}
                     >
                       <Share2 size={12} />
@@ -208,7 +208,7 @@ export default function AdminProjectPicker({
     <div className="space-y-8">
       {/* Featured Section */}
       <AdminSectionCard
-        icon={<CheckCircle2 size={22} className="text-blue-600" />}
+        icon={<CheckCircle2 size={22} className="text-indigo-600" />}
         title="Featured Showcase"
         subtitle={`Your top ${featuredProjects.length} repositories, ordered as they will appear on your portfolio.`}
       >
@@ -237,7 +237,7 @@ export default function AdminProjectPicker({
               placeholder="Search repositories..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:bg-white focus:border-blue-500 outline-none transition-colors"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 text-sm focus:bg-white focus:border-indigo-500 outline-none transition-colors"
             />
           </div>
         }

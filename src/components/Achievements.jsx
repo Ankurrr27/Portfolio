@@ -10,15 +10,15 @@ import { formatText } from "../utils/formatText";
 
 
 const icons = {
-  github: <SiGithub />,
-  leetcode: <SiLeetcode />,
-  gfg: <SiGeeksforgeeks />,
+  github: <SiGithub className="text-zinc-100" />,
+  leetcode: <SiLeetcode className="text-[#FFA116]" />,
+  gfg: <SiGeeksforgeeks className="text-[#2F8D46]" />,
 };
 
 const platformColors = {
-  github:   { bg: "bg-zinc-900",  text: "text-white",        icon: "text-zinc-100", border: "border-zinc-800" },
-  leetcode: { bg: "bg-orange-600", text: "text-white",        icon: "text-white",    border: "border-orange-500" },
-  gfg:      { bg: "bg-emerald-700",  text: "text-white",        icon: "text-white",    border: "border-emerald-600" },
+  github:   { bg: "bg-zinc-900/40", text: "text-white",        icon: "text-zinc-100",   border: "border-zinc-800",       glow: "group-hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]" },
+  leetcode: { bg: "bg-zinc-900/40", text: "text-white",        icon: "text-[#FFA116]", border: "border-orange-500/20", glow: "group-hover:shadow-[0_0_30px_rgba(255,161,22,0.1)]" },
+  gfg:      { bg: "bg-zinc-900/40", text: "text-white",        icon: "text-[#2F8D46]", border: "border-emerald-500/20", glow: "group-hover:shadow-[0_0_30px_rgba(47,141,70,0.1)]" },
 };
 
 const categories = [
@@ -109,7 +109,7 @@ const Achievements = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 md:gap-6 mb-10 md:mb-12">
            <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900">
-                 <Trophy size={16} className="text-orange-500" />
+                 <Trophy size={16} className="text-indigo-500" />
                  <span className="text-xs font-semibold text-zinc-300 uppercase tracking-wide">Milestone Tracker</span>
               </div>
               <h2 className="section-title text-white">
@@ -125,15 +125,15 @@ const Achievements = () => {
         {/* Coding Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {codingStats.map((stat, i) => {
-            const pc = platformColors[stat.icon] || { bg: "bg-zinc-800", text: "text-white", icon: "text-white", border: "border-zinc-700" };
+            const pc = platformColors[stat.icon] || { bg: "bg-zinc-800/40", text: "text-white", icon: "text-white", border: "border-zinc-700", glow: "" };
             return (
-              <div key={i} className={`p-6 md:p-8 rounded-2xl border ${pc.border} ${pc.bg} flex items-center justify-between group transition-all duration-500`}>
+              <div key={i} className={`p-6 md:p-8 rounded-2xl border ${pc.border} ${pc.bg} flex items-center justify-between group transition-all duration-500 backdrop-blur-xl ${pc.glow}`}>
                  <div className="space-y-1">
                     <p className={`text-[10px] font-bold uppercase tracking-[0.2em] ${pc.text} opacity-60`}>{stat.label}</p>
                     <h4 className={`text-4xl font-black tracking-tighter ${pc.text}`}>{stat.count}</h4>
                     <p className={`text-xs font-medium ${pc.text} opacity-80`}>{stat.detail}</p>
                  </div>
-                 <div className={`text-5xl ${pc.icon} opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700`}>
+                 <div className={`text-5xl ${pc.icon} opacity-30 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700`}>
                     {icons[stat.icon] || <Trophy />}
                  </div>
               </div>
@@ -152,7 +152,7 @@ const Achievements = () => {
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
                                 isActive 
-                                ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20" 
+                                ? "bg-indigo-500 border-indigo-500 text-white shadow-lg shadow-indigo-500/20" 
                                 : "bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
                             }`}
                         >
@@ -277,7 +277,7 @@ const Achievements = () => {
                                         e.stopPropagation();
                                         setSelectedMilestone(item);
                                     }}
-                                    className="text-[9px] font-bold uppercase tracking-widest text-orange-500/90 hover:text-orange-400 transition-colors"
+                                    className="text-[9px] font-bold uppercase tracking-widest text-indigo-500/90 hover:text-indigo-400 transition-colors"
                                 >
                                     Read Story
                                 </button>
@@ -323,7 +323,7 @@ const Achievements = () => {
                           <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center overflow-y-auto">
                               <div className="mb-6 flex flex-wrap gap-2">
                                   {(Array.isArray(selectedMilestone.category) ? selectedMilestone.category : [selectedMilestone.category]).map((cat, i) => (
-                                      <span key={i} className="px-3 py-1.5 rounded-lg bg-orange-500/10 text-orange-500 text-[9px] font-black uppercase tracking-[0.2em] border border-orange-500/20">
+                                      <span key={i} className="px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-500 text-[9px] font-black uppercase tracking-[0.2em] border border-indigo-500/20">
                                           {cat}
                                       </span>
                                   ))}
@@ -349,7 +349,7 @@ const Achievements = () => {
                                           href={selectedMilestone.achievementUrl} 
                                           target="_blank" 
                                           rel="noopener"
-                                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all shadow-lg shadow-white/5"
+                                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all shadow-lg shadow-white/5"
                                       >
                                           Verify Milestone <ArrowUpRight size={14} />
                                       </a>
@@ -380,13 +380,13 @@ const Achievements = () => {
               <>
                 <button
                     onClick={prevSlide}
-                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 left-2 md:-left-8 lg:-left-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-orange-500 transition-all group"
+                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 left-2 md:-left-8 lg:-left-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-indigo-500 transition-all group"
                 >
                     <ChevronLeft size={20} className="group-hover:scale-110 transition-transform" />
                 </button>
                 <button
                     onClick={nextSlide}
-                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 right-2 md:-right-8 lg:-right-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-orange-500 transition-all group"
+                    className="absolute top-[30%] md:top-1/2 -translate-y-1/2 right-2 md:-right-8 lg:-right-12 z-40 p-3 md:p-5 rounded-full bg-zinc-900/80 backdrop-blur-xl border border-white/10 text-white hover:bg-indigo-500 transition-all group"
                 >
                     <ChevronRight size={20} className="group-hover:scale-110 transition-transform" />
                 </button>
