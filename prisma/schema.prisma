@@ -154,6 +154,7 @@ model GalleryItem {
   @@index([displayOrder(sort: Asc)])
 }
 
+
 model Responsibility {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   organization    String
@@ -168,5 +169,51 @@ model Responsibility {
 
   @@index([displayOrder(sort: Asc)])
   @@index([featured])
+}
+
+model CodingStats {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  autoFetch        Boolean  @default(false)
+  showGithubStats  Boolean  @default(true)
+  showLeetcodeStats Boolean @default(true)
+  showGfgStats     Boolean  @default(true)
+  showCodeforcesStats Boolean @default(true)
+  
+  // GitHub
+  githubContributions String?  @default("1200+")
+  githubRepos        String?  @default("35+")
+  githubStars        String?  @default("150+")
+  
+  // LeetCode
+  leetcodeSolved     String?  @default("450+")
+  leetcodeRating     String?  @default("1650+")
+  leetcodeRanking    String?  @default("Top 5%")
+  
+  // GFG
+  gfgScore           String?  @default("1200+")
+  gfgRank            String?  @default("1")
+  gfgPercentile      String?  @default("Top 1%")
+  
+  // Codeforces
+  cfRating           String?  @default("1450+")
+  cfRank             String?  @default("Specialist")
+  cfSolved           String?  @default("300+")
+
+  // Neural Activity Matrix
+  naGithubVal        Int?     @default(92)
+  naGithubTrend      String?  @default("+12%")
+  naGithubLabel      String?  @default("Open Source Velocity")
+  naLeetcodeVal      Int?     @default(88)
+  naLeetcodeTrend    String?  @default("+5%")
+  naLeetcodeLabel    String?  @default("Algorithmic Precision")
+  naGfgVal           Int?     @default(75)
+  naGfgTrend         String?  @default("+8%")
+  naGfgLabel         String?  @default("Consistency Index")
+  naCfVal            Int?     @default(65)
+  naCfTrend          String?  @default("+2%")
+  naCfLabel          String?  @default("Competitive Standing")
+  globalScore        String?  @default("8.9")
+
+  updatedAt          DateTime @updatedAt
 }
 

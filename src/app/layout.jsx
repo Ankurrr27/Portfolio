@@ -70,8 +70,8 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head />
       <body className="antialiased selection:bg-primary/30">
+        <JsonLd />
         <ThemeProvider>
-          <JsonLd />
           {children}
         </ThemeProvider>
       </body>

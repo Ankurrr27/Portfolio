@@ -48,6 +48,7 @@ function AdminLayoutContent({ children }) {
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Projects", href: "/admin/projects", icon: FolderKanban },
     { name: "Achievements", href: "/admin/achievements", icon: Trophy },
+    { name: "Coding Stats", href: "/admin/stats", icon: Code2 },
     { name: "Responsibilities", href: "/admin/responsibilities", icon: Briefcase },
     { name: "Education", href: "/admin/education", icon: GraduationCap },
     { name: "Profile", href: "/admin/profile", icon: UserCircle },

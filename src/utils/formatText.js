@@ -34,7 +34,7 @@ const parseInline = (text) => {
     {
       name: 'underline',
       regex: /__(.*?)__/,
-      render: (content) => <u className="underline decoration-indigo-500/50">{parseInline(content)}</u>,
+      render: (content) => <u className="underline decoration-amber-500/50">{parseInline(content)}</u>,
     },
     {
       name: 'link',
@@ -44,7 +44,7 @@ const parseInline = (text) => {
           href={url} 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="text-indigo-500 hover:text-indigo-400 underline decoration-indigo-500/30 transition-colors inline"
+          className="text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 transition-colors inline"
         >
           {parseInline(content)}
         </a>

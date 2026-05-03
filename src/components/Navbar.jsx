@@ -15,16 +15,16 @@ const WhatsNewButton = () => {
     <button
       className={`relative inline-flex min-h-9 min-w-9 md:min-h-11 md:min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
         resolvedTheme === "dark"
-          ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-indigo-500 hover:text-indigo-500"
-          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-indigo-500 hover:text-indigo-500"
+          ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-amber-500 hover:text-amber-500"
+          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-amber-500 hover:text-amber-500"
       }`}
       aria-label="What's new"
       type="button"
     >
       <Sparkles className="w-4 h-4 md:w-[18px] md:h-[18px]" />
       <span className="absolute top-2.5 right-2.5 flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
       </span>
     </button>
   );
@@ -93,9 +93,9 @@ const Navbar = () => {
               <a
                 key={link}
                 href={`#${link.toLowerCase()}`}
-                className={`relative px-3 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all rounded-md after:absolute after:bottom-1 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-indigo-500 after:transition-opacity ${
+                className={`relative px-3 py-2 text-[10px] font-semibold uppercase tracking-wide transition-all rounded-md after:absolute after:bottom-1 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-amber-500 after:transition-opacity ${
                   active === link 
-                    ? "text-indigo-500 after:opacity-100" 
+                    ? "text-amber-500 after:opacity-100" 
                     : "text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-900"
                 } ${active === link ? "" : "after:opacity-0"}`}
               >
@@ -119,7 +119,7 @@ const Navbar = () => {
               className={`cursor-pointer min-h-9 min-w-9 p-1.5 md:min-h-11 md:min-w-11 md:p-2 rounded-md border transition-all active:scale-95 flex items-center justify-center ${
                 resolvedTheme === "dark"
                   ? "border-zinc-800 bg-zinc-900 text-white hover:bg-zinc-800"
-                  : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-indigo-500 hover:text-indigo-500"
+                  : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-amber-500 hover:text-amber-500"
               }`}
               aria-label="Toggle menu"
             >
@@ -158,9 +158,9 @@ const Navbar = () => {
                   >
                     <a
                       href={`#${link.toLowerCase()}`}
-                      className={`relative flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors after:absolute after:bottom-2 after:left-4 after:h-0.5 after:w-10 after:rounded-full after:bg-indigo-500 after:transition-opacity ${
+                      className={`relative flex items-center min-h-11 px-4 py-3 rounded-md text-sm font-semibold uppercase tracking-wide transition-colors after:absolute after:bottom-2 after:left-4 after:h-0.5 after:w-10 after:rounded-full after:bg-amber-500 after:transition-opacity ${
                         active === link 
-                          ? "text-indigo-500 after:opacity-100" 
+                          ? "text-amber-500 after:opacity-100" 
                           : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white"
                       } ${active === link ? "" : "after:opacity-0"}`}
                     >

@@ -161,14 +161,12 @@ const Home = ({ totalViews = 0 }) => {
               transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="max-w-5xl text-left sm:text-center text-[clamp(2.2rem,8vw,5.5rem)] font-bold leading-[1.05] tracking-tight text-white"
             >
-              Hello, I'm <span className="text-indigo-500">{p.fullName || "Ankur"}</span>
+              Hello, I'm <span className="text-amber-500">{p.fullName || "Ankur"}</span>
               <br className="block sm:hidden" />
               <span className="hidden sm:inline"> and</span>
-              <span className="sm:hidden"> and</span> I'm a
-              <br />
-              <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
-                <span className="text-indigo-500">{roleText || "\u00A0"}</span>
-                <span className="inline-block h-[1em] w-[2px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] bg-indigo-500" />
+              <span className="sm:hidden"> and</span> I'm a <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
+                <span className="text-amber-500">{roleText || "\u00A0"}</span>
+                <span className="inline-block h-[1em] w-[2px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] bg-amber-500" />
               </span>
             </motion.h1>
 
@@ -191,7 +189,7 @@ const Home = ({ totalViews = 0 }) => {
               <MagneticButton>
                 <a
                   href="#projects"
-                  className="inline-flex h-11 sm:h-12 w-full items-center justify-center rounded-lg bg-indigo-500 px-3 sm:px-10 text-xs sm:text-sm font-bold text-white transition-all hover:bg-indigo-600 active:scale-95 whitespace-nowrap"
+                  className="inline-flex h-11 sm:h-12 w-full items-center justify-center rounded-lg bg-amber-500 px-3 sm:px-10 text-xs sm:text-sm font-bold text-white transition-all hover:bg-amber-600 active:scale-95 whitespace-nowrap"
                 >
                   <span className="sm:hidden">See work</span>
                   <span className="hidden sm:inline">See the work</span>
@@ -221,7 +219,7 @@ const Home = ({ totalViews = 0 }) => {
                 { label: "Problems Solved", value: "600+" },
               ].map((stat) => (
                 <div key={stat.label} className="group flex min-w-0 flex-col items-center justify-start px-1 sm:items-start sm:px-0">
-                  <span className="text-xl font-black tracking-tighter text-white transition-colors group-hover:text-indigo-500 sm:text-3xl">{stat.value}</span>
+                  <span className="text-xl font-black tracking-tighter text-white transition-colors group-hover:text-amber-500 sm:text-3xl">{stat.value}</span>
                   <span className="mt-1 max-w-full text-center text-[8px] font-bold uppercase leading-tight tracking-[0.06em] text-zinc-500 transition-colors group-hover:text-zinc-300 sm:text-left sm:text-[10px] sm:tracking-[0.2em]">{stat.label}</span>
                 </div>
               ))}

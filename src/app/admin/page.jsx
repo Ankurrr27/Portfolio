@@ -63,6 +63,12 @@ export default function AdminPage() {
         icon: <Trophy size={18} />,
         href: "/admin/achievements",
       },
+      {
+        label: "Coding Stats",
+        value: "Edit",
+        icon: <Sparkles size={18} />,
+        href: "/admin/stats",
+      },
     ],
     [achievements.length, selectedSlugs.length]
   );

@@ -58,7 +58,7 @@ export default function GsapCursor() {
       {/* Center dot */}
       <div
         ref={dotRef}
-        className="absolute top-0 left-0 w-1 h-1 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.5)]"
+        className="absolute top-0 left-0 w-1 h-1 bg-amber-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.5)]"
         style={{
           transform: "translate(-50%, -50%)",
         }}

@@ -11,13 +11,13 @@ const PhoneComponent = () => {
 
       <div className="relative h-full w-full overflow-hidden rounded-[28px] bg-black">
         <div
-          className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 transition-transform duration-700 group-hover:scale-110"
+          className="absolute inset-0 bg-gradient-to-tr from-zinc-950 via-amber-950/20 to-zinc-950 transition-transform duration-700 group-hover:scale-110"
         ></div>
         <div
-          className="absolute top-0 right-0 w-[150px] h-[150px] bg-purple-600/20 blur-[40px] rounded-full mix-blend-screen transition-all duration-700 group-hover:translate-x-4 group-hover:-translate-y-4"
+          className="absolute top-0 right-0 w-[150px] h-[150px] bg-amber-600/20 blur-[40px] rounded-full mix-blend-screen transition-all duration-700 group-hover:translate-x-4 group-hover:-translate-y-4"
         ></div>
         <div
-          className="absolute bottom-0 left-0 w-[150px] h-[150px] bg-cyan-600/20 blur-[40px] rounded-full mix-blend-screen transition-all duration-700 group-hover:-translate-x-4 group-hover:translate-y-4"
+          className="absolute bottom-0 left-0 w-[150px] h-[150px] bg-amber-600/20 blur-[40px] rounded-full mix-blend-screen transition-all duration-700 group-hover:-translate-x-4 group-hover:translate-y-4"
         ></div>
 
         <div
@@ -113,7 +113,7 @@ const PhoneComponent = () => {
           <div className="grid grid-cols-4 gap-x-2 gap-y-4 place-items-center mt-2">
             <div className="flex flex-col items-center gap-1 cursor-pointer">
               <div
-                className="w-9 h-9 rounded-xl bg-indigo-400 shadow-md shadow-indigo-500/20 flex items-center justify-center text-white"
+                className="w-9 h-9 rounded-xl bg-amber-500 shadow-md shadow-amber-500/20 flex items-center justify-center text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +200,7 @@ const PhoneComponent = () => {
               </svg>
             </div>
             <div
-              className="w-10 h-10 rounded-xl bg-indigo-500 shadow-md shadow-indigo-500/20 flex items-center justify-center text-white border border-indigo-400"
+              className="w-10 h-10 rounded-xl bg-amber-500 shadow-md shadow-amber-500/20 flex items-center justify-center text-white border border-amber-400"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

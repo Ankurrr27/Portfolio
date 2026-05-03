@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Trophy, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trophy, ArrowUpRight, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import EditSectionButton from "./admin/EditSectionButton";
 import { fallbackAchievements } from "../data/achievements";
@@ -90,13 +90,12 @@ const Achievements = () => {
       <div className="section-container relative z-10">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12">
            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-amber-500/20 bg-amber-500/5">
+              <div className="flex items-center gap-2 mb-2">
                  <Trophy size={16} className="text-amber-400" />
                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Hall of Fame</span>
               </div>
               <h2 className="section-title text-white">
-                Major <br />
-                <span className="accent-text">Milestones.</span>
+                Major <span className="accent-text">Milestones.</span>
               </h2>
            </div>
            <p className="section-copy max-w-md lg:text-right text-zinc-400 italic">
@@ -104,25 +103,23 @@ const Achievements = () => {
            </p>
         </div>
 
-        {/* Categories Selection - High Contrast Pill Design */}
-        <div className="mb-12">
-            <div className="flex flex-wrap items-center gap-3">
-                {categories.map((cat) => {
-                    const isActive = selectedCategory === cat;
-                    return (
-                        <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(cat)}
-                            className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
-                                isActive 
-                                ? "bg-amber-500 border-amber-500 text-white shadow-lg shadow-amber-500/20" 
-                                : "bg-zinc-900/50 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300"
-                            }`}
-                        >
+        {/* Categories Selection - Dropdown Design */}
+        <div className="mb-12 flex justify-start">
+            <div className="relative group/dropdown">
+                <select 
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="appearance-none bg-zinc-900/50 border border-zinc-800 text-zinc-300 px-6 py-3 pr-12 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 hover:border-amber-500/50 focus:border-amber-500 focus:outline-none cursor-pointer"
+                >
+                    {categories.map((cat) => (
+                        <option key={cat} value={cat} className="bg-zinc-950 text-white">
                             {cat}
-                        </button>
-                    );
-                })}
+                        </option>
+                    ))}
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500 group-hover/dropdown:text-amber-500 transition-colors">
+                    <ChevronDown size={14} />
+                </div>
             </div>
         </div>
 

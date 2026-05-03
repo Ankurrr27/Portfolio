@@ -108,7 +108,7 @@ const Skills = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <div className="space-y-4">
             <div className="section-kicker">
-              <Cpu size={16} className="text-indigo-500" />
+              <Cpu size={16} className="text-amber-500" />
               <span>Skills</span>
             </div>
             <h2 className="section-title">
@@ -150,7 +150,7 @@ const Skills = () => {
                     </div>
                     <div className="min-w-0">
                       <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight break-words">{selectedSkill.title}</h3>
-                      <p className="mt-2 text-xs font-semibold text-indigo-500 uppercase tracking-wide">{selectedSkill.description}</p>
+                      <p className="mt-2 text-xs font-semibold text-amber-500 uppercase tracking-wide">{selectedSkill.description}</p>
                     </div>
                   </div>
 
@@ -160,7 +160,7 @@ const Skills = () => {
                       <span className="text-xs font-bold text-white">{selectedSkill.contribution}%</span>
                     </div>
                     <div className="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
-                      <div className="h-full bg-indigo-500 rounded-full transition-all duration-1000 ease-out" style={{ width: `${selectedSkill.contribution}%` }} />
+                      <div className="h-full bg-amber-500 rounded-full transition-all duration-1000 ease-out" style={{ width: `${selectedSkill.contribution}%` }} />
                     </div>
                   </div>
 
