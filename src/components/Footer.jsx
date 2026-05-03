@@ -154,7 +154,12 @@ const Footer = ({ totalViews = 0 }) => {
           <p className="text-zinc-600 text-xs font-semibold uppercase tracking-wide">
             © {currentYear} • {p.fullName || "Admin"}
           </p>
-          <span className="text-zinc-700 text-xs font-semibold uppercase tracking-wide">Built with precision</span>
+          <div className="flex flex-col items-start sm:items-end gap-1.5">
+            <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.15em]">
+              Made with <span className="text-zinc-400">Next.js</span> • Visuals from <a href="https://reactbits.dev" target="_blank" className="text-zinc-400 hover:text-amber-500 transition-colors">ReactBits</a>
+            </p>
+            <span className="text-zinc-800 text-[9px] font-medium uppercase tracking-[0.2em]">Crafted with precision & Credits to all contributors</span>
+          </div>
         </div>
       </div>
     </footer>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, ChevronRight, MapPin } from "lucide-react";
+import { ArrowUpRight, ChevronRight, MapPin, Sparkles } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
 import { useTheme } from "next-themes";
 
@@ -164,7 +164,11 @@ const Home = ({ totalViews = 0 }) => {
               I'm <span className="text-amber-500">{p.fullName || "Ankur"}</span>, a<br />
               <span className="inline-flex items-center gap-[4px] min-h-[1.1em]">
                 <span className="text-amber-500">{roleText || "\u00A0"}</span>
-                <span className="inline-block h-[1em] w-[2px] translate-y-[1px] animate-[blink_0.9s_step-end_infinite] bg-amber-500" />
+                <motion.span 
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 0.9, repeat: Infinity, ease: "steps(2)" }}
+                  className="inline-block h-[1em] w-[2px] translate-y-[1px] bg-amber-500" 
+                />
               </span>
             </motion.h1>
 
@@ -197,6 +201,19 @@ const Home = ({ totalViews = 0 }) => {
 
             <MagneticButton>
               <a
+                href={p.resumeUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 sm:h-12 w-auto items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-5 sm:px-10 text-[12px] sm:text-sm font-bold text-zinc-300 transition-all hover:border-zinc-700 active:scale-95 whitespace-nowrap"
+              >
+                <span className="sm:hidden">Resume</span>
+                <span className="hidden sm:inline">View Resume</span>
+                <Sparkles size={14} className="ml-1.5 text-amber-500" />
+              </a>
+            </MagneticButton>
+
+            <MagneticButton>
+              <a
                 href={p.linkedinUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -219,19 +236,12 @@ const Home = ({ totalViews = 0 }) => {
                 { label: "Problems Solved", value: "600+" },
               ].map((stat) => (
                 <div key={stat.label} className="group flex min-w-0 flex-col items-center justify-start px-1 sm:items-start sm:px-0">
-                  <span className="text-xl font-black tracking-tighter text-white transition-colors group-hover:text-amber-500 sm:text-3xl">{stat.value}</span>
-                  <span className="mt-1 max-w-full text-center text-[8px] font-bold uppercase leading-tight tracking-[0.06em] text-zinc-500 transition-colors group-hover:text-zinc-300 sm:text-left sm:text-[10px] sm:tracking-[0.2em]">{stat.label}</span>
+                  <span className="text-xl font-black tracking-tighter text-white sm:text-3xl">{stat.value}</span>
+                  <span className="mt-1 max-w-full text-center text-[8px] font-bold uppercase leading-tight tracking-[0.06em] text-zinc-500 sm:text-left sm:text-[10px] sm:tracking-[0.2em]">{stat.label}</span>
                 </div>
               ))}
             </div>
       </motion.div>
-
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-      `}</style>
     </section>
   );
 };

@@ -230,7 +230,7 @@ const CodingStats = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={isVisible ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: i * 0.1, duration: 0.8 }}
-        className={`group relative p-8 rounded-[32px] border border-white/5 bg-gradient-to-br ${stat.theme} flex flex-col justify-between transition-all duration-700 backdrop-blur-3xl hover:border-amber-500/30 ${pc.glow} overflow-hidden`}
+        className={`group relative p-8 rounded-[32px] border border-white/5 bg-gradient-to-br ${stat.theme} flex flex-col justify-between transition-all duration-700 backdrop-blur-3xl ${pc.glow} overflow-hidden`}
       >
         <a
           href={stat.url}
@@ -256,7 +256,7 @@ const CodingStats = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <p className={`text-[9px] font-semibold ${pc.text} opacity-40`}>{stat.subStats}</p>
+            <p className={`text-xs md:text-sm font-semibold ${pc.text} opacity-60`}>{stat.subStats}</p>
             {stat.showGraph && (
               <div className="pt-3 h-8 flex items-end gap-1">
                 {[30, 50, 40, 70, 60, 85, 75, 100].map((h, idx) => (
@@ -289,7 +289,7 @@ const CodingStats = () => {
                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Technical Ledger</span>
               </div>
               <h2 className="section-title">
-                Technical <span className="text-amber-500">Domain.</span>
+                Technical <span className="text-amber-500">Domain</span>
               </h2>
            </div>
 
@@ -345,7 +345,7 @@ const CodingStats = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isVisible ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.1, duration: 0.8 }}
-                className={`group relative p-8 rounded-[32px] border border-white/5 bg-gradient-to-br ${stat.theme} flex flex-col justify-between transition-all duration-700 backdrop-blur-3xl hover:border-amber-500/30 ${pc.glow} overflow-hidden`}
+                className={`group relative p-8 rounded-[32px] border border-white/5 bg-gradient-to-br ${stat.theme} flex flex-col justify-between transition-all duration-700 backdrop-blur-3xl ${pc.glow} overflow-hidden`}
               >
                  {/* Profile Redirect Badge */}
                  <a 

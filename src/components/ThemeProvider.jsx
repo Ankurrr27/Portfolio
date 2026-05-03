@@ -10,6 +10,7 @@ export default function ThemeProvider({ children }) {
       enableSystem
       storageKey="portfolio-theme"
       disableTransitionOnChange={false}
+      suppressHydrationWarning
     >
       {children}
     </NextThemesProvider>

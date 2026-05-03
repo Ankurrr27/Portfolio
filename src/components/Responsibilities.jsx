@@ -13,7 +13,7 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
 
   return (
     <div
-      className={`panel w-full overflow-hidden transition-all duration-500 hover:border-amber-500/50 hover:shadow-[0_20px_50px_rgba(245,158,11,0.12)] hover:-translate-y-1 ${
+      className={`panel w-full overflow-hidden transition-all duration-500 hover:-translate-y-1 ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       }`}
       style={{ transitionDelay: `${index * 120}ms` }}
@@ -23,8 +23,8 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
         <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl pointer-events-none" />
 
         {/* Card Header ("Navbar" style) */}
-        <div className="flex flex-row items-center justify-between gap-3 border-b border-zinc-800/50 bg-zinc-950/80 p-5 md:px-10 md:py-8 relative z-10">
-          <div className="flex items-center gap-4 md:gap-6 flex-1 min-w-0">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-b border-zinc-800/50 bg-zinc-950/80 p-6 md:px-10 md:py-8 relative z-10">
+          <div className="flex items-center gap-4 md:gap-6 flex-1 min-w-0 w-full">
             <div className="shrink-0 relative group/logo">
               {logoUrl ? (
                 <div className="relative">
@@ -38,7 +38,7 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="text-lg md:text-3xl font-bold tracking-tight leading-tight text-white transition-colors duration-300">
+              <h3 className="text-xl md:text-3xl font-bold tracking-tight leading-tight text-white">
                 {organization}
               </h3>
               <div className="flex items-center gap-2 mt-1">
@@ -51,7 +51,7 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
 
           {/* Social Handles */}
           {socials && socials.length > 0 && (
-            <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <div className="flex items-center gap-2 md:gap-3 w-full sm:w-auto justify-start sm:justify-end">
               {socials.map((social, idx) => {
                 const Icon = social.icon;
                 return (
@@ -60,10 +60,10 @@ const ResponsibilityItem = ({ organization, period, isVisible, index, logoUrl, r
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`p-2 md:p-2.5 rounded-xl bg-zinc-900/50 border border-zinc-800 transition-all hover:scale-110 hover:bg-amber-500/10 hover:border-amber-500/30 ${social.color || 'text-zinc-400'}`}
+                    className={`p-2 rounded-lg bg-zinc-900/50 border border-zinc-800 transition-all hover:scale-110 hover:bg-amber-500/10 hover:border-amber-500/30 ${social.color || 'text-zinc-400'}`}
                     aria-label={social.name}
                   >
-                    <Icon size={16} className="md:w-5 md:h-5" />
+                    <Icon size={14} className="md:w-4 md:h-4" />
                   </a>
                 );
               })}
@@ -243,7 +243,7 @@ const Responsibilities = () => {
           ],
         },
       ],
-      logoUrl: null,
+      logoUrl: "/images/udbhav_logo.png",
     },
   ];
 
@@ -271,7 +271,7 @@ const Responsibilities = () => {
             </div>
             <h2 className="section-title">
               Leadership <span className="relative inline-block">
-                <span className="relative z-10 accent-text">roles.</span>
+                <span className="relative z-10 accent-text">roles</span>
                 <span className={`absolute -bottom-2 left-0 w-full h-1 bg-amber-500/30 blur-sm transition-all duration-1000 ${isVisible ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"}`} style={{ transformOrigin: 'left' }} />
               </span>
             </h2>

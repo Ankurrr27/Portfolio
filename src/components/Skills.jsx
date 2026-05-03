@@ -112,12 +112,9 @@ const Skills = () => {
               <span>Skills</span>
             </div>
             <h2 className="section-title">
-              Technical <span className="accent-text">toolkit.</span>
+              Technical <span className="accent-text">toolkit</span>
             </h2>
           </div>
-          <p className="section-copy max-w-sm md:text-right">
-            A focused map of languages, frameworks, databases, and tools I use to build reliable software.
-          </p>
         </div>
       </div>
 

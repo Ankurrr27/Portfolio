@@ -2,31 +2,104 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Sun, Moon } from "lucide-react";
+import { Sparkles, Sun, Moon, LayoutGrid, ExternalLink, Globe, Code } from "lucide-react";
 import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import GlassSurface from "./ui/GlassSurface";
 
 const navLinks = ["Home", "About", "Skills", "Projects", "Achievements", "Responsibilities", "Education"];
 
-const WhatsNewButton = () => {
+const otherProjects = [
+  { name: "IIITians Network", icon: Globe, url: "https://www.iiitiansnetwork.in", color: "text-blue-500" },
+  { name: "TechKnow", icon: Code, url: "#", color: "text-emerald-500" },
+  { name: "Neon Cinematics", icon: Sparkles, url: "#", color: "text-purple-500" },
+  { name: "Ledger Pro", icon: LayoutGrid, url: "#", color: "text-amber-500" },
+];
+
+const MoreFromAnkur = () => {
   const { resolvedTheme } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <button
-      className={`relative inline-flex min-h-9 min-w-9 md:min-h-11 md:min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
-        resolvedTheme === "dark"
-          ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-amber-500 hover:text-amber-500"
-          : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-amber-500 hover:text-amber-500"
-      }`}
-      aria-label="What's new"
-      type="button"
-    >
-      <Sparkles className="w-4 h-4 md:w-[18px] md:h-[18px]" />
-      <span className="absolute top-2.5 right-2.5 flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-      </span>
-    </button>
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`relative inline-flex min-h-9 min-w-9 md:min-h-11 md:min-w-11 items-center justify-center rounded-md border shadow-sm transition-all active:scale-95 ${
+          resolvedTheme === "dark"
+            ? "border-zinc-800 bg-zinc-900 text-zinc-300 hover:border-amber-500 hover:text-amber-500"
+            : "border-zinc-200 bg-zinc-100 text-zinc-700 hover:border-amber-500 hover:text-amber-500"
+        }`}
+        title="More from Ankur"
+        type="button"
+      >
+        <Sparkles className="w-4 h-4 md:w-[18px] md:h-[18px]" />
+        <span className="absolute top-2.5 right-2.5 flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <div 
+              className="fixed inset-0 z-[60]" 
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="absolute right-0 mt-2 w-72 z-[70] origin-top-right"
+            >
+              <GlassSurface
+                width="100%"
+                height="auto"
+                borderRadius={12}
+                brightness={resolvedTheme === "dark" ? 20 : 98}
+                opacity={0.9}
+                blur={20}
+                backgroundOpacity={0.2}
+                className="p-4 border border-zinc-800/50 shadow-2xl"
+              >
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">More from Ankur</span>
+                  <LayoutGrid size={14} className="text-zinc-600" />
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {otherProjects.map((proj) => (
+                    <a
+                      key={proj.name}
+                      href={proj.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col items-center gap-2 p-2 rounded-xl hover:bg-white/5 transition-all group"
+                    >
+                      <div className={`w-10 h-10 rounded-xl bg-zinc-900 flex items-center justify-center border border-zinc-800 group-hover:border-zinc-700 shadow-sm ${proj.color}`}>
+                        <proj.icon size={20} />
+                      </div>
+                      <span className="text-[9px] font-bold text-zinc-400 text-center leading-tight group-hover:text-white transition-colors line-clamp-2">
+                        {proj.name}
+                      </span>
+                    </a>
+                  ))}
+                </div>
+                <div className="mt-4 pt-4 border-t border-zinc-800/50">
+                  <a 
+                    href="https://github.com/ankurrr27" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full py-2 rounded-lg bg-zinc-900 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all"
+                  >
+                    All Repositories <ExternalLink size={12} />
+                  </a>
+                </div>
+              </GlassSurface>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
@@ -104,15 +177,15 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile controls */}
+          {/* Desktop controls */}
           <div className="hidden md:flex items-center gap-3">
-            <WhatsNewButton />
+            <MoreFromAnkur />
             <ThemeToggle />
           </div>
 
           {/* Mobile controls */}
           <div className="flex items-center gap-2 md:hidden">
-            <WhatsNewButton />
+            <MoreFromAnkur />
             <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

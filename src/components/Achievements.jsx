@@ -95,7 +95,7 @@ const Achievements = () => {
                  <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest">Hall of Fame</span>
               </div>
               <h2 className="section-title text-white">
-                Major <span className="accent-text">Milestones.</span>
+                Major <span className="accent-text">Milestones</span>
               </h2>
            </div>
 
@@ -288,73 +288,89 @@ const Achievements = () => {
                       onClick={() => setSelectedMilestone(null)}
                   >
                       <motion.div 
-                          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                          initial={{ scale: 0.98, opacity: 0, y: 15 }}
                           animate={{ scale: 1, opacity: 1, y: 0 }}
-                          exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                          transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                          exit={{ scale: 0.98, opacity: 0, y: 15 }}
+                          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                           onClick={(e) => e.stopPropagation()}
-                          className="w-full max-w-4xl max-h-[90vh] bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden flex flex-col md:flex-row relative"
+                          className="w-full max-w-3xl max-h-[90vh] bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden flex flex-col relative shadow-2xl"
                       >
-                          {/* Image Side */}
-                          <div className="w-full md:w-1/2 h-64 md:h-auto bg-zinc-900 border-b md:border-b-0 md:border-r border-zinc-800">
-                              <img 
-                                  src={selectedMilestone.url || selectedMilestone.badgeImageUrl || "/images/hero_bg.png"} 
-                                  alt={selectedMilestone.title}
-                                  className="w-full h-full object-cover"
-                              />
+                          {/* Modal Header */}
+                          <div className="shrink-0 flex items-center justify-between px-6 py-5 border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl z-20 absolute top-0 left-0 right-0">
+                              <div className="min-w-0 flex items-center gap-3">
+                                 <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-zinc-950 shrink-0">
+                                    <Trophy size={14} className="font-bold" />
+                                 </div>
+                                 <h3 className="text-xl font-bold text-white tracking-tight truncate">
+                                    Achievement
+                                 </h3>
+                              </div>
+                              <button 
+                                onClick={() => setSelectedMilestone(null)}
+                                className="w-10 h-10 flex items-center justify-center rounded-full bg-zinc-900 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                              >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                              </button>
                           </div>
-
-                          {/* Content Side */}
-                          <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center overflow-y-auto">
-                              <div className="mb-6 flex flex-wrap gap-2">
-                                  {(Array.isArray(selectedMilestone.category) ? selectedMilestone.category : [selectedMilestone.category]).map((cat, i) => (
-                                      <span key={i} className="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 text-[9px] font-black uppercase tracking-[0.2em] border border-amber-500/20">
-                                          {cat}
-                                      </span>
-                                  ))}
+  
+                          {/* Scrollable Content */}
+                          <div className="flex-1 overflow-y-auto custom-scrollbar pt-[73px]">
+                              {/* Hero Image */}
+                              <div className="relative w-full aspect-video md:aspect-[21/9] border-b border-zinc-800 bg-zinc-900">
+                                  <img 
+                                      src={selectedMilestone.url || selectedMilestone.badgeImageUrl || "/images/hero_bg.png"} 
+                                      alt={selectedMilestone.title}
+                                      className="w-full h-full object-cover animate-in fade-in zoom-in-95 duration-700"
+                                  />
                               </div>
-
-                              <h3 className="text-white font-black text-2xl md:text-4xl leading-tight tracking-tighter mb-4">
-                                  {selectedMilestone.title}
-                              </h3>
-
-                              <div className="flex items-center gap-3 mb-8">
-                                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">{selectedMilestone.issuer}</span>
-                                  <span className="w-1.5 h-1.5 rounded-full bg-zinc-800"></span>
-                                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">{selectedMilestone.dateLabel}</span>
-                              </div>
-
-                              <div className="text-sm md:text-base text-zinc-400 leading-relaxed mb-10">
-                                  {formatText(selectedMilestone.description)}
-                              </div>
-
-                              <div className="flex items-center gap-4">
-                                  {selectedMilestone.achievementUrl && (
-                                      <a 
-                                          href={selectedMilestone.achievementUrl} 
-                                          target="_blank" 
-                                          rel="noopener"
-                                          className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-amber-500 hover:text-white transition-all shadow-lg shadow-white/5"
+  
+                              <div className="p-6 md:p-10 space-y-10">
+                                  {/* Info */}
+                                  <div className="space-y-4">
+                                      <div className="flex flex-wrap gap-2 mb-2">
+                                          {(Array.isArray(selectedMilestone.category) ? selectedMilestone.category : [selectedMilestone.category]).map((cat, i) => (
+                                              <span key={i} className="px-3 py-1.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold">
+                                                  {cat}
+                                              </span>
+                                          ))}
+                                      </div>
+                                      
+                                      <h3 className="text-2xl md:text-3xl font-black text-white leading-tight tracking-tighter">
+                                          {selectedMilestone.title}
+                                      </h3>
+  
+                                      <div className="flex items-center gap-3">
+                                          <span className="text-xs font-bold uppercase tracking-widest text-amber-500">{selectedMilestone.issuer}</span>
+                                          <span className="w-1.5 h-1.5 rounded-full bg-zinc-800"></span>
+                                          <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">{selectedMilestone.dateLabel}</span>
+                                      </div>
+                                  </div>
+  
+                                  <div className="text-zinc-300 text-[15px] leading-loose font-medium">
+                                      {formatText(selectedMilestone.description)}
+                                  </div>
+  
+                                  {/* Action Buttons */}
+                                  <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-zinc-800/50">
+                                      {selectedMilestone.achievementUrl && (
+                                          <a 
+                                              href={selectedMilestone.achievementUrl} 
+                                              target="_blank" 
+                                              rel="noopener noreferrer"
+                                              className="w-full sm:w-auto group flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-zinc-950 font-bold text-xs uppercase tracking-wide hover:bg-amber-500 hover:text-white transition-all duration-200 shadow-xl active:scale-[0.98]"
+                                          >
+                                              Verify Milestone <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                          </a>
+                                      )}
+                                      <button 
+                                          onClick={() => setSelectedMilestone(null)}
+                                          className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-bold uppercase tracking-wide hover:text-white transition-all active:scale-[0.98]"
                                       >
-                                          Verify Milestone <ArrowUpRight size={14} />
-                                      </a>
-                                  )}
-                                  <button 
-                                      onClick={() => setSelectedMilestone(null)}
-                                      className="px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-black uppercase tracking-widest hover:text-white transition-all"
-                                  >
-                                      Close
-                                  </button>
+                                          Close
+                                      </button>
+                                  </div>
                               </div>
                           </div>
-
-                          {/* Close Button X */}
-                          <button 
-                              onClick={() => setSelectedMilestone(null)}
-                              className="absolute top-4 right-4 p-2 rounded-full bg-black/40 text-white/60 hover:text-white backdrop-blur-md transition-colors"
-                          >
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                          </button>
                       </motion.div>
                   </motion.div>
               )}
